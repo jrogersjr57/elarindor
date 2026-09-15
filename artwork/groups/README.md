@@ -40,7 +40,8 @@ Artwork remains directly in this directory. Its development status is recorded h
 - **Status:** Exploration — applies to all six retained pages.
 - **Characters:** Vaelyn, Toma, Lyssara, and both families.
 - **Purpose:** An eight-page sequential-art exploration of adventure, first affection, homecoming, a private first night, accidental family disclosure, and the couple explaining the life they want together. Retained for visual storytelling, pacing, expressions, relationship staging, and continuity comparison.
-- **Completion:** Pages 1–6 are illustrated and uploaded. Pages 7–8 are scripted and await illustration.
+- **Completion:** Pages 1–6 are illustrated and uploaded. Pages 7–8 are fully scripted and intentionally deferred for future exploration.
+- **Current decision:** James chose to preserve this sequence as a future possibility while creative attention returns to the childhood scenes in *The Road and the Root*. The family reactions and the couple's future wishes can be reconsidered as their characters develop.
 - **Full script and continuation:** [Where the Road Leads — Graphic Novel Script (Exploration)](https://app.notion.com/p/3dcd83701b9d81579f26d46e76aba086) under **The Elarindor Chronicles** in Notion.
 
 | Page | Retained asset | Scene and version notes |
@@ -54,7 +55,7 @@ Artwork remains directly in this directory. Its development status is recorded h
 
 **Continuity use:** This sequence follows the experimental stature and costume direction in [the balanced-stature quartet](elarindor-quartet-balanced-stature.png): Vaelyn and Toma are roughly equal in height while retaining distinct faces, clothing, and species traits, including Toma's rounded human-like ears. These pages are exploration references, not approved character masters or established story canon. The parents' appearances, household design, dialogue, and family reactions remain provisional.
 
-**Continuation:** Use the uploaded page 6 for the established family cast, clothing, and supper-room staging when illustrating the remaining pages. Page 7, **Saying it plainly**, contains the couple's declaration and wishes. Page 8, **A place at the table**, contains the family response and closing hand-holding scene. Their complete panel directions and dialogue are preserved in the linked Notion script.
+**Future continuation — deferred:** If James deliberately reopens this exploration, review the current character and family development before illustrating pages 7–8. Use the uploaded page 6 as this sequence's family, clothing, and supper-room reference, revising the preserved script if later development calls for it. Page 7, **Saying it plainly**, contains the couple's declaration and wishes. Page 8, **A place at the table**, contains the family response and closing hand-holding scene. Their complete panel directions and dialogue are preserved in the linked Notion script.
 
 **Related story context:** [Vaelyn & Toma — Intimacy, Family, and Reproduction Exploration](https://app.notion.com/p/3dcd83701b9d8144ac0be22f1ccac056).
 
