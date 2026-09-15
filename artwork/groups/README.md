@@ -20,6 +20,20 @@ Artwork remains directly in this directory. Its development status is recorded h
 - **Purpose:** Tavern group-scene exploration generated from the then-current in-progress individual reference sheets for all four characters. Retained as a useful record of how the developing character designs read together in a shared scene.
 - **Continuity use:** Useful as a group-composition and visual-separation exploration. It is not an approved master reference and should not establish final heights, proportions, faces, costumes, equipment, or other canon visual details. Individual character reference materials remain authoritative for their current designs.
 
+### `exploration/vaelyn-toma-lyssara-bedroom-interruption-exploration.png`
+
+- **Status:** Exploration
+- **Characters:** Vaelyn, Toma, Lyssara
+- **Purpose:** Primary scene-composition exploration for the story beat in which Lyssara unexpectedly walks in on Vaelyn and Toma together in the bedroom.
+- **Continuity use:** Retained for staging, reaction, and narrative-composition reference only. It is not an approved visual reference for the final appearances, proportions, clothing, or anatomy of Vaelyn, Toma, or Lyssara, and it does not establish this story event as canon while Vaelyn's direction remains under exploration.
+
+### `exploration/vaelyn-toma-lyssara-intimate-interruption-exploration.png`
+
+- **Status:** Exploration
+- **Characters:** Vaelyn, Toma, Lyssara
+- **Purpose:** Alternate exploration of the same bedroom interruption, with greater emphasis on the romantic intimacy between Vaelyn and Toma immediately before Lyssara's arrival.
+- **Continuity use:** Retained as an emotional-tone and relationship-staging reference only. It is not an approved visual reference for final character appearance, clothing, anatomy, or scene canon, and should not override later character or relationship development.
+
 ## Maintenance
 
 When a group image becomes the current working reference, is approved, superseded, or rejected, update its status and notes here rather than moving the file solely because its status changed. Retain meaningful historical comparisons unless James deliberately requests deletion.
