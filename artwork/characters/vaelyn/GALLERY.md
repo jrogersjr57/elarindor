@@ -1,13 +1,10 @@
 # Vaelyn — Remaining UUID Visual Triage Gallery
 
-**Purpose:** Temporary visual index containing only Vaelyn-folder artwork that still has a UUID filename and therefore still needs identification, curation, or descriptive renaming.
+**Purpose:** Temporary visual index containing only Vaelyn-folder artwork that still has a UUID filename whose earlier curation decision has not yet been reconstructed into the repository.
 
-Open this file in GitHub's rendered **Preview** view. Once an image is identified and renamed, remove it from this gallery.
+The visual review itself has already been completed. This gallery is now only a recovery aid while the earlier keep/delete/rename decisions are reconstructed. Once a recovered decision is applied, remove that UUID from this file.
 
 ---
-
-## 06C3ACAA-7BA8-4FEA-9784-A58EBDD0D321.png
-![06C3ACAA-7BA8-4FEA-9784-A58EBDD0D321](./06C3ACAA-7BA8-4FEA-9784-A58EBDD0D321.png)
 
 ## 0E6558F5-5CE1-4896-A951-9EF80F804196.png
 ![0E6558F5-5CE1-4896-A951-9EF80F804196](./0E6558F5-5CE1-4896-A951-9EF80F804196.png)
@@ -81,29 +78,11 @@ Open this file in GitHub's rendered **Preview** view. Once an image is identifie
 ## 795EC645-EB11-4E03-BD98-52F1026CAED0.png
 ![795EC645-EB11-4E03-BD98-52F1026CAED0](./795EC645-EB11-4E03-BD98-52F1026CAED0.png)
 
-## 7FD1624C-E73E-4664-8B57-F5BED6CE403A.png
-![7FD1624C-E73E-4664-8B57-F5BED6CE403A](./7FD1624C-E73E-4664-8B57-F5BED6CE403A.png)
-
-## 7FD4FE87-FFAF-4E6E-A1D6-3719C6810613.png
-![7FD4FE87-FFAF-4E6E-A1D6-3719C6810613](./7FD4FE87-FFAF-4E6E-A1D6-3719C6810613.png)
-
 ## 7FE76B07-97BC-4178-B0C8-B1D446EB1781.png
 ![7FE76B07-97BC-4178-B0C8-B1D446EB1781](./7FE76B07-97BC-4178-B0C8-B1D446EB1781.png)
 
 ## 853A4200-9937-49A4-AAA8-D7AADA05C0AC.png
 ![853A4200-9937-49A4-AAA8-D7AADA05C0AC](./853A4200-9937-49A4-AAA8-D7AADA05C0AC.png)
-
-## 9E7263CC-D7FF-4B68-BBB6-661FC04A3387.png
-![9E7263CC-D7FF-4B68-BBB6-661FC04A3387](./9E7263CC-D7FF-4B68-BBB6-661FC04A3387.png)
-
-## AA2183AC-3C09-4404-86D5-F761024B2326.png
-![AA2183AC-3C09-4404-86D5-F761024B2326](./AA2183AC-3C09-4404-86D5-F761024B2326.png)
-
-## ABD47005-129E-4A8A-9FB4-3A16AAFB9FFA.png
-![ABD47005-129E-4A8A-9FB4-3A16AAFB9FFA](./ABD47005-129E-4A8A-9FB4-3A16AAFB9FFA.png)
-
-## B6685E0B-3FD9-4F86-9DBF-EF8AB0716312.png
-![B6685E0B-3FD9-4F86-9DBF-EF8AB0716312](./B6685E0B-3FD9-4F86-9DBF-EF8AB0716312.png)
 
 ## BEBBF2EE-AF6E-434E-A18E-B2B94A1F35E8.png
 ![BEBBF2EE-AF6E-434E-A18E-B2B94A1F35E8](./BEBBF2EE-AF6E-434E-A18E-B2B94A1F35E8.png)
