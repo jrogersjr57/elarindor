@@ -2,13 +2,12 @@
   'use strict';
 
   const DEFAULT_CONFIG = {
-    version: 3,
+    version: 4,
     rotationSeconds: 30,
     fadeMilliseconds: 2200,
     scenes: [
-      { id: 'woodland', name: 'Woodland Road — Day', eyebrow: 'Living Elarindor', quest: 'Build the Living Window', theme: 'woodland', characters: false, particles: 'leaves' },
-      { id: 'campfire', name: 'Forest Camp', eyebrow: 'Evening Camp', quest: 'Build the Living Window', theme: 'campfire', characters: true, particles: 'embers' },
-      { id: 'interior', name: 'Quiet Evening', eyebrow: 'After the Road', quest: 'Build the Living Window', theme: 'interior', characters: true, particles: 'dust' }
+      { id: 'morning-wakeup', name: 'Morning Wakeup', eyebrow: 'Living Elarindor', quest: 'Begin the Day', theme: 'bedroom-morning', particles: 'morning-dust' },
+      { id: 'nighttime-bed', name: 'Nighttime Bed', eyebrow: 'Living Elarindor', quest: "Rest at Day's End", theme: 'bedroom-night', particles: 'night-dust' }
     ]
   };
 
@@ -25,7 +24,6 @@
     quest: document.getElementById('quest-title'),
     location: document.getElementById('location'),
     debugPanel: document.getElementById('debug-panel'),
-    safeZone: document.getElementById('safe-zone'),
     status: document.getElementById('status')
   };
 
@@ -33,6 +31,8 @@
   let currentIndex = 0;
   let rotationTimer = null;
   let isAuto = !forcedScene;
+  let motionFrame = null;
+  let motionStartedAt = performance.now();
 
   function setStatus(message) {
     if (el.status) el.status.textContent = message;
@@ -55,51 +55,44 @@
     }
   }
 
-  function characterMarkup(scene) {
-    if (!scene.characters) return '';
-    return `
-      <div class="character-pair" aria-hidden="true">
-        <div class="character a"></div>
-        <div class="character b"></div>
-      </div>`;
-  }
-
   function sceneMarkup(scene) {
-    const characters = characterMarkup(scene);
     let layers = '';
 
-    if (scene.theme === 'woodland') {
+    if (scene.theme === 'bedroom-morning') {
       layers = `
-        <div class="layer woodland-sky"></div>
-        <div class="layer woodland-canopy-back"></div>
-        <div class="layer woodland-trunks-back"></div>
-        <div class="layer woodland-ground"></div>
-        <div class="layer woodland-road"></div>
-        <div class="layer woodland-road-light"></div>
-        <div class="layer woodland-mist mist-a"></div>
-        <div class="layer woodland-mist mist-b"></div>
-        <div class="layer woodland-sunbeam beam-a"></div>
-        <div class="layer woodland-sunbeam beam-b"></div>
-        ${characters}
-        <div class="layer woodland-foreground foreground-left"></div>
-        <div class="layer woodland-foreground foreground-right"></div>
-        <div class="layer woodland-vignette"></div>`;
-    } else if (scene.theme === 'campfire') {
+        <div class="layer room-wall"></div>
+        <div class="window morning-window" aria-hidden="true">
+          <div class="window-sky"></div>
+          <div class="curtain curtain-left"></div>
+          <div class="curtain curtain-right"></div>
+        </div>
+        <div class="layer dawn-light"></div>
+        <div class="bed" aria-hidden="true">
+          <div class="headboard"></div>
+          <div class="pillows"></div>
+          <div class="quilt"></div>
+        </div>
+        <div class="layer bedside-furniture"></div>
+        <div class="layer morning-glow"></div>`;
+    } else if (scene.theme === 'bedroom-night') {
       layers = `
-        <div class="layer trees"></div>
-        <div class="layer ground"></div>
-        <div class="layer firelight"></div>
-        ${characters}
-        <div class="fire" aria-hidden="true"></div>
-        <div class="layer foreground"></div>`;
-    } else if (scene.theme === 'interior') {
-      layers = `
-        <div class="layer wall"></div>
-        <div class="window" aria-hidden="true"></div>
+        <div class="layer room-wall"></div>
+        <div class="window night-window" aria-hidden="true">
+          <div class="window-sky"></div>
+          <div class="moon"></div>
+          <div class="curtain curtain-left"></div>
+          <div class="curtain curtain-right"></div>
+        </div>
         <div class="layer moonlight"></div>
-        <div class="layer candle-glow"></div>
-        ${characters}
-        <div class="layer furnishings"></div>`;
+        <div class="bed" aria-hidden="true">
+          <div class="headboard"></div>
+          <div class="pillows"></div>
+          <div class="quilt"></div>
+        </div>
+        <div class="candle candle-a" aria-hidden="true"></div>
+        <div class="candle candle-b" aria-hidden="true"></div>
+        <div class="layer bedside-furniture"></div>
+        <div class="layer night-glow"></div>`;
     }
 
     return `
@@ -111,30 +104,23 @@
 
   function renderScenes() {
     el.sceneRoot.innerHTML = config.scenes.map(sceneMarkup).join('');
-    config.scenes.forEach((scene, index) => seedParticles(scene, index));
+    config.scenes.forEach(seedParticles);
   }
 
   function seedParticles(scene) {
     const field = el.sceneRoot.querySelector(`[data-scene-id="${scene.id}"] .particle-field`);
     if (!field) return;
 
-    const type = scene.particles;
-    const count = type === 'leaves' ? 18 : type === 'embers' ? 24 : type === 'dust' ? 20 : 0;
-
+    const count = scene.particles === 'morning-dust' ? 28 : 20;
     for (let i = 0; i < count; i += 1) {
       const p = document.createElement('i');
-      p.className = `particle ${type === 'leaves' ? 'leaf' : type === 'embers' ? 'ember' : 'dust'}`;
-      const left = Math.random() * 100;
-      const top = type === 'embers' ? 68 + Math.random() * 8 : Math.random() * 100;
-      p.style.left = `${left}%`;
-      p.style.top = `${top}%`;
-      p.style.animationDelay = `${-(Math.random() * 14)}s`;
-      p.style.animationDuration = `${type === 'embers' ? 3.6 + Math.random() * 3.2 : type === 'leaves' ? 11 + Math.random() * 11 : 8 + Math.random() * 13}s`;
-      if (type === 'embers') p.style.setProperty('--drift', `${-35 + Math.random() * 70}px`);
-      if (type === 'leaves') {
-        p.style.opacity = `${0.28 + Math.random() * 0.45}`;
-        p.style.transform = `scale(${0.65 + Math.random() * 0.8})`;
-      }
+      p.className = `particle ${scene.particles}`;
+      p.style.left = `${8 + Math.random() * 84}%`;
+      p.style.top = `${8 + Math.random() * 78}%`;
+      p.style.opacity = `${0.22 + Math.random() * 0.48}`;
+      p.dataset.phase = `${Math.random() * Math.PI * 2}`;
+      p.dataset.speed = `${0.35 + Math.random() * 0.8}`;
+      p.dataset.range = `${5 + Math.random() * 18}`;
       field.appendChild(p);
     }
   }
@@ -148,7 +134,7 @@
       node.classList.toggle('active', node.dataset.sceneId === scene.id);
     });
 
-    if (el.eyebrow) el.eyebrow.textContent = scene.eyebrow || 'Current Quest';
+    if (el.eyebrow) el.eyebrow.textContent = scene.eyebrow || 'Living Elarindor';
     if (el.quest) el.quest.textContent = scene.quest || '';
     if (el.location) el.location.textContent = scene.name || scene.id;
 
@@ -200,10 +186,15 @@
       const button = document.createElement('button');
       button.type = 'button';
       button.dataset.scene = scene.id;
-      button.textContent = scene.id === 'woodland' ? 'Woodland' : scene.id === 'campfire' ? 'Campfire' : 'Interior';
+      button.textContent = scene.id === 'morning-wakeup' ? 'Morning Wakeup' : 'Nighttime Bed';
       button.addEventListener('click', () => forceScene(scene.id));
       el.debugPanel.appendChild(button);
     });
+
+    const probe = document.createElement('div');
+    probe.className = 'motion-probe';
+    probe.innerHTML = '<span>motion</span><i></i>';
+    el.livingSpace.appendChild(probe);
   }
 
   function updateDebugButtons(sceneId) {
@@ -214,6 +205,36 @@
     });
   }
 
+  function runMotion(now) {
+    const t = (now - motionStartedAt) / 1000;
+    const sway = Math.sin(t * 0.72);
+    const slower = Math.sin(t * 0.31);
+    const pulse = (Math.sin(t * 1.7) + 1) / 2;
+
+    document.documentElement.style.setProperty('--motion-x', sway.toFixed(4));
+    document.documentElement.style.setProperty('--motion-y', slower.toFixed(4));
+    document.documentElement.style.setProperty('--motion-pulse', pulse.toFixed(4));
+
+    el.sceneRoot.querySelectorAll('.particle').forEach((node, index) => {
+      const phase = Number(node.dataset.phase || 0);
+      const speed = Number(node.dataset.speed || 0.5);
+      const range = Number(node.dataset.range || 10);
+      const x = Math.sin((t * speed) + phase) * range;
+      const y = Math.cos((t * speed * 0.62) + phase + index * 0.07) * range * 0.42;
+      node.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+    });
+
+    if (debug) {
+      const probeDot = document.querySelector('.motion-probe i');
+      if (probeDot) {
+        const pct = 50 + Math.sin(t * 1.15) * 46;
+        probeDot.style.left = `${pct}%`;
+      }
+    }
+
+    motionFrame = window.requestAnimationFrame(runMotion);
+  }
+
   async function loadConfig() {
     try {
       const response = await fetch(`./data/scenes.json?v=${Date.now()}`, { cache: 'no-store' });
@@ -222,7 +243,6 @@
       if (!loaded || !Array.isArray(loaded.scenes) || !loaded.scenes.length) throw new Error('No scenes found');
       config = loaded;
       document.documentElement.style.setProperty('--fade-time', `${Math.max(0, Number(config.fadeMilliseconds) || 2200)}ms`);
-      setStatus(`Scene config loaded • engine v${config.version || '?'}`);
     } catch (error) {
       config = DEFAULT_CONFIG;
       setStatus(`Using built-in scene config • ${error.message}`);
@@ -251,6 +271,10 @@
     } else {
       startRotation();
     }
+
+    if (motionFrame) window.cancelAnimationFrame(motionFrame);
+    motionStartedAt = performance.now();
+    motionFrame = window.requestAnimationFrame(runMotion);
   }
 
   window.addEventListener('error', event => {
