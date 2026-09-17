@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#0d0b0b">
-  <title>Living Elarindor — Moon Cloud Cover Diagnostic v6</title>
+  <title>Living Elarindor — Moon Cloud Cover Diagnostic v7</title>
   <style>
     html, body {
       width: 100%;
@@ -33,9 +33,7 @@
       z-index: 0;
     }
 
-    /* Instead of drawing a visible cloud across the flattened window,
-       this test simulates a cloud passing over the moon by locally veiling
-       the baked-in moon and dimming the room's moonlight response. */
+    /* Keep the scene response subtle but visible during the accelerated test. */
     .room-dim {
       position: absolute;
       inset: 0;
@@ -44,20 +42,19 @@
       background:
         radial-gradient(
           ellipse at 84% 14%,
-          rgba(6, 12, 27, .20) 0%,
-          rgba(6, 12, 27, .17) 27%,
-          rgba(6, 12, 27, .12) 50%,
-          rgba(6, 12, 27, .05) 72%,
+          rgba(7, 14, 30, .18) 0%,
+          rgba(7, 14, 30, .15) 28%,
+          rgba(7, 14, 30, .10) 52%,
+          rgba(7, 14, 30, .04) 72%,
           rgba(0, 0, 0, 0) 100%
         ),
-        rgba(3, 7, 16, .10);
+        rgba(3, 7, 16, .08);
       opacity: 0;
       animation: room-moon-dim 16s ease-in-out infinite;
       will-change: opacity;
     }
 
-    /* Small zone centered on the painted moon only, intentionally kept
-       away from curtains, mullions and most tree silhouettes. */
+    /* Small moon-only zone: nothing can spill over the curtains/window frame. */
     .moon-zone {
       position: absolute;
       left: 79.7%;
@@ -67,42 +64,48 @@
       overflow: hidden;
       z-index: 2;
       pointer-events: none;
-      border-radius: 50%;
+      border-radius: 44% 52% 48% 55%;
     }
 
-    .cloud-veil {
+    /* Three soft irregular veils cross at slightly different heights.
+       No circular shadow is used, so the moon should haze/dim rather than
+       read like an eclipse or changing phase. */
+    .wisp {
       position: absolute;
       left: 0;
-      top: 11%;
-      width: 145%;
-      height: 75%;
-      border-radius: 50%;
-      background:
-        radial-gradient(ellipse at 16% 50%, rgba(28, 40, 61, 0) 0 16%, rgba(38, 51, 74, .26) 34%, rgba(49, 63, 88, .46) 52%, rgba(31, 43, 65, .18) 72%, rgba(0,0,0,0) 100%),
-        radial-gradient(ellipse at 46% 50%, rgba(32, 44, 67, .08) 0 18%, rgba(43, 57, 82, .44) 38%, rgba(56, 70, 96, .66) 54%, rgba(37, 49, 72, .22) 73%, rgba(0,0,0,0) 100%),
-        radial-gradient(ellipse at 76% 50%, rgba(31, 43, 65, 0) 0 16%, rgba(42, 55, 80, .34) 35%, rgba(54, 68, 93, .54) 52%, rgba(34, 47, 69, .18) 72%, rgba(0,0,0,0) 100%);
+      border-radius: 47% 58% 44% 61% / 63% 42% 58% 39%;
       filter: blur(5px);
-      transform: translate3d(70%, 0, 0);
-      opacity: 0;
-      animation: moon-cloud-pass 16s ease-in-out infinite;
       will-change: transform, opacity;
     }
 
-    .moon-shadow {
-      position: absolute;
-      inset: 0;
-      border-radius: 50%;
-      background: radial-gradient(
-        circle at 50% 50%,
-        rgba(18, 27, 44, .74) 0%,
-        rgba(22, 32, 51, .58) 38%,
-        rgba(27, 39, 61, .20) 68%,
-        rgba(0,0,0,0) 100%
-      );
-      filter: blur(3px);
-      opacity: 0;
-      animation: moon-shadow-dim 16s ease-in-out infinite;
-      will-change: opacity;
+    .wisp-a {
+      top: 18%;
+      width: 148%;
+      height: 29%;
+      background:
+        radial-gradient(ellipse at 14% 52%, rgba(36,49,72,0) 0 16%, rgba(49,64,90,.30) 36%, rgba(61,78,106,.48) 53%, rgba(40,54,79,.14) 73%, rgba(0,0,0,0) 100%),
+        radial-gradient(ellipse at 51% 48%, rgba(43,57,82,.08) 0 18%, rgba(56,72,99,.42) 38%, rgba(66,84,112,.58) 55%, rgba(42,56,82,.18) 74%, rgba(0,0,0,0) 100%),
+        radial-gradient(ellipse at 82% 54%, rgba(35,48,71,0) 0 14%, rgba(50,65,91,.26) 36%, rgba(60,77,104,.43) 54%, rgba(38,52,76,.12) 73%, rgba(0,0,0,0) 100%);
+      animation: wisp-a-pass 16s ease-in-out infinite;
+    }
+
+    .wisp-b {
+      top: 35%;
+      width: 132%;
+      height: 23%;
+      background:
+        radial-gradient(ellipse at 20% 50%, rgba(43,58,84,0) 0 18%, rgba(58,74,101,.25) 37%, rgba(70,87,115,.43) 55%, rgba(47,61,87,.12) 75%, rgba(0,0,0,0) 100%),
+        radial-gradient(ellipse at 67% 48%, rgba(41,55,81,.06) 0 16%, rgba(55,71,98,.31) 38%, rgba(65,83,111,.48) 55%, rgba(42,56,82,.14) 74%, rgba(0,0,0,0) 100%);
+      animation: wisp-b-pass 16s ease-in-out infinite;
+    }
+
+    .wisp-c {
+      top: 5%;
+      width: 120%;
+      height: 19%;
+      background:
+        radial-gradient(ellipse at 38% 50%, rgba(44,59,86,0) 0 20%, rgba(59,76,103,.20) 40%, rgba(72,90,118,.38) 56%, rgba(49,63,89,.10) 75%, rgba(0,0,0,0) 100%);
+      animation: wisp-c-pass 16s ease-in-out infinite;
     }
 
     .diagnostic-note {
@@ -119,45 +122,38 @@
       pointer-events: none;
     }
 
-    @keyframes moon-cloud-pass {
-      0%, 18% {
-        transform: translate3d(78%, 0, 0);
-        opacity: 0;
-      }
-      28% {
-        transform: translate3d(42%, 0, 0);
-        opacity: .50;
-      }
-      42% {
-        transform: translate3d(10%, 0, 0);
-        opacity: .88;
-      }
-      55% {
-        transform: translate3d(-13%, 0, 0);
-        opacity: .92;
-      }
-      70% {
-        transform: translate3d(-45%, 0, 0);
-        opacity: .52;
-      }
-      82%, 100% {
-        transform: translate3d(-78%, 0, 0);
-        opacity: 0;
-      }
+    @keyframes wisp-a-pass {
+      0%, 17%   { transform: translate3d(76%, 0, 0) rotate(-1deg); opacity: 0; }
+      28%        { transform: translate3d(43%, 0, 0) rotate(-1deg); opacity: .42; }
+      42%        { transform: translate3d(12%, 1%, 0) rotate(0deg); opacity: .82; }
+      56%        { transform: translate3d(-15%, 1%, 0) rotate(1deg); opacity: .88; }
+      70%        { transform: translate3d(-45%, 0, 0) rotate(1deg); opacity: .40; }
+      83%, 100%  { transform: translate3d(-78%, 0, 0) rotate(1deg); opacity: 0; }
     }
 
-    @keyframes moon-shadow-dim {
-      0%, 24%, 78%, 100% { opacity: 0; }
-      36% { opacity: .20; }
-      47%, 59% { opacity: .78; }
-      69% { opacity: .22; }
+    @keyframes wisp-b-pass {
+      0%, 21%   { transform: translate3d(84%, 0, 0) rotate(1deg); opacity: 0; }
+      34%        { transform: translate3d(44%, 0, 0) rotate(1deg); opacity: .30; }
+      48%        { transform: translate3d(9%, -1%, 0) rotate(0deg); opacity: .70; }
+      61%        { transform: translate3d(-18%, -1%, 0) rotate(-1deg); opacity: .72; }
+      73%        { transform: translate3d(-48%, 0, 0) rotate(-1deg); opacity: .28; }
+      86%, 100%  { transform: translate3d(-82%, 0, 0) rotate(-1deg); opacity: 0; }
+    }
+
+    @keyframes wisp-c-pass {
+      0%, 13%   { transform: translate3d(88%, 0, 0); opacity: 0; }
+      25%        { transform: translate3d(52%, 0, 0); opacity: .22; }
+      38%        { transform: translate3d(18%, 0, 0); opacity: .54; }
+      50%        { transform: translate3d(-8%, 0, 0); opacity: .58; }
+      63%        { transform: translate3d(-38%, 0, 0); opacity: .24; }
+      78%, 100%  { transform: translate3d(-76%, 0, 0); opacity: 0; }
     }
 
     @keyframes room-moon-dim {
-      0%, 25%, 77%, 100% { opacity: 0; }
-      38% { opacity: .18; }
-      48%, 59% { opacity: .56; }
-      69% { opacity: .20; }
+      0%, 23%, 78%, 100% { opacity: 0; }
+      36% { opacity: .16; }
+      48%, 60% { opacity: .48; }
+      70% { opacity: .18; }
     }
   </style>
 </head>
@@ -171,11 +167,12 @@
     <div class="room-dim" aria-hidden="true"></div>
 
     <div class="moon-zone" aria-hidden="true">
-      <div class="cloud-veil"></div>
-      <div class="moon-shadow"></div>
+      <div class="wisp wisp-a"></div>
+      <div class="wisp wisp-b"></div>
+      <div class="wisp wisp-c"></div>
     </div>
 
-    <div class="diagnostic-note">CLOUD TEST v6 · moon-only veil · 16s</div>
+    <div class="diagnostic-note">CLOUD TEST v7 · irregular wisps · 16s</div>
   </main>
 </body>
 </html>
