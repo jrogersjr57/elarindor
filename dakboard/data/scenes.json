@@ -1,7 +1,6 @@
 {
-  "version": 6,
-  "rotationSeconds": 15,
-  "fadeMilliseconds": 2200,
+  "version": 7,
+  "fadeMilliseconds": 1400,
   "scenes": [
     {
       "id": "morning-wakeup",
