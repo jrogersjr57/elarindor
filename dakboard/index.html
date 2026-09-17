@@ -1,0 +1,662 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Living Elarindor</title>
+  <style>
+    :root {
+      --fade-time: 2200ms;
+      --panel-bg: rgba(10, 14, 12, .48);
+      --panel-border: rgba(237, 227, 194, .20);
+      --text-main: #f3ead2;
+      --text-soft: rgba(243, 234, 210, .76);
+      --accent: #d5bd79;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      background: #07100c;
+      color: var(--text-main);
+      font-family: Georgia, "Times New Roman", serif;
+    }
+
+    body { user-select: none; }
+
+    #living-space {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      isolation: isolate;
+      background: #07100c;
+    }
+
+    .scene {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity var(--fade-time) ease-in-out;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .scene.active { opacity: 1; }
+
+    .scene::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 50% 45%, transparent 0 45%, rgba(0,0,0,.12) 72%, rgba(0,0,0,.38) 100%),
+        linear-gradient(to bottom, rgba(0,0,0,.04), rgba(0,0,0,.22));
+      z-index: 20;
+    }
+
+    .layer { position: absolute; inset: 0; }
+
+    /* ---------- WOODLAND ROAD ---------- */
+    #woodland {
+      background:
+        radial-gradient(circle at 65% 15%, rgba(242,215,145,.55), transparent 20%),
+        linear-gradient(#6d8d74 0%, #44634f 35%, #223b30 68%, #0c1c16 100%);
+    }
+
+    #woodland .distant {
+      top: 24%;
+      background:
+        repeating-linear-gradient(88deg, transparent 0 4.2%, rgba(18,45,34,.43) 4.2% 5.4%, transparent 5.4% 8.5%),
+        linear-gradient(to top, rgba(15,38,28,.88), transparent 70%);
+      opacity: .85;
+      animation: woodland-breathe 14s ease-in-out infinite alternate;
+    }
+
+    #woodland .road {
+      inset: auto 18% -18% 16%;
+      height: 62%;
+      background: linear-gradient(102deg, transparent 0 27%, rgba(164,143,102,.18) 31%, rgba(191,168,123,.56) 47%, rgba(131,111,78,.46) 64%, transparent 69%);
+      clip-path: polygon(48% 0, 58% 0, 100% 100%, 0 100%);
+      filter: blur(.3px);
+      transform-origin: 50% 0;
+    }
+
+    #woodland .mist {
+      inset: 38% -15% 12% -15%;
+      background:
+        radial-gradient(ellipse at 25% 45%, rgba(223,238,222,.18), transparent 46%),
+        radial-gradient(ellipse at 72% 62%, rgba(223,238,222,.15), transparent 43%),
+        radial-gradient(ellipse at 52% 30%, rgba(223,238,222,.12), transparent 39%);
+      filter: blur(18px);
+      animation: drift-right 28s linear infinite alternate;
+    }
+
+    #woodland .foreground {
+      background:
+        radial-gradient(ellipse at -4% 38%, rgba(11,33,23,.88) 0 19%, transparent 20%),
+        radial-gradient(ellipse at 104% 48%, rgba(10,29,21,.9) 0 23%, transparent 24%),
+        linear-gradient(to top, rgba(6,20,14,.88) 0 12%, transparent 25%);
+      z-index: 12;
+      animation: foreground-sway 8s ease-in-out infinite alternate;
+      transform-origin: bottom center;
+    }
+
+    #woodland .sunbeam {
+      inset: -20% 25% 0 46%;
+      background: linear-gradient(110deg, transparent 20%, rgba(251,226,157,.12) 44%, rgba(251,226,157,.04) 62%, transparent 74%);
+      transform: skewX(-7deg);
+      animation: light-pulse 11s ease-in-out infinite alternate;
+      z-index: 5;
+    }
+
+    /* ---------- CAMPFIRE ---------- */
+    #campfire {
+      background:
+        radial-gradient(circle at 50% 67%, rgba(206,103,43,.38), transparent 21%),
+        linear-gradient(#172437 0%, #111d26 38%, #101815 68%, #070d0a 100%);
+    }
+
+    #campfire .trees {
+      top: 16%;
+      background:
+        repeating-linear-gradient(92deg, transparent 0 5%, rgba(5,12,10,.72) 5% 6.2%, transparent 6.2% 10%),
+        linear-gradient(to top, rgba(4,11,8,.8), transparent 75%);
+      opacity: .95;
+    }
+
+    #campfire .ground {
+      top: 63%;
+      background: radial-gradient(ellipse at 50% 30%, rgba(93,55,31,.32), transparent 34%), linear-gradient(#142018, #050b08);
+      z-index: 5;
+    }
+
+    .fire {
+      position: absolute;
+      left: 50%;
+      top: 66%;
+      width: clamp(42px, 5vw, 92px);
+      aspect-ratio: 1 / 1.28;
+      transform: translate(-50%, -50%);
+      border-radius: 54% 46% 58% 42% / 65% 58% 42% 35%;
+      background:
+        radial-gradient(circle at 50% 74%, #ffd47c 0 14%, transparent 15%),
+        radial-gradient(ellipse at 48% 58%, #ec8c36 0 35%, #8f381d 62%, transparent 64%);
+      filter: blur(.6px) drop-shadow(0 0 22px rgba(234,120,48,.72));
+      animation: flame-dance .75s ease-in-out infinite alternate;
+      z-index: 11;
+    }
+
+    #campfire .firelight {
+      inset: 35% 18% -22% 18%;
+      background: radial-gradient(ellipse at 50% 62%, rgba(232,133,61,.28), transparent 43%);
+      animation: firelight 1.5s ease-in-out infinite alternate;
+      z-index: 8;
+    }
+
+    #campfire .foreground {
+      background: linear-gradient(to top, rgba(2,7,5,.88) 0 11%, transparent 29%);
+      z-index: 13;
+    }
+
+    /* ---------- NIGHT INTERIOR ---------- */
+    #interior {
+      background:
+        radial-gradient(circle at 70% 30%, rgba(184,201,218,.11), transparent 24%),
+        linear-gradient(120deg, #171b20 0%, #27221f 47%, #130f11 100%);
+    }
+
+    #interior .wall {
+      inset: 8% 5% 7% 5%;
+      border: 1px solid rgba(180,151,111,.10);
+      background:
+        linear-gradient(90deg, rgba(87,57,38,.08) 1px, transparent 1px),
+        linear-gradient(rgba(87,57,38,.06) 1px, transparent 1px);
+      background-size: 10% 100%, 100% 18%;
+      opacity: .7;
+    }
+
+    #interior .window {
+      inset: 14% 11% auto auto;
+      width: 21%;
+      height: 43%;
+      border: clamp(6px, .7vw, 15px) solid rgba(58,43,35,.9);
+      background:
+        radial-gradient(circle at 68% 24%, rgba(239,240,213,.9) 0 4%, rgba(201,216,228,.22) 4.5% 7%, transparent 8%),
+        linear-gradient(#304055, #172233 70%, #111822);
+      box-shadow: 0 0 45px rgba(154,186,214,.08);
+      z-index: 5;
+    }
+
+    #interior .window::before,
+    #interior .window::after {
+      content: "";
+      position: absolute;
+      background: rgba(50,38,33,.88);
+    }
+
+    #interior .window::before { width: 5%; height: 100%; left: 48%; }
+    #interior .window::after { width: 100%; height: 4%; top: 48%; }
+
+    #interior .moonlight {
+      inset: 20% -7% -5% 43%;
+      background: linear-gradient(126deg, rgba(178,204,226,.15), rgba(178,204,226,.035) 44%, transparent 67%);
+      filter: blur(4px);
+      animation: light-pulse 12s ease-in-out infinite alternate;
+      z-index: 4;
+    }
+
+    #interior .candle-glow {
+      inset: 42% 49% 0 6%;
+      background: radial-gradient(circle at 36% 47%, rgba(224,151,67,.26), transparent 27%);
+      animation: candle-flicker 1.9s ease-in-out infinite alternate;
+      z-index: 6;
+    }
+
+    #interior .furnishings {
+      inset: auto 0 0 0;
+      height: 37%;
+      background:
+        linear-gradient(to right, transparent 0 8%, rgba(15,10,10,.72) 8% 33%, transparent 33% 60%, rgba(13,9,9,.76) 60% 92%, transparent 92%),
+        linear-gradient(to top, rgba(9,7,7,.8), transparent 48%);
+      z-index: 10;
+    }
+
+    /* ---------- PLACEHOLDER CHARACTER SILHOUETTES ---------- */
+    .character-pair {
+      position: absolute;
+      left: 50%;
+      top: 58%;
+      width: min(30vw, 520px);
+      height: min(43vh, 500px);
+      transform: translate(-50%, -50%);
+      z-index: 9;
+      opacity: .34;
+    }
+
+    .character {
+      position: absolute;
+      bottom: 0;
+      width: 36%;
+      height: 90%;
+      filter: blur(.35px);
+      animation: character-breathe 5.5s ease-in-out infinite alternate;
+    }
+
+    .character::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 4%;
+      width: 34%;
+      aspect-ratio: 1;
+      transform: translateX(-50%);
+      border-radius: 50%;
+      background: rgba(6,9,8,.95);
+    }
+
+    .character::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 22%;
+      width: 72%;
+      height: 74%;
+      transform: translateX(-50%);
+      border-radius: 45% 45% 20% 20% / 20% 20% 10% 10%;
+      background: linear-gradient(rgba(8,12,10,.96), rgba(4,7,5,.98));
+      clip-path: polygon(30% 0, 70% 0, 87% 45%, 70% 100%, 30% 100%, 13% 45%);
+    }
+
+    .character.a { left: 15%; transform: scale(.88); transform-origin: bottom center; }
+    .character.b { right: 13%; animation-delay: -2.1s; }
+
+    #interior .character-pair { left: 47%; top: 61%; width: min(27vw, 470px); opacity: .29; }
+    #campfire .character-pair { top: 58%; width: min(28vw, 500px); }
+
+    /* ---------- PARTICLES ---------- */
+    .particle-field { position: absolute; inset: 0; z-index: 15; overflow: hidden; }
+    .particle { position: absolute; pointer-events: none; }
+
+    .leaf {
+      width: 10px;
+      height: 5px;
+      border-radius: 80% 0 80% 0;
+      background: rgba(181,155,76,.62);
+      animation: leaf-fall linear infinite;
+    }
+
+    .ember {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: rgba(255,187,88,.88);
+      box-shadow: 0 0 6px rgba(255,139,52,.85);
+      animation: ember-rise linear infinite;
+    }
+
+    .dust {
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: rgba(224,207,168,.46);
+      animation: dust-float linear infinite alternate;
+    }
+
+    /* ---------- UI ---------- */
+    .hud {
+      position: absolute;
+      inset: 0;
+      z-index: 50;
+      pointer-events: none;
+    }
+
+    .clock {
+      position: absolute;
+      top: clamp(18px, 2.2vw, 42px);
+      right: clamp(22px, 3vw, 58px);
+      text-align: right;
+      text-shadow: 0 2px 12px rgba(0,0,0,.72);
+    }
+
+    .clock .time {
+      font-size: clamp(34px, 4.2vw, 82px);
+      line-height: .95;
+      letter-spacing: .02em;
+    }
+
+    .clock .date {
+      margin-top: .35em;
+      font-size: clamp(15px, 1.25vw, 26px);
+      color: var(--text-soft);
+      letter-spacing: .07em;
+      text-transform: uppercase;
+    }
+
+    .quest-panel {
+      position: absolute;
+      left: clamp(20px, 3vw, 58px);
+      bottom: clamp(22px, 3.2vw, 60px);
+      max-width: min(48vw, 820px);
+      padding: clamp(12px, 1.2vw, 22px) clamp(16px, 1.7vw, 30px);
+      border-left: 2px solid rgba(213,189,121,.72);
+      background: linear-gradient(90deg, var(--panel-bg), rgba(10,14,12,.18), transparent);
+      text-shadow: 0 2px 10px rgba(0,0,0,.7);
+    }
+
+    .eyebrow {
+      font-size: clamp(11px, .85vw, 17px);
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .quest-title {
+      margin-top: .25em;
+      font-size: clamp(20px, 2vw, 38px);
+      line-height: 1.08;
+    }
+
+    .location {
+      position: absolute;
+      right: clamp(24px, 3vw, 58px);
+      bottom: clamp(24px, 3.2vw, 60px);
+      font-size: clamp(14px, 1vw, 21px);
+      color: var(--text-soft);
+      letter-spacing: .13em;
+      text-transform: uppercase;
+      text-shadow: 0 2px 9px rgba(0,0,0,.75);
+    }
+
+    .debug-safe-area {
+      display: none;
+      position: absolute;
+      left: 30%;
+      right: 30%;
+      top: 14%;
+      bottom: 12%;
+      z-index: 80;
+      border: 2px dashed rgba(235,210,113,.55);
+      color: rgba(250,232,159,.8);
+      align-items: flex-start;
+      justify-content: center;
+      padding-top: 8px;
+      font: 14px/1.2 system-ui, sans-serif;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      pointer-events: none;
+    }
+
+    .debug-controls {
+      display: none;
+      position: absolute;
+      left: 18px;
+      top: 18px;
+      z-index: 100;
+      gap: 8px;
+      padding: 10px;
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 10px;
+      background: rgba(3,6,5,.75);
+      font-family: system-ui, sans-serif;
+      pointer-events: auto;
+    }
+
+    .debug-controls button {
+      border: 1px solid rgba(255,255,255,.22);
+      border-radius: 7px;
+      background: rgba(255,255,255,.08);
+      color: white;
+      padding: 8px 11px;
+      font: 13px system-ui, sans-serif;
+      cursor: pointer;
+    }
+
+    .debug-controls button.active { background: rgba(213,189,121,.32); border-color: rgba(213,189,121,.75); }
+    body.debug .debug-controls { display: flex; }
+    body.debug .debug-safe-area { display: flex; }
+
+    .status-dot {
+      position: absolute;
+      right: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: rgba(244,232,196,.42);
+      z-index: 60;
+    }
+
+    /* ---------- ANIMATION ---------- */
+    @keyframes drift-right { from { transform: translateX(-4%); } to { transform: translateX(7%); } }
+    @keyframes woodland-breathe { from { transform: scale(1.01) translateY(0); } to { transform: scale(1.035) translateY(-.6%); } }
+    @keyframes foreground-sway { from { transform: skewX(-.4deg) scale(1.015); } to { transform: skewX(.7deg) scale(1.025); } }
+    @keyframes light-pulse { from { opacity: .55; } to { opacity: 1; } }
+    @keyframes character-breathe { from { transform: translateY(0) scaleY(1); } to { transform: translateY(-.4%) scaleY(1.004); } }
+    @keyframes flame-dance { from { transform: translate(-50%, -50%) rotate(-3deg) scale(.94,1.04); } to { transform: translate(-50%, -50%) rotate(3deg) scale(1.07,.95); } }
+    @keyframes firelight { from { opacity: .68; transform: scale(.96); } to { opacity: 1; transform: scale(1.04); } }
+    @keyframes candle-flicker { 0% { opacity: .62; } 45% { opacity: .9; } 67% { opacity: .7; } 100% { opacity: 1; } }
+    @keyframes leaf-fall {
+      0% { transform: translate3d(0,-8vh,0) rotate(0deg); opacity: 0; }
+      10% { opacity: .65; }
+      100% { transform: translate3d(12vw,112vh,0) rotate(680deg); opacity: .05; }
+    }
+    @keyframes ember-rise {
+      0% { transform: translateY(0) scale(.6); opacity: 0; }
+      15% { opacity: .9; }
+      100% { transform: translate3d(var(--drift, 20px), -34vh, 0) scale(.1); opacity: 0; }
+    }
+    @keyframes dust-float {
+      from { transform: translate(0,0); opacity: .12; }
+      to { transform: translate(var(--dx, 45px), var(--dy, -35px)); opacity: .52; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; }
+      .scene { transition-duration: .01ms; }
+    }
+  </style>
+</head>
+<body>
+  <main id="living-space" aria-label="Living Elarindor dashboard">
+    <section class="scene active" id="woodland" data-name="Woodland Road" aria-hidden="false">
+      <div class="layer distant"></div>
+      <div class="layer sunbeam"></div>
+      <div class="layer road"></div>
+      <div class="layer mist"></div>
+      <div class="character-pair" aria-hidden="true">
+        <div class="character a"></div>
+        <div class="character b"></div>
+      </div>
+      <div class="particle-field" id="woodland-particles"></div>
+      <div class="layer foreground"></div>
+    </section>
+
+    <section class="scene" id="campfire" data-name="Forest Camp" aria-hidden="true">
+      <div class="layer trees"></div>
+      <div class="layer ground"></div>
+      <div class="layer firelight"></div>
+      <div class="character-pair" aria-hidden="true">
+        <div class="character a"></div>
+        <div class="character b"></div>
+      </div>
+      <div class="fire" aria-hidden="true"></div>
+      <div class="particle-field" id="campfire-particles"></div>
+      <div class="layer foreground"></div>
+    </section>
+
+    <section class="scene" id="interior" data-name="Quiet Evening" aria-hidden="true">
+      <div class="layer wall"></div>
+      <div class="window" aria-hidden="true"></div>
+      <div class="layer moonlight"></div>
+      <div class="layer candle-glow"></div>
+      <div class="character-pair" aria-hidden="true">
+        <div class="character a"></div>
+        <div class="character b"></div>
+      </div>
+      <div class="particle-field" id="interior-particles"></div>
+      <div class="layer furnishings"></div>
+    </section>
+
+    <div class="hud">
+      <div class="clock" aria-live="off">
+        <div class="time" id="time">--:--</div>
+        <div class="date" id="date">Loading date…</div>
+      </div>
+
+      <div class="quest-panel">
+        <div class="eyebrow">Current Quest</div>
+        <div class="quest-title" id="quest-title">Build the Living Window</div>
+      </div>
+
+      <div class="location" id="location">Woodland Road</div>
+    </div>
+
+    <div class="debug-safe-area">Character / Action Safe Area</div>
+
+    <div class="debug-controls" id="debug-controls" aria-label="Scene test controls">
+      <button type="button" data-scene="woodland">Woodland</button>
+      <button type="button" data-scene="campfire">Campfire</button>
+      <button type="button" data-scene="interior">Interior</button>
+      <button type="button" data-scene="auto">Auto</button>
+    </div>
+
+    <div class="status-dot" title="Living Elarindor v0.1"></div>
+  </main>
+
+  <script>
+    (() => {
+      'use strict';
+
+      const ROTATION_MS = 30000;
+      const sceneIds = ['woodland', 'campfire', 'interior'];
+      const scenes = sceneIds.map(id => document.getElementById(id));
+      const locationEl = document.getElementById('location');
+      const timeEl = document.getElementById('time');
+      const dateEl = document.getElementById('date');
+      const debugControls = document.getElementById('debug-controls');
+      const params = new URLSearchParams(window.location.search);
+      const debug = params.get('debug') === '1';
+      const forcedScene = params.get('scene');
+
+      let currentIndex = 0;
+      let rotationTimer = null;
+      let autoMode = true;
+
+      if (debug) document.body.classList.add('debug');
+
+      function updateClock() {
+        const now = new Date();
+        timeEl.textContent = new Intl.DateTimeFormat('en-US', {
+          hour: 'numeric', minute: '2-digit'
+        }).format(now);
+        dateEl.textContent = new Intl.DateTimeFormat('en-US', {
+          weekday: 'long', month: 'long', day: 'numeric'
+        }).format(now);
+      }
+
+      function setActiveButton(value) {
+        debugControls.querySelectorAll('button').forEach(button => {
+          button.classList.toggle('active', button.dataset.scene === value);
+        });
+      }
+
+      function showScene(id, manual = false) {
+        const index = sceneIds.indexOf(id);
+        if (index < 0) return;
+        currentIndex = index;
+
+        scenes.forEach((scene, i) => {
+          const active = i === index;
+          scene.classList.toggle('active', active);
+          scene.setAttribute('aria-hidden', active ? 'false' : 'true');
+        });
+
+        locationEl.textContent = scenes[index].dataset.name;
+        if (debug) setActiveButton(manual ? id : (autoMode ? 'auto' : id));
+      }
+
+      function nextScene() {
+        if (!autoMode) return;
+        currentIndex = (currentIndex + 1) % scenes.length;
+        showScene(sceneIds[currentIndex]);
+      }
+
+      function startAuto() {
+        autoMode = true;
+        clearInterval(rotationTimer);
+        rotationTimer = setInterval(nextScene, ROTATION_MS);
+        if (debug) setActiveButton('auto');
+      }
+
+      function stopAuto() {
+        autoMode = false;
+        clearInterval(rotationTimer);
+        rotationTimer = null;
+      }
+
+      function addParticles(containerId, kind, count) {
+        const field = document.getElementById(containerId);
+        if (!field) return;
+
+        for (let i = 0; i < count; i += 1) {
+          const p = document.createElement('span');
+          p.className = `particle ${kind}`;
+          p.style.left = `${Math.random() * 100}%`;
+          p.style.top = kind === 'ember' ? `${68 + Math.random() * 8}%` : `${Math.random() * 100}%`;
+
+          if (kind === 'leaf') {
+            p.style.animationDuration = `${13 + Math.random() * 18}s`;
+            p.style.animationDelay = `${-Math.random() * 26}s`;
+            p.style.transform = `scale(${0.55 + Math.random() * 1.1})`;
+          } else if (kind === 'ember') {
+            p.style.animationDuration = `${2.3 + Math.random() * 3.2}s`;
+            p.style.animationDelay = `${-Math.random() * 5}s`;
+            p.style.setProperty('--drift', `${-55 + Math.random() * 110}px`);
+          } else {
+            p.style.animationDuration = `${8 + Math.random() * 14}s`;
+            p.style.animationDelay = `${-Math.random() * 12}s`;
+            p.style.setProperty('--dx', `${-70 + Math.random() * 140}px`);
+            p.style.setProperty('--dy', `${-45 + Math.random() * 90}px`);
+          }
+
+          field.appendChild(p);
+        }
+      }
+
+      debugControls.addEventListener('click', event => {
+        const button = event.target.closest('button[data-scene]');
+        if (!button) return;
+        const target = button.dataset.scene;
+
+        if (target === 'auto') {
+          startAuto();
+          return;
+        }
+
+        stopAuto();
+        showScene(target, true);
+      });
+
+      updateClock();
+      setInterval(updateClock, 1000);
+
+      addParticles('woodland-particles', 'leaf', 17);
+      addParticles('campfire-particles', 'ember', 28);
+      addParticles('interior-particles', 'dust', 18);
+
+      if (forcedScene && sceneIds.includes(forcedScene)) {
+        stopAuto();
+        showScene(forcedScene, true);
+      } else {
+        showScene(sceneIds[0]);
+        startAuto();
+      }
+    })();
+  </script>
+</body>
+</html>
