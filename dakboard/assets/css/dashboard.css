@@ -1,234 +1,402 @@
 :root {
   --fade-time: 2200ms;
-  --panel-bg: rgba(10, 14, 12, .48);
-  --text-main: #f3ead2;
-  --text-soft: rgba(243, 234, 210, .76);
-  --accent: #d5bd79;
+  --text-main: #f4ead6;
+  --text-soft: rgba(244, 234, 214, .78);
+  --accent: #d7bd78;
+  --panel-bg: rgba(15, 13, 13, .42);
+  --curtain-shift: 0px;
+  --curtain-rotate: 0deg;
+  --light-shift: 0px;
+  --light-opacity: .75;
+  --candle-scale: 1;
+  --candle-opacity: .86;
 }
 
 * { box-sizing: border-box; }
-html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; background: #07100c; color: var(--text-main); font-family: Georgia, "Times New Roman", serif; }
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  background: #100d0d;
+  color: var(--text-main);
+  font-family: Georgia, "Times New Roman", serif;
+}
 body { user-select: none; }
 
-#living-space { position: relative; width: 100vw; height: 100vh; overflow: hidden; isolation: isolate; background: #07100c; }
+#living-space {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  isolation: isolate;
+  background: #100d0d;
+}
+
 #scene-root { position: absolute; inset: 0; }
-.scene { position: absolute; inset: 0; opacity: 0; transition: opacity var(--fade-time) ease-in-out; overflow: hidden; pointer-events: none; }
+.scene {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  overflow: hidden;
+  pointer-events: none;
+  transition: opacity var(--fade-time) ease-in-out;
+}
 .scene.active { opacity: 1; }
-.scene::after { content: ""; position: absolute; inset: 0; z-index: 40; background: radial-gradient(circle at 52% 44%, transparent 0 46%, rgba(0,0,0,.08) 70%, rgba(0,0,0,.34) 100%), linear-gradient(to bottom, rgba(0,0,0,.02), rgba(0,0,0,.16)); }
+.scene::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 60;
+  background:
+    radial-gradient(ellipse at 51% 49%, transparent 0 56%, rgba(0,0,0,.09) 75%, rgba(0,0,0,.36) 100%),
+    linear-gradient(to bottom, rgba(0,0,0,.02), rgba(0,0,0,.18));
+}
 .layer { position: absolute; inset: 0; }
 
-/* Woodland Road — Day: first real living-environment study. */
-.scene.woodland {
-  background: linear-gradient(#8fa99a 0%, #789485 22%, #526e5d 46%, #263f31 72%, #112219 100%);
-}
-
-.scene.woodland .woodland-sky {
-  inset: -7% -4% 30% -4%;
+/* Shared bedroom stage — exploratory environment only. */
+.scene .room-wall {
+  z-index: 1;
   background:
-    radial-gradient(circle at 66% 18%, rgba(255,238,184,.92) 0 4%, rgba(255,226,158,.35) 5%, transparent 18%),
-    radial-gradient(ellipse at 49% 36%, rgba(221,236,215,.34), transparent 49%),
-    linear-gradient(#9db6aa 0%, #799686 58%, rgba(83,112,91,.15) 100%);
-  animation: woodland-sky-breathe 18s ease-in-out infinite alternate;
-  transform-origin: 60% 30%;
+    linear-gradient(90deg, rgba(104,75,55,.10) 1px, transparent 1px),
+    linear-gradient(rgba(104,75,55,.08) 1px, transparent 1px);
+  background-size: 12% 100%, 100% 22%;
 }
 
-.scene.woodland .woodland-canopy-back {
-  inset: -10% -5% 28% -5%;
-  z-index: 3;
-  background:
-    radial-gradient(ellipse at 6% 12%, rgba(22,59,38,.92) 0 13%, transparent 14%),
-    radial-gradient(ellipse at 18% 5%, rgba(29,72,45,.88) 0 14%, transparent 15%),
-    radial-gradient(ellipse at 34% -1%, rgba(31,75,47,.82) 0 16%, transparent 17%),
-    radial-gradient(ellipse at 78% 2%, rgba(25,63,41,.86) 0 17%, transparent 18%),
-    radial-gradient(ellipse at 94% 12%, rgba(17,49,33,.95) 0 18%, transparent 19%),
-    radial-gradient(ellipse at 61% 0%, rgba(43,84,52,.68) 0 14%, transparent 15%);
-  filter: blur(.4px);
-  animation: canopy-drift 12s ease-in-out infinite alternate;
-  transform-origin: top center;
-}
-
-.scene.woodland .woodland-trunks-back {
-  inset: 6% -4% 16% -4%;
-  z-index: 5;
-  opacity: .84;
-  background:
-    linear-gradient(93deg, transparent 0 5%, rgba(43,50,34,.62) 5.2% 6.3%, transparent 6.5% 12%, rgba(47,54,36,.55) 12.3% 13.1%, transparent 13.4% 21%, rgba(35,45,31,.65) 21.2% 22.5%, transparent 22.8% 32%, rgba(50,56,36,.46) 32.4% 33.2%, transparent 33.5% 45%, rgba(35,44,29,.52) 45.2% 46.5%, transparent 46.8% 59%, rgba(44,51,34,.58) 59.2% 60.7%, transparent 61% 72%, rgba(34,44,30,.6) 72.1% 73.5%, transparent 73.8% 86%, rgba(39,47,31,.68) 86.2% 87.8%, transparent 88%),
-    linear-gradient(to top, rgba(17,41,27,.64), transparent 72%);
-  filter: blur(.2px);
-  animation: woodland-depth 20s ease-in-out infinite alternate;
-}
-
-.scene.woodland .woodland-ground {
-  inset: 44% -4% -8% -4%;
-  z-index: 6;
-  background:
-    radial-gradient(ellipse at 12% 53%, rgba(72,99,55,.72) 0 17%, transparent 18%),
-    radial-gradient(ellipse at 87% 47%, rgba(56,83,46,.72) 0 20%, transparent 21%),
-    radial-gradient(ellipse at 50% 75%, rgba(35,62,39,.76) 0 42%, transparent 58%),
-    linear-gradient(#425e43 0%, #27402f 48%, #15291e 100%);
-}
-
-.scene.woodland .woodland-road {
-  inset: auto 9% -17% 11%;
-  height: 67%;
-  z-index: 8;
-  clip-path: polygon(45% 0, 54% 0, 87% 100%, 7% 100%);
-  background:
-    radial-gradient(ellipse at 56% 16%, rgba(220,201,155,.16), transparent 22%),
-    linear-gradient(103deg, rgba(90,75,51,.2) 0%, rgba(154,135,96,.64) 35%, rgba(190,170,122,.78) 52%, rgba(139,119,82,.62) 68%, rgba(79,67,48,.28) 100%);
-  box-shadow: inset 0 0 46px rgba(74,57,35,.24);
-  transform-origin: 50% 0;
-}
-
-.scene.woodland .woodland-road-light {
-  inset: auto 20% 4% 25%;
-  height: 39%;
-  z-index: 9;
-  clip-path: polygon(36% 0, 50% 0, 72% 100%, 15% 100%);
-  background: linear-gradient(105deg, transparent 0 25%, rgba(255,229,162,.22) 39%, rgba(255,239,189,.36) 55%, rgba(255,229,162,.09) 72%, transparent 84%);
-  filter: blur(7px);
-  animation: road-light 9s ease-in-out infinite alternate;
-}
-
-.scene.woodland .woodland-mist {
-  z-index: 10;
-  filter: blur(24px);
-  opacity: .65;
-}
-.scene.woodland .mist-a {
-  inset: 37% -18% 17% -18%;
-  background:
-    radial-gradient(ellipse at 23% 46%, rgba(222,238,225,.22), transparent 40%),
-    radial-gradient(ellipse at 70% 59%, rgba(222,238,225,.19), transparent 44%),
-    radial-gradient(ellipse at 48% 30%, rgba(231,241,228,.12), transparent 36%);
-  animation: mist-drift-a 31s linear infinite alternate;
-}
-.scene.woodland .mist-b {
-  inset: 47% -12% 8% -12%;
-  background:
-    radial-gradient(ellipse at 38% 58%, rgba(219,235,219,.14), transparent 38%),
-    radial-gradient(ellipse at 80% 38%, rgba(219,235,219,.12), transparent 42%);
-  opacity: .45;
-  animation: mist-drift-b 38s linear infinite alternate;
-}
-
-.scene.woodland .woodland-sunbeam {
+.window {
+  position: absolute;
+  left: 10%;
+  top: 12%;
+  width: 24%;
+  height: 48%;
   z-index: 12;
-  mix-blend-mode: screen;
+  overflow: hidden;
+  border: clamp(8px, .8vw, 16px) solid rgba(69,47,36,.92);
+  box-shadow: 0 10px 26px rgba(0,0,0,.30), inset 0 0 0 2px rgba(233,205,161,.08);
+}
+.window::before,
+.window::after {
+  content: "";
+  position: absolute;
+  z-index: 18;
+  background: rgba(67,45,35,.94);
+}
+.window::before { left: 49%; top: 0; width: 3.5%; height: 100%; }
+.window::after { left: 0; top: 48%; width: 100%; height: 3.5%; }
+.window-sky { position: absolute; inset: 0; }
+
+.curtain {
+  position: absolute;
+  top: -5%;
+  width: 42%;
+  height: 112%;
+  z-index: 25;
+  opacity: .92;
   transform-origin: top center;
+  will-change: transform;
 }
-.scene.woodland .beam-a {
-  inset: -21% 19% 0 41%;
-  background: linear-gradient(111deg, transparent 19%, rgba(255,234,171,.17) 41%, rgba(255,234,171,.05) 61%, transparent 73%);
-  transform: skewX(-7deg);
-  animation: sunbeam-pulse-a 10s ease-in-out infinite alternate;
+.curtain-left {
+  left: -7%;
+  transform: translateX(var(--curtain-shift)) rotate(var(--curtain-rotate));
 }
-.scene.woodland .beam-b {
-  inset: -16% 44% 10% 23%;
-  background: linear-gradient(105deg, transparent 26%, rgba(249,228,170,.09) 48%, transparent 67%);
-  transform: skewX(-4deg);
-  animation: sunbeam-pulse-b 13s ease-in-out infinite alternate;
+.curtain-right {
+  right: -7%;
+  transform: translateX(calc(-1 * var(--curtain-shift))) rotate(calc(-1 * var(--curtain-rotate)));
 }
 
-.scene.woodland .woodland-foreground {
-  z-index: 24;
-  width: 34%;
-  animation: foreground-breathe 8s ease-in-out infinite alternate;
+.bed {
+  position: absolute;
+  left: 28%;
+  bottom: 7%;
+  width: 62%;
+  height: 49%;
+  z-index: 25;
 }
-.scene.woodland .foreground-left {
-  right: auto;
+.headboard {
+  position: absolute;
+  left: 0;
+  bottom: 30%;
+  width: 92%;
+  height: 56%;
+  border-radius: 32px 32px 8px 8px;
   background:
-    radial-gradient(ellipse at 1% 29%, rgba(7,28,17,.98) 0 23%, transparent 24%),
-    radial-gradient(ellipse at 13% 68%, rgba(10,38,22,.95) 0 25%, transparent 26%),
-    radial-gradient(ellipse at 21% 92%, rgba(9,32,19,.96) 0 31%, transparent 32%),
-    linear-gradient(83deg, rgba(8,22,15,.94) 0 13%, transparent 14%);
-  transform-origin: left bottom;
+    linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px),
+    linear-gradient(#654838, #3b2922);
+  background-size: 11% 100%, 100% 100%;
+  box-shadow: inset 0 5px 0 rgba(255,255,255,.04), 0 18px 30px rgba(0,0,0,.28);
 }
-.scene.woodland .foreground-right {
-  left: auto;
+.pillows {
+  position: absolute;
+  left: 12%;
+  bottom: 31%;
+  width: 67%;
+  height: 25%;
+  border-radius: 48% 48% 34% 34% / 45% 45% 55% 55%;
   background:
-    radial-gradient(ellipse at 99% 36%, rgba(6,25,16,.98) 0 25%, transparent 26%),
-    radial-gradient(ellipse at 87% 70%, rgba(9,34,20,.95) 0 27%, transparent 28%),
-    radial-gradient(ellipse at 79% 94%, rgba(8,29,18,.97) 0 31%, transparent 32%),
-    linear-gradient(97deg, transparent 0 85%, rgba(7,21,14,.95) 86% 100%);
-  transform-origin: right bottom;
-  animation-delay: -3.3s;
+    radial-gradient(ellipse at 29% 55%, rgba(255,255,255,.18), transparent 36%),
+    linear-gradient(105deg, #d8c8ad, #bca98d 54%, #a99578);
+  box-shadow: 0 10px 22px rgba(0,0,0,.22);
 }
-
-.scene.woodland .woodland-vignette {
-  z-index: 28;
+.quilt {
+  position: absolute;
+  left: 4%;
+  bottom: 0;
+  width: 92%;
+  height: 47%;
+  border-radius: 24px 34px 10px 10px;
   background:
-    linear-gradient(to top, rgba(5,17,11,.48), transparent 23%),
-    radial-gradient(ellipse at 50% 47%, transparent 0 58%, rgba(2,11,7,.16) 78%, rgba(2,9,6,.39) 100%);
+    linear-gradient(90deg, rgba(255,255,255,.055) 1px, transparent 1px),
+    linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
+    linear-gradient(105deg, #66583f, #80704f 45%, #584c37 100%);
+  background-size: 10% 100%, 100% 31%, 100% 100%;
+  box-shadow: inset 0 12px 28px rgba(255,255,255,.035), 0 16px 30px rgba(0,0,0,.24);
 }
 
-/* Existing prototype scenes retained while Woodland Road is developed first. */
-.scene.campfire { background: radial-gradient(circle at 50% 67%, rgba(206,103,43,.38), transparent 21%), linear-gradient(#172437 0%, #111d26 38%, #101815 68%, #070d0a 100%); }
-.scene.campfire .trees { top: 16%; background: repeating-linear-gradient(92deg, transparent 0 5%, rgba(5,12,10,.72) 5% 6.2%, transparent 6.2% 10%), linear-gradient(to top, rgba(4,11,8,.8), transparent 75%); }
-.scene.campfire .ground { top: 63%; background: radial-gradient(ellipse at 50% 30%, rgba(93,55,31,.32), transparent 34%), linear-gradient(#142018, #050b08); z-index: 5; }
-.scene.campfire .firelight { inset: 35% 18% -22% 18%; background: radial-gradient(ellipse at 50% 62%, rgba(232,133,61,.28), transparent 43%); animation: firelight 1.5s ease-in-out infinite alternate; z-index: 8; }
-.scene.campfire .foreground { background: linear-gradient(to top, rgba(2,7,5,.88) 0 11%, transparent 29%); z-index: 13; }
-.fire { position: absolute; left: 50%; top: 66%; width: clamp(42px, 5vw, 92px); aspect-ratio: 1 / 1.28; transform: translate(-50%, -50%); border-radius: 54% 46% 58% 42% / 65% 58% 42% 35%; background: radial-gradient(circle at 50% 74%, #ffd47c 0 14%, transparent 15%), radial-gradient(ellipse at 48% 58%, #ec8c36 0 35%, #8f381d 62%, transparent 64%); filter: blur(.6px) drop-shadow(0 0 22px rgba(234,120,48,.72)); animation: flame-dance .75s ease-in-out infinite alternate; z-index: 11; }
+.bedside-furniture {
+  inset: auto 0 0 0;
+  height: 32%;
+  z-index: 20;
+  background:
+    linear-gradient(90deg,
+      transparent 0 5%, rgba(38,26,23,.85) 5% 15%, transparent 15% 86%, rgba(35,24,21,.86) 86% 96%, transparent 96%),
+    linear-gradient(to top, rgba(22,15,14,.55), transparent 52%);
+}
 
-.scene.interior { background: radial-gradient(circle at 70% 30%, rgba(184,201,218,.11), transparent 24%), linear-gradient(120deg, #171b20 0%, #27221f 47%, #130f11 100%); }
-.scene.interior .wall { inset: 8% 5% 7% 5%; border: 1px solid rgba(180,151,111,.10); background: linear-gradient(90deg, rgba(87,57,38,.08) 1px, transparent 1px), linear-gradient(rgba(87,57,38,.06) 1px, transparent 1px); background-size: 10% 100%, 100% 18%; opacity: .7; }
-.scene.interior .window { inset: 14% 11% auto auto; width: 21%; height: 43%; border: clamp(6px, .7vw, 15px) solid rgba(58,43,35,.9); background: radial-gradient(circle at 68% 24%, rgba(239,240,213,.9) 0 4%, rgba(201,216,228,.22) 4.5% 7%, transparent 8%), linear-gradient(#304055, #172233 70%, #111822); box-shadow: 0 0 45px rgba(154,186,214,.08); z-index: 5; }
-.scene.interior .window::before, .scene.interior .window::after { content: ""; position: absolute; background: rgba(50,38,33,.88); }
-.scene.interior .window::before { width: 5%; height: 100%; left: 48%; }
-.scene.interior .window::after { width: 100%; height: 4%; top: 48%; }
-.scene.interior .moonlight { inset: 20% -7% -5% 43%; background: linear-gradient(126deg, rgba(178,204,226,.15), rgba(178,204,226,.035) 44%, transparent 67%); filter: blur(4px); animation: light-pulse 12s ease-in-out infinite alternate; z-index: 4; }
-.scene.interior .candle-glow { inset: 42% 49% 0 6%; background: radial-gradient(circle at 36% 47%, rgba(224,151,67,.26), transparent 27%); animation: candle-flicker 1.9s ease-in-out infinite alternate; z-index: 6; }
-.scene.interior .furnishings { inset: auto 0 0 0; height: 37%; background: linear-gradient(to right, transparent 0 8%, rgba(15,10,10,.72) 8% 33%, transparent 33% 60%, rgba(13,9,9,.76) 60% 92%, transparent 92%), linear-gradient(to top, rgba(9,7,7,.8), transparent 48%); z-index: 10; }
+/* Morning Wakeup */
+.scene.bedroom-morning {
+  background:
+    radial-gradient(circle at 23% 23%, rgba(255,237,187,.36), transparent 31%),
+    linear-gradient(125deg, #a8896d 0%, #806a59 38%, #59493f 72%, #302821 100%);
+}
+.scene.bedroom-morning .room-wall {
+  background-color: rgba(190,151,114,.16);
+}
+.scene.bedroom-morning .morning-window .window-sky {
+  background:
+    radial-gradient(circle at 61% 22%, rgba(255,248,205,.95) 0 7%, rgba(255,220,144,.48) 8%, transparent 25%),
+    linear-gradient(#8cc5d1 0%, #c8d9cf 50%, #efd19b 100%);
+}
+.scene.bedroom-morning .curtain {
+  background:
+    linear-gradient(90deg, rgba(255,255,255,.07), transparent 22%, rgba(0,0,0,.08) 52%, transparent 78%, rgba(255,255,255,.06)),
+    linear-gradient(#b89571, #8a694f);
+}
+.scene.bedroom-morning .dawn-light {
+  z-index: 14;
+  inset: -18% 20% -5% -8%;
+  opacity: var(--light-opacity);
+  transform: translateX(var(--light-shift)) skewX(-8deg);
+  transform-origin: top left;
+  will-change: transform, opacity;
+  background:
+    linear-gradient(112deg, transparent 25%, rgba(255,238,177,.10) 36%, rgba(255,240,188,.34) 48%, rgba(255,231,161,.14) 61%, transparent 74%);
+  filter: blur(3px);
+}
+.scene.bedroom-morning .morning-glow {
+  z-index: 18;
+  background:
+    radial-gradient(ellipse at 39% 68%, rgba(255,211,132,.23), transparent 36%),
+    radial-gradient(ellipse at 76% 59%, rgba(255,235,188,.08), transparent 34%);
+  opacity: var(--light-opacity);
+}
+.scene.bedroom-morning .bed { filter: saturate(.88) brightness(1.03); }
 
-.character-pair { position: absolute; left: 50%; top: 58%; width: min(30vw, 520px); height: min(43vh, 500px); transform: translate(-50%, -50%); z-index: 9; opacity: .34; }
-.character { position: absolute; bottom: 0; width: 36%; height: 90%; filter: blur(.35px); animation: character-breathe 5.5s ease-in-out infinite alternate; }
-.character::before { content: ""; position: absolute; left: 50%; top: 4%; width: 34%; aspect-ratio: 1; transform: translateX(-50%); border-radius: 50%; background: rgba(6,9,8,.95); }
-.character::after { content: ""; position: absolute; left: 50%; top: 22%; width: 72%; height: 74%; transform: translateX(-50%); border-radius: 45% 45% 20% 20% / 20% 20% 10% 10%; background: linear-gradient(rgba(8,12,10,.96), rgba(4,7,5,.98)); clip-path: polygon(30% 0, 70% 0, 87% 45%, 70% 100%, 30% 100%, 13% 45%); }
-.character.a { left: 15%; transform: scale(.88); transform-origin: bottom center; }
-.character.b { right: 13%; animation-delay: -2.1s; }
+/* Nighttime Bed */
+.scene.bedroom-night {
+  background:
+    radial-gradient(circle at 22% 28%, rgba(111,146,188,.16), transparent 30%),
+    linear-gradient(125deg, #20283a 0%, #252432 37%, #211b23 69%, #120f16 100%);
+}
+.scene.bedroom-night .room-wall { background-color: rgba(61,54,71,.16); }
+.scene.bedroom-night .night-window .window-sky {
+  background:
+    radial-gradient(circle at 72% 23%, rgba(241,239,211,.96) 0 6%, rgba(199,214,230,.20) 7%, transparent 18%),
+    radial-gradient(circle at 20% 28%, rgba(255,255,255,.72) 0 1px, transparent 2px),
+    radial-gradient(circle at 43% 16%, rgba(255,255,255,.56) 0 1px, transparent 2px),
+    radial-gradient(circle at 78% 69%, rgba(255,255,255,.50) 0 1px, transparent 2px),
+    linear-gradient(#17233b, #26344d 68%, #171d29);
+}
+.scene.bedroom-night .moon {
+  position: absolute;
+  right: 13%;
+  top: 10%;
+  width: 18%;
+  aspect-ratio: 1;
+  z-index: 8;
+  border-radius: 50%;
+  background: rgba(244,240,206,.92);
+  box-shadow: 0 0 28px rgba(195,217,236,.36);
+}
+.scene.bedroom-night .curtain {
+  background:
+    linear-gradient(90deg, rgba(255,255,255,.05), transparent 25%, rgba(0,0,0,.15) 55%, transparent 78%),
+    linear-gradient(#5d4358, #3b2d42);
+}
+.scene.bedroom-night .moonlight {
+  z-index: 14;
+  inset: -13% 28% 4% -9%;
+  opacity: calc(.46 + (var(--light-opacity) * .22));
+  transform: translateX(var(--light-shift)) skewX(-9deg);
+  background: linear-gradient(114deg, transparent 25%, rgba(184,211,236,.08) 38%, rgba(184,213,240,.24) 50%, rgba(161,191,220,.08) 62%, transparent 75%);
+  filter: blur(4px);
+  will-change: transform, opacity;
+}
+.scene.bedroom-night .night-glow {
+  z-index: 18;
+  background:
+    radial-gradient(ellipse at 82% 65%, rgba(220,137,66,.16), transparent 28%),
+    radial-gradient(ellipse at 42% 61%, rgba(114,153,197,.12), transparent 38%);
+}
 
-.particle-field { position: absolute; inset: 0; z-index: 30; overflow: hidden; }
-.particle { position: absolute; pointer-events: none; }
-.leaf { width: 10px; height: 5px; border-radius: 80% 0 80% 0; background: rgba(186,157,79,.62); animation: leaf-fall linear infinite; box-shadow: 0 0 4px rgba(206,184,112,.1); }
-.ember { width: 4px; height: 4px; border-radius: 50%; background: rgba(255,187,88,.88); box-shadow: 0 0 6px rgba(255,139,52,.85); animation: ember-rise linear infinite; }
-.dust { width: 3px; height: 3px; border-radius: 50%; background: rgba(224,207,168,.46); animation: dust-float linear infinite alternate; }
+.candle {
+  position: absolute;
+  z-index: 36;
+  width: 10px;
+  height: 34px;
+  border-radius: 4px 4px 2px 2px;
+  background: #d8c29c;
+  box-shadow: 0 0 18px rgba(225,139,69,.16);
+}
+.candle::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 28px;
+  width: 16px;
+  height: 27px;
+  transform: translateX(-50%) scale(var(--candle-scale));
+  transform-origin: center bottom;
+  border-radius: 50% 50% 48% 48% / 63% 63% 37% 37%;
+  opacity: var(--candle-opacity);
+  background: radial-gradient(ellipse at 50% 72%, #fff2a8 0 19%, #f2a452 39%, #bc5f30 67%, transparent 69%);
+  filter: drop-shadow(0 0 11px rgba(239,139,62,.82));
+  will-change: transform, opacity;
+}
+.candle-a { right: 9.5%; bottom: 28%; }
+.candle-b { right: 15.5%; bottom: 24%; transform: scale(.78); opacity: .82; }
 
-.hud { position: absolute; inset: 0; z-index: 50; pointer-events: none; }
-.clock { position: absolute; top: clamp(18px, 2.2vw, 42px); right: clamp(22px, 3vw, 58px); text-align: right; text-shadow: 0 2px 12px rgba(0,0,0,.72); }
+/* Ambient dust — positions are animated with JavaScript for DAKboard compatibility. */
+.particle-field { position: absolute; inset: 0; z-index: 42; overflow: hidden; }
+.particle {
+  position: absolute;
+  pointer-events: none;
+  border-radius: 50%;
+  will-change: transform;
+}
+.morning-dust {
+  width: 4px;
+  height: 4px;
+  background: rgba(255,235,185,.72);
+  box-shadow: 0 0 7px rgba(255,227,163,.35);
+}
+.night-dust {
+  width: 3px;
+  height: 3px;
+  background: rgba(193,210,229,.46);
+  box-shadow: 0 0 5px rgba(193,210,229,.22);
+}
+
+/* HUD */
+.hud { position: absolute; inset: 0; z-index: 80; pointer-events: none; }
+.clock {
+  position: absolute;
+  top: clamp(18px, 2.2vw, 42px);
+  right: clamp(22px, 3vw, 58px);
+  text-align: right;
+  text-shadow: 0 2px 12px rgba(0,0,0,.72);
+}
 .clock .time { font-size: clamp(34px, 4.2vw, 82px); line-height: .95; letter-spacing: .02em; }
 .clock .date { margin-top: .35em; font-size: clamp(15px, 1.25vw, 26px); color: var(--text-soft); letter-spacing: .07em; text-transform: uppercase; }
-.quest-panel { position: absolute; left: clamp(20px, 3vw, 58px); bottom: clamp(22px, 3.2vw, 60px); max-width: min(48vw, 820px); padding: clamp(12px, 1.2vw, 22px) clamp(16px, 1.7vw, 30px); border-left: 2px solid rgba(213,189,121,.72); background: linear-gradient(90deg, var(--panel-bg), rgba(10,14,12,.18), transparent); text-shadow: 0 2px 10px rgba(0,0,0,.7); }
+.quest-panel {
+  position: absolute;
+  left: clamp(20px, 3vw, 58px);
+  bottom: clamp(22px, 3.2vw, 60px);
+  max-width: min(48vw, 820px);
+  padding: clamp(12px, 1.2vw, 22px) clamp(16px, 1.7vw, 30px);
+  border-left: 2px solid rgba(215,189,120,.75);
+  background: linear-gradient(90deg, var(--panel-bg), rgba(12,10,10,.14), transparent);
+  text-shadow: 0 2px 10px rgba(0,0,0,.72);
+}
 .eyebrow { font-size: clamp(11px, .85vw, 17px); letter-spacing: .18em; text-transform: uppercase; color: var(--accent); }
 .quest-title { margin-top: .25em; font-size: clamp(20px, 2vw, 38px); line-height: 1.08; }
-.location { position: absolute; right: clamp(24px, 3vw, 58px); bottom: clamp(25px, 3.4vw, 64px); font-size: clamp(13px, 1vw, 20px); letter-spacing: .14em; text-transform: uppercase; color: var(--text-soft); text-shadow: 0 2px 10px rgba(0,0,0,.8); }
+.location {
+  position: absolute;
+  right: clamp(24px, 3vw, 58px);
+  bottom: clamp(25px, 3.4vw, 64px);
+  font-size: clamp(13px, 1vw, 20px);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--text-soft);
+  text-shadow: 0 2px 10px rgba(0,0,0,.8);
+}
 
-.debug-panel { position: absolute; top: 18px; left: 18px; z-index: 100; display: none; gap: 8px; align-items: center; padding: 10px; border: 1px solid rgba(255,255,255,.18); border-radius: 8px; background: rgba(0,0,0,.66); font: 14px/1.2 system-ui, sans-serif; color: white; pointer-events: auto; }
+/* Debug */
+.debug-panel {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  z-index: 110;
+  display: none;
+  gap: 8px;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid rgba(255,255,255,.20);
+  border-radius: 8px;
+  background: rgba(0,0,0,.70);
+  font: 14px/1.2 system-ui, sans-serif;
+  color: white;
+  pointer-events: auto;
+}
 .debug .debug-panel { display: flex; }
-.debug-panel button { border: 1px solid rgba(255,255,255,.22); border-radius: 5px; background: rgba(255,255,255,.08); color: white; padding: 7px 10px; cursor: pointer; }
-.debug-panel button.active { background: rgba(213,189,121,.28); border-color: rgba(213,189,121,.72); }
-.safe-zone { position: absolute; left: 30%; top: 18%; width: 40%; height: 64%; z-index: 80; display: none; border: 1px dashed rgba(255,225,120,.6); pointer-events: none; }
-.debug .safe-zone { display: block; }
-.status { position: absolute; left: 18px; bottom: 18px; z-index: 100; display: none; padding: 7px 10px; border-radius: 5px; background: rgba(0,0,0,.62); color: rgba(255,255,255,.8); font: 12px/1.2 system-ui, sans-serif; }
+.debug-panel button {
+  border: 1px solid rgba(255,255,255,.22);
+  border-radius: 5px;
+  background: rgba(255,255,255,.08);
+  color: white;
+  padding: 7px 10px;
+  cursor: pointer;
+}
+.debug-panel button.active { background: rgba(215,189,120,.29); border-color: rgba(215,189,120,.76); }
+.status {
+  position: absolute;
+  left: 18px;
+  bottom: 18px;
+  z-index: 110;
+  display: none;
+  padding: 7px 10px;
+  border-radius: 5px;
+  background: rgba(0,0,0,.66);
+  color: rgba(255,255,255,.84);
+  font: 12px/1.2 system-ui, sans-serif;
+}
 .debug .status { display: block; }
-
-@keyframes woodland-sky-breathe { from { transform: scale(1); filter: brightness(.98); } to { transform: scale(1.018); filter: brightness(1.04); } }
-@keyframes canopy-drift { from { transform: translateX(-.3%) rotate(-.12deg) scale(1.01); } to { transform: translateX(.4%) rotate(.15deg) scale(1.018); } }
-@keyframes woodland-depth { from { transform: scale(1.005) translateX(-.15%); } to { transform: scale(1.018) translateX(.15%); } }
-@keyframes road-light { from { opacity: .48; transform: translateX(-1%) scale(.98); } to { opacity: .9; transform: translateX(1.2%) scale(1.03); } }
-@keyframes mist-drift-a { from { transform: translateX(-3%); } to { transform: translateX(4%); } }
-@keyframes mist-drift-b { from { transform: translateX(4%); } to { transform: translateX(-3%); } }
-@keyframes sunbeam-pulse-a { from { opacity: .45; transform: skewX(-7deg) translateX(-.8%); } to { opacity: .9; transform: skewX(-7deg) translateX(.8%); } }
-@keyframes sunbeam-pulse-b { from { opacity: .2; transform: skewX(-4deg) translateX(.5%); } to { opacity: .62; transform: skewX(-4deg) translateX(-.7%); } }
-@keyframes foreground-breathe { from { transform: rotate(-.28deg) scale(1.01); } to { transform: rotate(.3deg) scale(1.023); } }
-@keyframes light-pulse { from { opacity: .55; } to { opacity: 1; } }
-@keyframes flame-dance { from { transform: translate(-50%, -50%) rotate(-2deg) scale(.94, 1.03); } to { transform: translate(-50%, -50%) rotate(2deg) scale(1.05, .96); } }
-@keyframes firelight { from { opacity: .65; transform: scale(.97); } to { opacity: 1; transform: scale(1.025); } }
-@keyframes candle-flicker { from { opacity: .62; } to { opacity: 1; } }
-@keyframes character-breathe { from { transform: translateY(0); } to { transform: translateY(-1.2%); } }
-@keyframes leaf-fall { 0% { transform: translate3d(-3vw,-10vh,0) rotate(0deg); opacity: 0; } 12% { opacity: .7; } 55% { transform: translate3d(6vw,55vh,0) rotate(260deg); } 100% { transform: translate3d(14vw,112vh,0) rotate(560deg); opacity: 0; } }
-@keyframes ember-rise { 0% { transform: translate3d(0,0,0) scale(.7); opacity: 0; } 12% { opacity: 1; } 100% { transform: translate3d(var(--drift,0),-38vh,0) scale(.25); opacity: 0; } }
-@keyframes dust-float { from { transform: translate3d(-8px,-10px,0); opacity: .15; } to { transform: translate3d(18px,14px,0); opacity: .65; } }
+.motion-probe {
+  position: absolute;
+  left: 20%;
+  right: 20%;
+  top: 78px;
+  height: 28px;
+  z-index: 115;
+  display: none;
+  border-top: 1px dashed rgba(255,255,255,.38);
+  color: rgba(255,255,255,.82);
+  font: 11px/1 system-ui, sans-serif;
+  pointer-events: none;
+}
+.debug .motion-probe { display: block; }
+.motion-probe span { position: absolute; top: -16px; left: 0; text-transform: uppercase; letter-spacing: .12em; }
+.motion-probe i {
+  position: absolute;
+  left: 50%;
+  top: -7px;
+  width: 14px;
+  height: 14px;
+  margin-left: -7px;
+  border-radius: 50%;
+  background: #fff2a0;
+  box-shadow: 0 0 14px #fff2a0, 0 0 24px rgba(255,197,82,.85);
+}
 
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
+  .scene { transition-duration: 0ms; }
 }
