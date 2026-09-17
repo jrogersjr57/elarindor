@@ -117,7 +117,6 @@ Adult Valdari retain:
 -   relatively youthful skin,
 -   rounded or gently heart-shaped faces,
 -   little conventional visible facial aging.
-
 This youthful appearance persists throughout adulthood, including at venerable ages and near the natural end of life.
 
 This can make even experienced adult Valdari appear remarkably young to humans and other peoples.
@@ -174,7 +173,7 @@ They are:
 
 The backward sweep should be immediately noticeable upon inspection but subtle enough that the ear still looks biologically plausible.
 
-> ![[../species/valdar/valdari_ear_anatomy_guide.png]]
+> ![[../artwork/species/valdari/valdari_ear_anatomy_guide.png]]
 
 ![[Vaelyn_Thistletide_Overview.png]]
 
@@ -237,7 +236,6 @@ Hair color should not be treated as an absolute marker of cultural identity. Ind
 Braids are culturally common because they are practical and provide opportunities for decoration.
 
 Flowers, herbs, beads, carved wooden pieces, ribbons, and other small objects may be woven into hairstyles.
-
 Braided or curly hair is **not biologically required**.
 
 Vaelyn's exceptionally long golden-blonde braid is an individual characteristic rather than the default appearance of Valdari women.
@@ -477,7 +475,6 @@ The **body is fully mature**.
 ------------------------------------------------------------------------
 
 # 15. Aging & Lifespan
-
 The Valdari are exceptionally long-lived but **mortal**.
 
 Their current working natural lifespan is approximately:
@@ -837,7 +834,6 @@ The exact cultural roles, prevalence, limitations, and mechanics of Valdari magi
 Valdari alchemy is strongly connected to the natural world.
 
 Alchemy may involve:
-
 -   tinctures,
 -   oils,
 -   powders,
@@ -1077,7 +1073,6 @@ The following rules should govern future Valdari concept art unless this Race Bi
 - Clothing is practical and culturally crafted.
 - Movement should suggest balance, dexterity, and quiet confidence.
 - Adult characters should communicate adulthood through bearing and context even when their faces appear youthful.
-
 ------------------------------------------------------------------------
 
 # 37. Avoid in Future Artwork
