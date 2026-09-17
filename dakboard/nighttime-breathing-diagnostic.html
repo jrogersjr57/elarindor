@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#0d0b0b">
-  <title>Living Elarindor — Breathing Diagnostic v8</title>
+  <title>Living Elarindor — Breathing Diagnostic v9</title>
   <style>
     html, body {
       width: 100%;
@@ -35,9 +35,8 @@
 
     .scene-image { z-index: 0; }
 
-    /* Diagnostic v8: preserve Vaelyn v4. Toma is nudged slightly down and
-       toward Vaelyn, with a modestly tighter mask to reduce the visible seam.
-       Their breathing cycles remain independent but much closer in speed. */
+    /* Diagnostic v9: keep the approved v8 breathing geometry/timing and
+       restore the approved left/right candle flicker for an integrated read. */
     .breath-layer {
       z-index: 1;
       pointer-events: none;
@@ -86,6 +85,76 @@
       animation: breathe-toma 8.25s cubic-bezier(.42,0,.58,1) infinite;
     }
 
+    .ambient {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .flame {
+      position: absolute;
+      width: .72vw;
+      min-width: 7px;
+      height: 2.6vh;
+      min-height: 18px;
+      border-radius: 55% 55% 45% 45%;
+      background: radial-gradient(
+        ellipse at 50% 64%,
+        rgba(255,255,218,1) 0%,
+        rgba(255,224,124,.98) 29%,
+        rgba(255,160,43,.9) 58%,
+        rgba(255,92,20,.32) 80%,
+        rgba(255,92,20,0) 100%
+      );
+      transform-origin: 50% 100%;
+      filter: blur(.15px);
+      box-shadow:
+        0 0 7px rgba(255, 216, 123, .90),
+        0 0 15px rgba(255, 157, 45, .58),
+        0 0 24px rgba(255, 106, 25, .22);
+      opacity: .90;
+      animation: flame-flicker 1.05s ease-in-out infinite alternate;
+      will-change: transform, opacity;
+    }
+
+    .flame-left  { left: 8.0%;  top: 36.3%; animation-duration: .92s; }
+    .flame-right { left: 96.0%; top: 36.1%; animation-duration: 1.03s; animation-delay: -.71s; }
+
+    .candle-halo {
+      position: absolute;
+      border-radius: 50%;
+      background: radial-gradient(
+        ellipse at center,
+        rgba(255, 205, 112, .24) 0%,
+        rgba(255, 150, 56, .10) 38%,
+        rgba(255, 100, 29, .025) 61%,
+        rgba(0,0,0,0) 78%
+      );
+      opacity: .22;
+      transform: scale(.94);
+      animation: halo-flicker 1.65s ease-in-out infinite alternate;
+      will-change: transform, opacity;
+    }
+
+    .halo-left {
+      left: 1vw;
+      top: 27vh;
+      width: 15vw;
+      height: 22vh;
+      animation-duration: 1.42s;
+    }
+
+    .halo-right {
+      right: -1vw;
+      top: 28vh;
+      width: 13vw;
+      height: 20vh;
+      animation-duration: 1.67s;
+      animation-delay: -.9s;
+    }
+
     @keyframes breathe-vaelyn {
       0%, 100% { transform: translate3d(0, 0, 0) scaleY(1); }
       42%      { transform: translate3d(0, -4px, 0) scaleY(1.014); }
@@ -97,10 +166,24 @@
       42%      { transform: translate3d(0, -4px, 0) scaleY(1.016); }
       58%      { transform: translate3d(0, -4px, 0) scaleY(1.016); }
     }
+
+    @keyframes flame-flicker {
+      0%   { transform: translate3d(-1px, 1px, 0) scale(.82, 1.12) rotate(-3deg); opacity: .72; }
+      35%  { transform: translate3d(1px, -1px, 0) scale(1.04, .94) rotate(2deg); opacity: 1; }
+      70%  { transform: translate3d(-1px, 0, 0) scale(.91, 1.06) rotate(-1deg); opacity: .84; }
+      100% { transform: translate3d(2px, -2px, 0) scale(1.09, .88) rotate(3deg); opacity: .96; }
+    }
+
+    @keyframes halo-flicker {
+      0%   { opacity: .13; transform: scale(.92); }
+      35%  { opacity: .31; transform: scale(1.01); }
+      70%  { opacity: .18; transform: scale(.96); }
+      100% { opacity: .34; transform: scale(1.05); }
+    }
   </style>
 </head>
 <body>
-  <main class="stage" aria-label="Nighttime Bed two-person breathing diagnostic">
+  <main class="stage" aria-label="Nighttime Bed breathing and candle diagnostic">
     <img
       class="scene-image"
       src="./assets/images/nighttime-bed-character-staging-v1.png?v=1"
@@ -117,6 +200,13 @@
       src="./assets/images/nighttime-bed-character-staging-v1.png?v=1"
       alt=""
       aria-hidden="true">
+
+    <div class="ambient" aria-hidden="true">
+      <div class="candle-halo halo-left"></div>
+      <div class="candle-halo halo-right"></div>
+      <i class="flame flame-left"></i>
+      <i class="flame flame-right"></i>
+    </div>
   </main>
 </body>
 </html>
