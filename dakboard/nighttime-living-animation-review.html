@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#0d0b0b">
-  <title>Living Elarindor — Nighttime Bed Stage 3.4 Review</title>
+  <title>Living Elarindor — Nighttime Bed Stage 3.5 Review</title>
   <style>
     html, body {
       width: 100%;
@@ -22,15 +22,14 @@
       background: #0d0b0b;
     }
 
-    /* The entire painted scene and all aligned overlays move together.
-       This creates a very slow living-still camera drift without changing
-       any character anatomy or disturbing the candle alignment. */
+    /* Stronger review-pass drift so it is actually visible from the couch.
+       The entire painted scene and all aligned overlays move together. */
     .world {
       position: absolute;
       inset: 0;
       overflow: hidden;
       transform-origin: 50% 50%;
-      animation: living-camera 18s ease-in-out infinite alternate;
+      animation: living-camera 20s ease-in-out infinite alternate;
       will-change: transform;
     }
 
@@ -174,9 +173,9 @@
     .m6 { left: 72%; top: 66%; animation-duration: 7.2s; animation-delay: -1s; }
 
     @keyframes living-camera {
-      0%   { transform: translate3d(-2px, 1px, 0) scale(1.006); }
-      48%  { transform: translate3d(1px, -1px, 0) scale(1.010); }
-      100% { transform: translate3d(3px, 1px, 0) scale(1.007); }
+      0%   { transform: translate3d(-14px, 6px, 0) scale(1.012); }
+      50%  { transform: translate3d(0, -4px, 0) scale(1.024); }
+      100% { transform: translate3d(14px, 3px, 0) scale(1.032); }
     }
 
     @keyframes flame-flicker {
