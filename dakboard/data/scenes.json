@@ -1,0 +1,34 @@
+{
+  "version": 2,
+  "rotationSeconds": 30,
+  "fadeMilliseconds": 2200,
+  "scenes": [
+    {
+      "id": "woodland",
+      "name": "Woodland Road",
+      "eyebrow": "The Road",
+      "quest": "Build the Living Window",
+      "theme": "woodland",
+      "characters": true,
+      "particles": "leaves"
+    },
+    {
+      "id": "campfire",
+      "name": "Forest Camp",
+      "eyebrow": "Evening Camp",
+      "quest": "Build the Living Window",
+      "theme": "campfire",
+      "characters": true,
+      "particles": "embers"
+    },
+    {
+      "id": "interior",
+      "name": "Quiet Evening",
+      "eyebrow": "After the Road",
+      "quest": "Build the Living Window",
+      "theme": "interior",
+      "characters": true,
+      "particles": "dust"
+    }
+  ]
+}
