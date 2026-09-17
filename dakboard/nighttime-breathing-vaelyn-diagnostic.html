@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0d0b0b">
+  <title>Living Elarindor — Vaelyn Breathing Isolation Test</title>
+  <style>
+    html, body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      background: #0d0b0b;
+    }
+
+    .stage {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background: #0d0b0b;
+    }
+
+    .scene-image,
+    .breath-vaelyn {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center center;
+      display: block;
+    }
+
+    .scene-image { z-index: 0; }
+
+    /* Isolation diagnostic: Vaelyn's breathing zone is placed immediately
+       beneath her visible upper torso at the top of the covers. This avoids
+       the lower-bed position used by the earlier combined test. */
+    .breath-vaelyn {
+      z-index: 1;
+      pointer-events: none;
+      transform-origin: 30.5% 54%;
+      -webkit-mask-image: radial-gradient(
+        ellipse 9.5% 6.5% at 30.5% 50%,
+        rgba(0,0,0,1) 0%,
+        rgba(0,0,0,.92) 34%,
+        rgba(0,0,0,.56) 58%,
+        rgba(0,0,0,.18) 78%,
+        rgba(0,0,0,0) 100%
+      );
+      mask-image: radial-gradient(
+        ellipse 9.5% 6.5% at 30.5% 50%,
+        rgba(0,0,0,1) 0%,
+        rgba(0,0,0,.92) 34%,
+        rgba(0,0,0,.56) 58%,
+        rgba(0,0,0,.18) 78%,
+        rgba(0,0,0,0) 100%
+      );
+      animation: breathe-vaelyn-only 8s cubic-bezier(.42,0,.58,1) infinite;
+      will-change: transform;
+    }
+
+    @keyframes breathe-vaelyn-only {
+      0%, 100% { transform: translate3d(0, 0, 0) scaleY(1); }
+      42%      { transform: translate3d(0, -5px, 0) scaleY(1.018); }
+      58%      { transform: translate3d(0, -5px, 0) scaleY(1.018); }
+    }
+  </style>
+</head>
+<body>
+  <main class="stage" aria-label="Nighttime Bed Vaelyn-only breathing diagnostic">
+    <img
+      class="scene-image"
+      src="./assets/images/nighttime-bed-character-staging-v1.png?v=1"
+      alt="Nighttime Bed character staging artwork">
+
+    <img
+      class="breath-vaelyn"
+      src="./assets/images/nighttime-bed-character-staging-v1.png?v=1"
+      alt=""
+      aria-hidden="true">
+  </main>
+</body>
+</html>
