@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#0d0b0b">
-  <title>Living Elarindor — Nighttime Bed Stage 3.5 Review</title>
+  <title>Living Elarindor — Nighttime Bed Stage 3.6 Review</title>
   <style>
     html, body {
       width: 100%;
@@ -22,14 +22,13 @@
       background: #0d0b0b;
     }
 
-    /* Stronger review-pass drift so it is actually visible from the couch.
-       The entire painted scene and all aligned overlays move together. */
+    /* Deliberately obvious diagnostic motion. Once confirmed, this will be
+       reduced to a much subtler living-still drift. */
     .world {
       position: absolute;
-      inset: 0;
-      overflow: hidden;
+      inset: -6%;
       transform-origin: 50% 50%;
-      animation: living-camera 20s ease-in-out infinite alternate;
+      animation: living-camera-test 8s ease-in-out infinite alternate;
       will-change: transform;
     }
 
@@ -172,10 +171,10 @@
     .m5 { left: 84%; top: 50%; animation-duration: 8.5s; animation-delay: -6s; }
     .m6 { left: 72%; top: 66%; animation-duration: 7.2s; animation-delay: -1s; }
 
-    @keyframes living-camera {
-      0%   { transform: translate3d(-14px, 6px, 0) scale(1.012); }
-      50%  { transform: translate3d(0, -4px, 0) scale(1.024); }
-      100% { transform: translate3d(14px, 3px, 0) scale(1.032); }
+    @keyframes living-camera-test {
+      0%   { transform: translate3d(-42px, 14px, 0) scale(1.00); }
+      50%  { transform: translate3d(0, -12px, 0) scale(1.045); }
+      100% { transform: translate3d(42px, 10px, 0) scale(1.085); }
     }
 
     @keyframes flame-flicker {
