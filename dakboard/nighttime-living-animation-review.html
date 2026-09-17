@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#0d0b0b">
-  <title>Living Elarindor — Nighttime Bed Stage 3.3 Review</title>
+  <title>Living Elarindor — Nighttime Bed Stage 3.4 Review</title>
   <style>
     html, body {
       width: 100%;
@@ -20,6 +20,18 @@
       height: 100vh;
       overflow: hidden;
       background: #0d0b0b;
+    }
+
+    /* The entire painted scene and all aligned overlays move together.
+       This creates a very slow living-still camera drift without changing
+       any character anatomy or disturbing the candle alignment. */
+    .world {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      transform-origin: 50% 50%;
+      animation: living-camera 18s ease-in-out infinite alternate;
+      will-change: transform;
     }
 
     .scene-image {
@@ -161,6 +173,12 @@
     .m5 { left: 84%; top: 50%; animation-duration: 8.5s; animation-delay: -6s; }
     .m6 { left: 72%; top: 66%; animation-duration: 7.2s; animation-delay: -1s; }
 
+    @keyframes living-camera {
+      0%   { transform: translate3d(-2px, 1px, 0) scale(1.006); }
+      48%  { transform: translate3d(1px, -1px, 0) scale(1.010); }
+      100% { transform: translate3d(3px, 1px, 0) scale(1.007); }
+    }
+
     @keyframes flame-flicker {
       0%   { transform: translate3d(-1px, 1px, 0) scale(.82, 1.12) rotate(-3deg); opacity: .72; }
       35%  { transform: translate3d(1px, -1px, 0) scale(1.04, .94) rotate(2deg); opacity: 1; }
@@ -195,26 +213,28 @@
 </head>
 <body>
   <main class="stage" aria-label="Nighttime Bed living animation development review">
-    <img
-      class="scene-image"
-      src="./assets/images/nighttime-bed-character-staging-v1.png?v=1"
-      alt="Nighttime Bed character staging artwork">
+    <div class="world">
+      <img
+        class="scene-image"
+        src="./assets/images/nighttime-bed-character-staging-v1.png?v=1"
+        alt="Nighttime Bed character staging artwork">
 
-    <div class="ambient" aria-hidden="true">
-      <div class="moon-wash"></div>
-      <div class="moon-beam"></div>
+      <div class="ambient" aria-hidden="true">
+        <div class="moon-wash"></div>
+        <div class="moon-beam"></div>
 
-      <div class="candle-halo halo-left"></div>
-      <div class="candle-halo halo-right"></div>
-      <i class="flame flame-left"></i>
-      <i class="flame flame-right"></i>
+        <div class="candle-halo halo-left"></div>
+        <div class="candle-halo halo-right"></div>
+        <i class="flame flame-left"></i>
+        <i class="flame flame-right"></i>
 
-      <i class="mote m1"></i>
-      <i class="mote m2"></i>
-      <i class="mote m3"></i>
-      <i class="mote m4"></i>
-      <i class="mote m5"></i>
-      <i class="mote m6"></i>
+        <i class="mote m1"></i>
+        <i class="mote m2"></i>
+        <i class="mote m3"></i>
+        <i class="mote m4"></i>
+        <i class="mote m5"></i>
+        <i class="mote m6"></i>
+      </div>
     </div>
   </main>
 </body>
