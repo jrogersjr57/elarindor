@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#0d0b0b">
-  <title>Living Elarindor — Moon Cloud Cover Diagnostic v8</title>
+  <title>Living Elarindor — Moon Cloud Cover Diagnostic v9</title>
   <style>
     html, body {
       width: 100%;
@@ -33,6 +33,8 @@
       z-index: 0;
     }
 
+    /* The room response is the main cue that a cloud has crossed the moon.
+       No literal cloud shape is drawn across the window in this version. */
     .room-dim {
       position: absolute;
       inset: 0;
@@ -41,19 +43,19 @@
       background:
         radial-gradient(
           ellipse at 84% 14%,
-          rgba(7, 14, 30, .18) 0%,
-          rgba(7, 14, 30, .14) 30%,
+          rgba(7, 14, 30, .20) 0%,
+          rgba(7, 14, 30, .15) 30%,
           rgba(7, 14, 30, .09) 54%,
           rgba(7, 14, 30, .03) 74%,
           rgba(0, 0, 0, 0) 100%
         ),
-        rgba(3, 7, 16, .07);
+        rgba(3, 7, 16, .08);
       opacity: 0;
       animation: room-moon-dim 16s ease-in-out infinite;
       will-change: opacity;
     }
 
-    /* Moon-only zone, kept away from the window frame. */
+    /* Small moon-only zone so nothing can touch curtains, frame, or room. */
     .moon-zone {
       position: absolute;
       left: 79.7%;
@@ -63,70 +65,40 @@
       overflow: hidden;
       z-index: 2;
       pointer-events: none;
-      border-radius: 44% 52% 48% 55%;
+      border-radius: 50%;
     }
 
-    /* v8 deliberately uses thin, separated streaks instead of overlapping
-       soft blobs. The lower blur keeps each wisp visually distinct. */
-    .wisp {
+    /* Patchy translucent haze. It covers the whole moon unevenly instead of
+       making a moving silhouette or crescent edge. */
+    .haze-a,
+    .haze-b {
       position: absolute;
-      left: 0;
-      border-radius: 999px;
-      filter: blur(1.2px);
-      will-change: transform, opacity;
+      inset: -12%;
+      opacity: 0;
+      will-change: opacity, transform;
+      mix-blend-mode: multiply;
     }
 
-    .wisp-a {
-      top: 18%;
-      width: 150%;
-      height: 11%;
+    .haze-a {
       background:
-        linear-gradient(
-          90deg,
-          rgba(52,68,95,0) 0%,
-          rgba(66,84,113,.20) 15%,
-          rgba(77,96,126,.50) 35%,
-          rgba(62,80,108,.58) 54%,
-          rgba(79,98,128,.42) 72%,
-          rgba(58,74,101,.12) 88%,
-          rgba(52,68,95,0) 100%
-        );
-      animation: wisp-a-pass 16s ease-in-out infinite;
+        radial-gradient(circle at 18% 28%, rgba(23,34,54,.36) 0 16%, rgba(23,34,54,0) 34%),
+        radial-gradient(circle at 49% 18%, rgba(28,40,62,.28) 0 18%, rgba(28,40,62,0) 39%),
+        radial-gradient(circle at 76% 34%, rgba(21,32,51,.44) 0 19%, rgba(21,32,51,0) 40%),
+        radial-gradient(circle at 32% 66%, rgba(31,44,67,.30) 0 20%, rgba(31,44,67,0) 43%),
+        radial-gradient(circle at 67% 72%, rgba(20,30,48,.40) 0 21%, rgba(20,30,48,0) 44%),
+        linear-gradient(90deg, rgba(18,28,45,.10), rgba(31,43,66,.30) 46%, rgba(20,31,50,.12));
+      filter: blur(4px);
+      animation: haze-a-pass 16s ease-in-out infinite;
     }
 
-    .wisp-b {
-      top: 43%;
-      width: 128%;
-      height: 9%;
+    .haze-b {
       background:
-        linear-gradient(
-          90deg,
-          rgba(48,63,89,0) 0%,
-          rgba(61,78,106,.18) 17%,
-          rgba(73,91,120,.40) 39%,
-          rgba(57,74,101,.50) 58%,
-          rgba(71,89,118,.34) 76%,
-          rgba(52,68,94,.10) 90%,
-          rgba(48,63,89,0) 100%
-        );
-      animation: wisp-b-pass 16s ease-in-out infinite;
-    }
-
-    .wisp-c {
-      top: 65%;
-      width: 104%;
-      height: 7%;
-      background:
-        linear-gradient(
-          90deg,
-          rgba(46,61,86,0) 0%,
-          rgba(57,73,100,.14) 18%,
-          rgba(68,86,114,.31) 43%,
-          rgba(55,71,98,.38) 61%,
-          rgba(65,82,110,.22) 79%,
-          rgba(46,61,86,0) 100%
-        );
-      animation: wisp-c-pass 16s ease-in-out infinite;
+        radial-gradient(ellipse at 27% 43%, rgba(37,50,74,.24) 0 17%, rgba(37,50,74,0) 40%),
+        radial-gradient(ellipse at 58% 36%, rgba(18,28,45,.38) 0 19%, rgba(18,28,45,0) 43%),
+        radial-gradient(ellipse at 82% 61%, rgba(35,48,72,.26) 0 18%, rgba(35,48,72,0) 41%),
+        radial-gradient(ellipse at 41% 78%, rgba(20,30,48,.32) 0 20%, rgba(20,30,48,0) 45%);
+      filter: blur(5px);
+      animation: haze-b-pass 16s ease-in-out infinite;
     }
 
     .diagnostic-note {
@@ -143,38 +115,57 @@
       pointer-events: none;
     }
 
-    @keyframes wisp-a-pass {
-      0%, 15%   { transform: translate3d(82%, 0, 0); opacity: 0; }
-      27%        { transform: translate3d(48%, 0, 0); opacity: .42; }
-      42%        { transform: translate3d(12%, 0, 0); opacity: .85; }
-      56%        { transform: translate3d(-18%, 0, 0); opacity: .88; }
-      70%        { transform: translate3d(-50%, 0, 0); opacity: .38; }
-      83%, 100%  { transform: translate3d(-84%, 0, 0); opacity: 0; }
+    @keyframes haze-a-pass {
+      0%, 20% {
+        opacity: 0;
+        transform: translate3d(8%, -3%, 0) scale(1.02);
+      }
+      34% {
+        opacity: .28;
+        transform: translate3d(3%, -1%, 0) scale(1.03);
+      }
+      47%, 58% {
+        opacity: .78;
+        transform: translate3d(-2%, 1%, 0) scale(1.05);
+      }
+      70% {
+        opacity: .30;
+        transform: translate3d(-6%, 2%, 0) scale(1.04);
+      }
+      82%, 100% {
+        opacity: 0;
+        transform: translate3d(-10%, 3%, 0) scale(1.02);
+      }
     }
 
-    @keyframes wisp-b-pass {
-      0%, 20%   { transform: translate3d(88%, 0, 0); opacity: 0; }
-      33%        { transform: translate3d(50%, 0, 0); opacity: .32; }
-      48%        { transform: translate3d(11%, 0, 0); opacity: .70; }
-      62%        { transform: translate3d(-20%, 0, 0); opacity: .73; }
-      74%        { transform: translate3d(-50%, 0, 0); opacity: .30; }
-      87%, 100%  { transform: translate3d(-86%, 0, 0); opacity: 0; }
-    }
-
-    @keyframes wisp-c-pass {
-      0%, 24%   { transform: translate3d(94%, 0, 0); opacity: 0; }
-      36%        { transform: translate3d(54%, 0, 0); opacity: .22; }
-      51%        { transform: translate3d(12%, 0, 0); opacity: .54; }
-      64%        { transform: translate3d(-20%, 0, 0); opacity: .56; }
-      76%        { transform: translate3d(-50%, 0, 0); opacity: .20; }
-      89%, 100%  { transform: translate3d(-88%, 0, 0); opacity: 0; }
+    @keyframes haze-b-pass {
+      0%, 25% {
+        opacity: 0;
+        transform: translate3d(6%, 2%, 0) scale(1.01);
+      }
+      39% {
+        opacity: .20;
+        transform: translate3d(2%, 1%, 0) scale(1.03);
+      }
+      50%, 63% {
+        opacity: .58;
+        transform: translate3d(-3%, -1%, 0) scale(1.05);
+      }
+      73% {
+        opacity: .18;
+        transform: translate3d(-7%, -2%, 0) scale(1.03);
+      }
+      84%, 100% {
+        opacity: 0;
+        transform: translate3d(-9%, -3%, 0) scale(1.01);
+      }
     }
 
     @keyframes room-moon-dim {
       0%, 23%, 78%, 100% { opacity: 0; }
-      36% { opacity: .15; }
-      49%, 61% { opacity: .45; }
-      70% { opacity: .17; }
+      37% { opacity: .16; }
+      49%, 61% { opacity: .48; }
+      70% { opacity: .18; }
     }
   </style>
 </head>
@@ -188,12 +179,11 @@
     <div class="room-dim" aria-hidden="true"></div>
 
     <div class="moon-zone" aria-hidden="true">
-      <div class="wisp wisp-a"></div>
-      <div class="wisp wisp-b"></div>
-      <div class="wisp wisp-c"></div>
+      <div class="haze-a"></div>
+      <div class="haze-b"></div>
     </div>
 
-    <div class="diagnostic-note">CLOUD TEST v8 · separated wisps · 16s</div>
+    <div class="diagnostic-note">CLOUD TEST v9 · patchy moon haze · 16s</div>
   </main>
 </body>
 </html>
