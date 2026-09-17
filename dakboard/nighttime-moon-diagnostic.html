@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#0d0b0b">
-  <title>Living Elarindor — Moon Cloud Cover Diagnostic v7</title>
+  <title>Living Elarindor — Moon Cloud Cover Diagnostic v8</title>
   <style>
     html, body {
       width: 100%;
@@ -33,7 +33,6 @@
       z-index: 0;
     }
 
-    /* Keep the scene response subtle but visible during the accelerated test. */
     .room-dim {
       position: absolute;
       inset: 0;
@@ -43,18 +42,18 @@
         radial-gradient(
           ellipse at 84% 14%,
           rgba(7, 14, 30, .18) 0%,
-          rgba(7, 14, 30, .15) 28%,
-          rgba(7, 14, 30, .10) 52%,
-          rgba(7, 14, 30, .04) 72%,
+          rgba(7, 14, 30, .14) 30%,
+          rgba(7, 14, 30, .09) 54%,
+          rgba(7, 14, 30, .03) 74%,
           rgba(0, 0, 0, 0) 100%
         ),
-        rgba(3, 7, 16, .08);
+        rgba(3, 7, 16, .07);
       opacity: 0;
       animation: room-moon-dim 16s ease-in-out infinite;
       will-change: opacity;
     }
 
-    /* Small moon-only zone: nothing can spill over the curtains/window frame. */
+    /* Moon-only zone, kept away from the window frame. */
     .moon-zone {
       position: absolute;
       left: 79.7%;
@@ -67,44 +66,66 @@
       border-radius: 44% 52% 48% 55%;
     }
 
-    /* Three soft irregular veils cross at slightly different heights.
-       No circular shadow is used, so the moon should haze/dim rather than
-       read like an eclipse or changing phase. */
+    /* v8 deliberately uses thin, separated streaks instead of overlapping
+       soft blobs. The lower blur keeps each wisp visually distinct. */
     .wisp {
       position: absolute;
       left: 0;
-      border-radius: 47% 58% 44% 61% / 63% 42% 58% 39%;
-      filter: blur(5px);
+      border-radius: 999px;
+      filter: blur(1.2px);
       will-change: transform, opacity;
     }
 
     .wisp-a {
       top: 18%;
-      width: 148%;
-      height: 29%;
+      width: 150%;
+      height: 11%;
       background:
-        radial-gradient(ellipse at 14% 52%, rgba(36,49,72,0) 0 16%, rgba(49,64,90,.30) 36%, rgba(61,78,106,.48) 53%, rgba(40,54,79,.14) 73%, rgba(0,0,0,0) 100%),
-        radial-gradient(ellipse at 51% 48%, rgba(43,57,82,.08) 0 18%, rgba(56,72,99,.42) 38%, rgba(66,84,112,.58) 55%, rgba(42,56,82,.18) 74%, rgba(0,0,0,0) 100%),
-        radial-gradient(ellipse at 82% 54%, rgba(35,48,71,0) 0 14%, rgba(50,65,91,.26) 36%, rgba(60,77,104,.43) 54%, rgba(38,52,76,.12) 73%, rgba(0,0,0,0) 100%);
+        linear-gradient(
+          90deg,
+          rgba(52,68,95,0) 0%,
+          rgba(66,84,113,.20) 15%,
+          rgba(77,96,126,.50) 35%,
+          rgba(62,80,108,.58) 54%,
+          rgba(79,98,128,.42) 72%,
+          rgba(58,74,101,.12) 88%,
+          rgba(52,68,95,0) 100%
+        );
       animation: wisp-a-pass 16s ease-in-out infinite;
     }
 
     .wisp-b {
-      top: 35%;
-      width: 132%;
-      height: 23%;
+      top: 43%;
+      width: 128%;
+      height: 9%;
       background:
-        radial-gradient(ellipse at 20% 50%, rgba(43,58,84,0) 0 18%, rgba(58,74,101,.25) 37%, rgba(70,87,115,.43) 55%, rgba(47,61,87,.12) 75%, rgba(0,0,0,0) 100%),
-        radial-gradient(ellipse at 67% 48%, rgba(41,55,81,.06) 0 16%, rgba(55,71,98,.31) 38%, rgba(65,83,111,.48) 55%, rgba(42,56,82,.14) 74%, rgba(0,0,0,0) 100%);
+        linear-gradient(
+          90deg,
+          rgba(48,63,89,0) 0%,
+          rgba(61,78,106,.18) 17%,
+          rgba(73,91,120,.40) 39%,
+          rgba(57,74,101,.50) 58%,
+          rgba(71,89,118,.34) 76%,
+          rgba(52,68,94,.10) 90%,
+          rgba(48,63,89,0) 100%
+        );
       animation: wisp-b-pass 16s ease-in-out infinite;
     }
 
     .wisp-c {
-      top: 5%;
-      width: 120%;
-      height: 19%;
+      top: 65%;
+      width: 104%;
+      height: 7%;
       background:
-        radial-gradient(ellipse at 38% 50%, rgba(44,59,86,0) 0 20%, rgba(59,76,103,.20) 40%, rgba(72,90,118,.38) 56%, rgba(49,63,89,.10) 75%, rgba(0,0,0,0) 100%);
+        linear-gradient(
+          90deg,
+          rgba(46,61,86,0) 0%,
+          rgba(57,73,100,.14) 18%,
+          rgba(68,86,114,.31) 43%,
+          rgba(55,71,98,.38) 61%,
+          rgba(65,82,110,.22) 79%,
+          rgba(46,61,86,0) 100%
+        );
       animation: wisp-c-pass 16s ease-in-out infinite;
     }
 
@@ -123,37 +144,37 @@
     }
 
     @keyframes wisp-a-pass {
-      0%, 17%   { transform: translate3d(76%, 0, 0) rotate(-1deg); opacity: 0; }
-      28%        { transform: translate3d(43%, 0, 0) rotate(-1deg); opacity: .42; }
-      42%        { transform: translate3d(12%, 1%, 0) rotate(0deg); opacity: .82; }
-      56%        { transform: translate3d(-15%, 1%, 0) rotate(1deg); opacity: .88; }
-      70%        { transform: translate3d(-45%, 0, 0) rotate(1deg); opacity: .40; }
-      83%, 100%  { transform: translate3d(-78%, 0, 0) rotate(1deg); opacity: 0; }
+      0%, 15%   { transform: translate3d(82%, 0, 0); opacity: 0; }
+      27%        { transform: translate3d(48%, 0, 0); opacity: .42; }
+      42%        { transform: translate3d(12%, 0, 0); opacity: .85; }
+      56%        { transform: translate3d(-18%, 0, 0); opacity: .88; }
+      70%        { transform: translate3d(-50%, 0, 0); opacity: .38; }
+      83%, 100%  { transform: translate3d(-84%, 0, 0); opacity: 0; }
     }
 
     @keyframes wisp-b-pass {
-      0%, 21%   { transform: translate3d(84%, 0, 0) rotate(1deg); opacity: 0; }
-      34%        { transform: translate3d(44%, 0, 0) rotate(1deg); opacity: .30; }
-      48%        { transform: translate3d(9%, -1%, 0) rotate(0deg); opacity: .70; }
-      61%        { transform: translate3d(-18%, -1%, 0) rotate(-1deg); opacity: .72; }
-      73%        { transform: translate3d(-48%, 0, 0) rotate(-1deg); opacity: .28; }
-      86%, 100%  { transform: translate3d(-82%, 0, 0) rotate(-1deg); opacity: 0; }
+      0%, 20%   { transform: translate3d(88%, 0, 0); opacity: 0; }
+      33%        { transform: translate3d(50%, 0, 0); opacity: .32; }
+      48%        { transform: translate3d(11%, 0, 0); opacity: .70; }
+      62%        { transform: translate3d(-20%, 0, 0); opacity: .73; }
+      74%        { transform: translate3d(-50%, 0, 0); opacity: .30; }
+      87%, 100%  { transform: translate3d(-86%, 0, 0); opacity: 0; }
     }
 
     @keyframes wisp-c-pass {
-      0%, 13%   { transform: translate3d(88%, 0, 0); opacity: 0; }
-      25%        { transform: translate3d(52%, 0, 0); opacity: .22; }
-      38%        { transform: translate3d(18%, 0, 0); opacity: .54; }
-      50%        { transform: translate3d(-8%, 0, 0); opacity: .58; }
-      63%        { transform: translate3d(-38%, 0, 0); opacity: .24; }
-      78%, 100%  { transform: translate3d(-76%, 0, 0); opacity: 0; }
+      0%, 24%   { transform: translate3d(94%, 0, 0); opacity: 0; }
+      36%        { transform: translate3d(54%, 0, 0); opacity: .22; }
+      51%        { transform: translate3d(12%, 0, 0); opacity: .54; }
+      64%        { transform: translate3d(-20%, 0, 0); opacity: .56; }
+      76%        { transform: translate3d(-50%, 0, 0); opacity: .20; }
+      89%, 100%  { transform: translate3d(-88%, 0, 0); opacity: 0; }
     }
 
     @keyframes room-moon-dim {
       0%, 23%, 78%, 100% { opacity: 0; }
-      36% { opacity: .16; }
-      48%, 60% { opacity: .48; }
-      70% { opacity: .18; }
+      36% { opacity: .15; }
+      49%, 61% { opacity: .45; }
+      70% { opacity: .17; }
     }
   </style>
 </head>
@@ -172,7 +193,7 @@
       <div class="wisp wisp-c"></div>
     </div>
 
-    <div class="diagnostic-note">CLOUD TEST v7 · irregular wisps · 16s</div>
+    <div class="diagnostic-note">CLOUD TEST v8 · separated wisps · 16s</div>
   </main>
 </body>
 </html>
