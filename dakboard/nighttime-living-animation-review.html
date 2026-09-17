@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#0d0b0b">
-  <title>Living Elarindor — Nighttime Bed Stage 3.1 Review</title>
+  <title>Living Elarindor — Nighttime Bed Stage 3.2 Review</title>
   <style>
     html, body {
       width: 100%;
@@ -41,9 +41,7 @@
       z-index: 1;
     }
 
-    /* Keep effects simple and compositor-friendly for DAKboard/Roku.
-       No blend modes: only opacity + transform + box-shadow. */
-
+    /* Cool window-side motion only. This stays slow and does not flicker. */
     .moon-wash {
       position: absolute;
       right: -7vw;
@@ -52,14 +50,14 @@
       height: 104vh;
       background: radial-gradient(
         ellipse at 79% 30%,
-        rgba(145, 181, 255, .26) 0%,
-        rgba(111, 147, 220, .17) 34%,
-        rgba(71, 104, 171, .08) 57%,
+        rgba(145, 181, 255, .22) 0%,
+        rgba(111, 147, 220, .14) 34%,
+        rgba(71, 104, 171, .06) 57%,
         rgba(0, 0, 0, 0) 76%
       );
-      opacity: .26;
+      opacity: .22;
       transform: translate3d(-16px, 0, 0) scale(.98);
-      animation: moon-drift 7.5s ease-in-out infinite alternate;
+      animation: moon-drift 8.5s ease-in-out infinite alternate;
       will-change: transform, opacity;
     }
 
@@ -73,31 +71,17 @@
         113deg,
         rgba(105, 148, 231, 0) 0%,
         rgba(116, 157, 234, .02) 20%,
-        rgba(138, 177, 245, .15) 48%,
-        rgba(112, 153, 228, .04) 68%,
+        rgba(138, 177, 245, .12) 48%,
+        rgba(112, 153, 228, .03) 68%,
         rgba(88, 126, 200, 0) 100%
       );
-      opacity: .22;
+      opacity: .18;
       transform: translate3d(-22px, 0, 0) skewX(-7deg);
-      animation: beam-drift 9s ease-in-out infinite alternate;
+      animation: beam-drift 10s ease-in-out infinite alternate;
       will-change: transform, opacity;
     }
 
-    .warm-room {
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(
-        ellipse at 34% 39%,
-        rgba(255, 165, 71, .13) 0%,
-        rgba(255, 135, 48, .06) 38%,
-        rgba(0, 0, 0, 0) 68%
-      );
-      opacity: .24;
-      animation: warm-room 5.5s ease-in-out infinite alternate;
-      will-change: opacity;
-    }
-
-    /* Actual visible flame sprites aligned to the three clearest candles. */
+    /* Visible flame sprites aligned to the clearest candles. */
     .flame {
       position: absolute;
       width: .72vw;
@@ -116,57 +100,58 @@
       transform-origin: 50% 100%;
       filter: blur(.15px);
       box-shadow:
-        0 0 8px rgba(255, 216, 123, .95),
-        0 0 18px rgba(255, 157, 45, .72),
-        0 0 36px rgba(255, 106, 25, .34);
-      opacity: .92;
+        0 0 7px rgba(255, 216, 123, .90),
+        0 0 15px rgba(255, 157, 45, .58),
+        0 0 24px rgba(255, 106, 25, .22);
+      opacity: .90;
       animation: flame-flicker 1.05s ease-in-out infinite alternate;
       will-change: transform, opacity;
     }
 
-    /* Approximate positions in the approved 1536×1024 artwork. */
     .flame-left   { left: 8.0%;  top: 36.3%; animation-duration: .92s; }
     .flame-center { left: 53.3%; top: 36.2%; animation-duration: 1.17s; animation-delay: -.37s; }
     .flame-right  { left: 96.0%; top: 36.1%; animation-duration: 1.03s; animation-delay: -.71s; }
 
+    /* Halos are intentionally tight around their light sources so the quilt
+       does not visibly pulse with the candle animation. */
     .candle-halo {
       position: absolute;
       border-radius: 50%;
       background: radial-gradient(
         ellipse at center,
-        rgba(255, 205, 112, .22) 0%,
-        rgba(255, 150, 56, .11) 40%,
-        rgba(255, 100, 29, .04) 62%,
+        rgba(255, 205, 112, .24) 0%,
+        rgba(255, 150, 56, .10) 38%,
+        rgba(255, 100, 29, .025) 61%,
         rgba(0,0,0,0) 78%
       );
-      opacity: .25;
-      transform: scale(.92);
-      animation: halo-flicker 1.55s ease-in-out infinite alternate;
+      opacity: .22;
+      transform: scale(.94);
+      animation: halo-flicker 1.65s ease-in-out infinite alternate;
       will-change: transform, opacity;
     }
 
     .halo-left {
-      left: -2vw;
-      top: 23vh;
-      width: 22vw;
-      height: 34vh;
+      left: 1vw;
+      top: 27vh;
+      width: 15vw;
+      height: 22vh;
       animation-duration: 1.42s;
     }
 
     .halo-center {
-      left: 45vw;
-      top: 25vh;
-      width: 18vw;
-      height: 29vh;
+      left: 47.5vw;
+      top: 28vh;
+      width: 12vw;
+      height: 18vh;
       animation-duration: 1.84s;
       animation-delay: -.6s;
     }
 
     .halo-right {
-      right: -3vw;
-      top: 24vh;
-      width: 18vw;
-      height: 30vh;
+      right: -1vw;
+      top: 28vh;
+      width: 13vw;
+      height: 20vh;
       animation-duration: 1.67s;
       animation-delay: -.9s;
     }
@@ -198,25 +183,20 @@
     }
 
     @keyframes halo-flicker {
-      0%   { opacity: .16; transform: scale(.89); }
-      30%  { opacity: .39; transform: scale(1.02); }
-      62%  { opacity: .23; transform: scale(.95); }
-      100% { opacity: .46; transform: scale(1.08); }
+      0%   { opacity: .13; transform: scale(.92); }
+      35%  { opacity: .31; transform: scale(1.01); }
+      70%  { opacity: .18; transform: scale(.96); }
+      100% { opacity: .34; transform: scale(1.05); }
     }
 
     @keyframes moon-drift {
-      0%   { opacity: .16; transform: translate3d(-20px, 0, 0) scale(.97); }
-      100% { opacity: .40; transform: translate3d(17px, 2px, 0) scale(1.035); }
+      0%   { opacity: .14; transform: translate3d(-18px, 0, 0) scale(.98); }
+      100% { opacity: .30; transform: translate3d(14px, 2px, 0) scale(1.025); }
     }
 
     @keyframes beam-drift {
-      0%   { opacity: .10; transform: translate3d(-28px, 0, 0) skewX(-8deg); }
-      100% { opacity: .34; transform: translate3d(26px, 4px, 0) skewX(-5deg); }
-    }
-
-    @keyframes warm-room {
-      0%   { opacity: .16; }
-      100% { opacity: .36; }
+      0%   { opacity: .08; transform: translate3d(-24px, 0, 0) skewX(-8deg); }
+      100% { opacity: .24; transform: translate3d(22px, 4px, 0) skewX(-5deg); }
     }
 
     @keyframes mote-drift {
@@ -237,7 +217,6 @@
     <div class="ambient" aria-hidden="true">
       <div class="moon-wash"></div>
       <div class="moon-beam"></div>
-      <div class="warm-room"></div>
 
       <div class="candle-halo halo-left"></div>
       <div class="candle-halo halo-center"></div>
