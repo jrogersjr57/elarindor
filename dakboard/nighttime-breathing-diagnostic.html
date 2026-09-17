@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#0d0b0b">
-  <title>Living Elarindor — Breathing Diagnostic v2</title>
+  <title>Living Elarindor — Breathing Diagnostic v3</title>
   <style>
     html, body {
       width: 100%;
@@ -35,10 +35,9 @@
 
     .scene-image { z-index: 0; }
 
-    /* Diagnostic v2: keep the visible top edge of the covers anchored to the
-       original painting. The moving duplicate is pushed lower into the body
-       of the bedding and heavily feathered so the motion reads as a soft
-       rise/fall instead of a sliding patch. */
+    /* Diagnostic v3: same mask and movement range as v2, but with a much
+       slower breathing cycle so speed can be judged independently from the
+       feathering/blur issue. */
     .breath-layer {
       z-index: 1;
       pointer-events: none;
@@ -59,7 +58,7 @@
         rgba(0,0,0,.24) 76%,
         rgba(0,0,0,0) 100%
       );
-      animation: bedding-breathe-test 5.2s cubic-bezier(.42,0,.58,1) infinite;
+      animation: bedding-breathe-test 7.8s cubic-bezier(.42,0,.58,1) infinite;
       will-change: transform;
     }
 
