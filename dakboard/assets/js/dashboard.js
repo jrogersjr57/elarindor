@@ -2,9 +2,8 @@
   'use strict';
 
   const DEFAULT_CONFIG = {
-    version: 6,
-    rotationSeconds: 15,
-    fadeMilliseconds: 2200,
+    version: 7,
+    fadeMilliseconds: 1400,
     scenes: [
       { id: 'morning-wakeup', name: 'Morning Wakeup', eyebrow: 'Living Elarindor', quest: 'Begin the Day', theme: 'bedroom-morning', particles: 'morning-dust' },
       { id: 'nighttime-bed', name: 'Nighttime Bed', eyebrow: 'Living Elarindor', quest: "Rest at Day's End", theme: 'bedroom-night', particles: 'night-dust' }
@@ -13,10 +12,9 @@
 
   const params = new URLSearchParams(window.location.search);
   const debug = params.get('debug') === '1';
-  const forcedScene = params.get('scene');
+  const requestedScene = params.get('scene') || 'morning-wakeup';
 
   const el = {
-    livingSpace: document.getElementById('living-space'),
     sceneRoot: document.getElementById('scene-root'),
     time: document.getElementById('time'),
     date: document.getElementById('date'),
@@ -28,12 +26,7 @@
   };
 
   let config = DEFAULT_CONFIG;
-  let currentIndex = 0;
-  let isAuto = !forcedScene;
-  let motionFrame = null;
-  let motionStartedAt = performance.now();
-  let lastSceneSwitchAt = performance.now();
-  let lastProductionSceneId = null;
+  let activeSceneId = null;
 
   function setStatus(message) {
     if (el.status) el.status.textContent = message;
@@ -103,34 +96,36 @@
       </section>`;
   }
 
-  function renderScenes() {
-    el.sceneRoot.innerHTML = config.scenes.map(sceneMarkup).join('');
-    config.scenes.forEach(seedParticles);
-  }
-
   function seedParticles(scene) {
     const field = el.sceneRoot.querySelector(`[data-scene-id="${scene.id}"] .particle-field`);
     if (!field) return;
 
-    const count = scene.particles === 'morning-dust' ? 28 : 20;
+    const count = scene.particles === 'morning-dust' ? 26 : 18;
     for (let i = 0; i < count; i += 1) {
       const p = document.createElement('i');
       p.className = `particle ${scene.particles}`;
       p.style.left = `${8 + Math.random() * 84}%`;
       p.style.top = `${8 + Math.random() * 78}%`;
-      p.style.opacity = `${0.22 + Math.random() * 0.48}`;
-      p.dataset.phase = `${Math.random() * Math.PI * 2}`;
-      p.dataset.speed = `${0.35 + Math.random() * 0.8}`;
-      p.dataset.range = `${5 + Math.random() * 18}`;
+      p.style.setProperty('--dust-x', `${(-16 + Math.random() * 32).toFixed(1)}px`);
+      p.style.setProperty('--dust-y', `${(-14 + Math.random() * 24).toFixed(1)}px`);
+      p.style.setProperty('--dust-opacity-low', `${(0.12 + Math.random() * 0.16).toFixed(2)}`);
+      p.style.setProperty('--dust-opacity-high', `${(0.38 + Math.random() * 0.32).toFixed(2)}`);
+      p.style.animationDuration = `${(7 + Math.random() * 9).toFixed(2)}s`;
+      p.style.animationDelay = `${(-Math.random() * 12).toFixed(2)}s`;
       field.appendChild(p);
     }
   }
 
-  function setActiveScene(index, reason = 'manual') {
-    if (!config.scenes.length) return;
-    currentIndex = (index + config.scenes.length) % config.scenes.length;
-    const scene = config.scenes[currentIndex];
+  function renderScenes() {
+    el.sceneRoot.innerHTML = config.scenes.map(sceneMarkup).join('');
+    config.scenes.forEach(seedParticles);
+  }
 
+  function setSceneById(id, reason = 'URL') {
+    const scene = config.scenes.find(item => item.id === id) || config.scenes[0];
+    if (!scene) return;
+
+    activeSceneId = scene.id;
     el.sceneRoot.querySelectorAll('.scene').forEach(node => {
       node.classList.toggle('active', node.dataset.sceneId === scene.id);
     });
@@ -139,130 +134,29 @@
     if (el.quest) el.quest.textContent = scene.quest || '';
     if (el.location) el.location.textContent = scene.name || scene.id;
 
-    updateDebugButtons(scene.id);
-    setStatus(`Scene: ${scene.id} • ${reason} • engine v${config.version}`);
-  }
-
-  function setSceneById(id, reason) {
-    const index = config.scenes.findIndex(scene => scene.id === id);
-    if (index < 0) return false;
-    if (currentIndex === index && el.sceneRoot.querySelector('.scene.active')) return true;
-    setActiveScene(index, reason);
-    return true;
-  }
-
-  function advanceScene(reason = 'auto') {
-    setActiveScene(currentIndex + 1, reason);
-    lastSceneSwitchAt = performance.now();
-  }
-
-  function startAuto() {
-    isAuto = true;
-    lastSceneSwitchAt = performance.now();
-    updateDebugButtons(config.scenes[currentIndex]?.id);
-    setStatus(`Auto mode • frame-driven • engine v${config.version}`);
-  }
-
-  function forceScene(id) {
-    const index = config.scenes.findIndex(scene => scene.id === id);
-    if (index < 0) return;
-    isAuto = false;
-    setActiveScene(index, 'forced');
-  }
-
-  function productionSceneId(now = new Date()) {
-    const hour = now.getHours();
-    return (hour >= 18 || hour < 5) ? 'nighttime-bed' : 'morning-wakeup';
-  }
-
-  function updateProductionSchedule() {
-    if (debug || forcedScene) return;
-    const desired = productionSceneId(new Date());
-    if (desired !== lastProductionSceneId) {
-      lastProductionSceneId = desired;
-      setSceneById(desired, 'time-of-day');
-    }
+    updateDebugButtons();
+    setStatus(`Scene: ${scene.id} • ${reason} • CSS motion • engine v${config.version}`);
   }
 
   function buildDebugControls() {
     if (!debug || !el.debugPanel) return;
     document.documentElement.classList.add('debug');
 
-    const auto = document.createElement('button');
-    auto.type = 'button';
-    auto.dataset.mode = 'auto';
-    auto.textContent = 'Auto';
-    auto.addEventListener('click', startAuto);
-    el.debugPanel.appendChild(auto);
-
     config.scenes.forEach(scene => {
       const button = document.createElement('button');
       button.type = 'button';
       button.dataset.scene = scene.id;
       button.textContent = scene.id === 'morning-wakeup' ? 'Morning Wakeup' : 'Nighttime Bed';
-      button.addEventListener('click', () => forceScene(scene.id));
+      button.addEventListener('click', () => setSceneById(scene.id, 'debug-button'));
       el.debugPanel.appendChild(button);
     });
-
-    const cssProbe = document.createElement('div');
-    cssProbe.className = 'diagnostic-probe css-probe';
-    cssProbe.innerHTML = '<span>CSS motion</span><i></i>';
-    el.livingSpace.appendChild(cssProbe);
-
-    const jsProbe = document.createElement('div');
-    jsProbe.className = 'diagnostic-probe js-probe';
-    jsProbe.innerHTML = '<span>JS motion</span><i></i>';
-    el.livingSpace.appendChild(jsProbe);
   }
 
-  function updateDebugButtons(sceneId) {
+  function updateDebugButtons() {
     if (!el.debugPanel) return;
     el.debugPanel.querySelectorAll('button').forEach(button => {
-      const active = button.dataset.mode === 'auto' ? isAuto : button.dataset.scene === sceneId && !isAuto;
-      button.classList.toggle('active', active);
+      button.classList.toggle('active', button.dataset.scene === activeSceneId);
     });
-  }
-
-  function runMotion(now) {
-    const t = (now - motionStartedAt) / 1000;
-    const sway = Math.sin(t * 0.72);
-    const slower = Math.sin(t * 0.31);
-    const pulse = (Math.sin(t * 1.7) + 1) / 2;
-
-    document.documentElement.style.setProperty('--curtain-shift', `${(sway * 10).toFixed(2)}px`);
-    document.documentElement.style.setProperty('--curtain-rotate', `${(sway * 1.15).toFixed(2)}deg`);
-    document.documentElement.style.setProperty('--light-shift', `${(slower * 18).toFixed(2)}px`);
-    document.documentElement.style.setProperty('--light-opacity', `${(0.62 + pulse * 0.24).toFixed(3)}`);
-    document.documentElement.style.setProperty('--candle-scale', `${(0.93 + pulse * 0.11).toFixed(3)}`);
-    document.documentElement.style.setProperty('--candle-opacity', `${(0.66 + pulse * 0.32).toFixed(3)}`);
-
-    el.sceneRoot.querySelectorAll('.particle').forEach((node, index) => {
-      const phase = Number(node.dataset.phase || 0);
-      const speed = Number(node.dataset.speed || 0.5);
-      const range = Number(node.dataset.range || 10);
-      const x = Math.sin((t * speed) + phase) * range;
-      const y = Math.cos((t * speed * 0.62) + phase + index * 0.07) * range * 0.42;
-      node.style.transform = `translate3d(${x.toFixed(2)}px, ${y.toFixed(2)}px, 0)`;
-    });
-
-    if (debug) {
-      const jsProbeDot = document.querySelector('.js-probe i');
-      if (jsProbeDot) {
-        const pct = 50 + Math.sin(t * 1.15) * 44;
-        jsProbeDot.style.left = `${pct.toFixed(2)}%`;
-      }
-
-      if (isAuto) {
-        const seconds = Math.max(5, Number(config.rotationSeconds) || 15);
-        if (now - lastSceneSwitchAt >= seconds * 1000) {
-          advanceScene('auto-frame');
-        }
-      }
-    } else {
-      updateProductionSchedule();
-    }
-
-    motionFrame = window.requestAnimationFrame(runMotion);
   }
 
   async function loadConfig() {
@@ -272,7 +166,7 @@
       const loaded = await response.json();
       if (!loaded || !Array.isArray(loaded.scenes) || !loaded.scenes.length) throw new Error('No scenes found');
       config = loaded;
-      document.documentElement.style.setProperty('--fade-time', `${Math.max(0, Number(config.fadeMilliseconds) || 2200)}ms`);
+      document.documentElement.style.setProperty('--fade-time', `${Math.max(0, Number(config.fadeMilliseconds) || 1400)}ms`);
     } catch (error) {
       config = DEFAULT_CONFIG;
       setStatus(`Using built-in scene config • ${error.message}`);
@@ -281,28 +175,12 @@
 
   async function init() {
     updateClock();
-    window.setInterval(updateClock, 1000);
+    window.setInterval(updateClock, 30000);
 
     await loadConfig();
     renderScenes();
     buildDebugControls();
-
-    if (forcedScene) {
-      isAuto = false;
-      setSceneById(forcedScene, 'URL');
-    } else if (debug) {
-      isAuto = true;
-      setActiveScene(0, 'debug-initial');
-      lastSceneSwitchAt = performance.now();
-    } else {
-      isAuto = false;
-      lastProductionSceneId = productionSceneId(new Date());
-      setSceneById(lastProductionSceneId, 'time-of-day');
-    }
-
-    if (motionFrame) window.cancelAnimationFrame(motionFrame);
-    motionStartedAt = performance.now();
-    motionFrame = window.requestAnimationFrame(runMotion);
+    setSceneById(requestedScene, params.get('scene') ? 'URL' : 'default');
   }
 
   window.addEventListener('error', event => {
