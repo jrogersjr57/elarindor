@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#0d0b0b">
-  <title>Living Elarindor — Nighttime Bed Stage 3.12 Review</title>
+  <title>Living Elarindor — Nighttime Bed Stage 3.13 Review</title>
   <style>
     html, body {
       width: 100%;
@@ -26,7 +26,7 @@
       position: absolute;
       inset: -6%;
       transform-origin: 50% 50%;
-      animation: living-camera 7s cubic-bezier(.45, 0, .55, 1) infinite alternate;
+      animation: living-camera 9.5s cubic-bezier(.45, 0, .55, 1) infinite alternate;
       will-change: transform;
     }
 
@@ -220,9 +220,11 @@
     .m5 { left: 84%; top: 50%; animation-duration: 8.5s; animation-delay: -6s; }
     .m6 { left: 72%; top: 66%; animation-duration: 7.2s; animation-delay: -1s; }
 
+    /* About 1.2 seconds of stillness at each end, while preserving
+       roughly the same seven-second travel time between endpoints. */
     @keyframes living-camera {
-      0%   { transform: translate3d(-34px, 8px, 0) scale(1.010); }
-      100% { transform: translate3d(34px, -6px, 0) scale(1.065); }
+      0%, 13%   { transform: translate3d(-34px, 8px, 0) scale(1.010); }
+      87%, 100% { transform: translate3d(34px, -6px, 0) scale(1.065); }
     }
 
     @keyframes breathe-vaelyn {
