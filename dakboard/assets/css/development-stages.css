@@ -1,0 +1,38 @@
+/* Living Elarindor v9 — development-stage review support.
+   Stage URLs are for Den TV review during production. */
+
+.stage-label {
+  position: absolute;
+  left: 50%;
+  top: clamp(14px, 1.6vw, 28px);
+  transform: translateX(-50%);
+  z-index: 120;
+  display: none;
+  padding: .5em .85em;
+  border: 1px solid rgba(244, 234, 214, .32);
+  border-radius: 999px;
+  background: rgba(10, 9, 10, .58);
+  color: rgba(244, 234, 214, .92);
+  font: 600 clamp(11px, .8vw, 16px)/1.1 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, .75);
+  backdrop-filter: blur(6px);
+  pointer-events: none;
+}
+
+html[data-stage]:not([data-stage="live"]) .stage-label {
+  display: block;
+}
+
+/* These hooks intentionally do not alter the artwork yet.
+   Future layered scene assets can be hidden/revealed by stage without
+   changing the review URLs already used on the Den TV. */
+html[data-stage="environment"] .character-layer,
+html[data-stage="environment"] .character-motion-layer {
+  display: none !important;
+}
+
+html[data-stage="characters"] .character-motion-layer {
+  display: none !important;
+}
