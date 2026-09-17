@@ -1,15 +1,15 @@
 {
-  "version": 2,
+  "version": 3,
   "rotationSeconds": 30,
   "fadeMilliseconds": 2200,
   "scenes": [
     {
       "id": "woodland",
-      "name": "Woodland Road",
-      "eyebrow": "The Road",
+      "name": "Woodland Road — Day",
+      "eyebrow": "Living Elarindor",
       "quest": "Build the Living Window",
       "theme": "woodland",
-      "characters": true,
+      "characters": false,
       "particles": "leaves"
     },
     {
