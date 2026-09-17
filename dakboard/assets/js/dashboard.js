@@ -2,7 +2,7 @@
   'use strict';
 
   const DEFAULT_CONFIG = {
-    version: 9,
+    version: 10,
     fadeMilliseconds: 1400,
     scenes: [
       { id: 'morning-wakeup', name: 'Morning Wakeup', eyebrow: 'Living Elarindor', quest: 'Begin the Day', theme: 'bedroom-morning', particles: 'morning-dust' },
@@ -84,6 +84,7 @@
         <div class="layer morning-glow"></div>`;
     } else if (scene.theme === 'bedroom-night') {
       layers = `
+        <div class="environment-art nighttime-environment-art" aria-hidden="true"></div>
         <div class="layer room-wall"></div>
         <div class="window night-window" aria-hidden="true">
           <div class="window-sky"></div>
