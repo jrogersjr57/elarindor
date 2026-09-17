@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#0d0b0b">
-  <title>Living Elarindor — Nighttime Bed Stage 3.11 Review</title>
+  <title>Living Elarindor — Nighttime Bed Stage 3.12 Review</title>
   <style>
     html, body {
       width: 100%;
@@ -30,7 +30,8 @@
       will-change: transform;
     }
 
-    .scene-image {
+    .scene-image,
+    .breath-layer {
       position: absolute;
       inset: 0;
       width: 100%;
@@ -38,7 +39,57 @@
       object-fit: cover;
       object-position: center center;
       display: block;
-      z-index: 0;
+    }
+
+    .scene-image { z-index: 0; }
+
+    .breath-layer {
+      z-index: 1;
+      pointer-events: none;
+      will-change: transform;
+    }
+
+    /* Keeper breathing geometry from the approved combined v8 diagnostic. */
+    .breath-vaelyn {
+      transform-origin: 40.5% 56%;
+      -webkit-mask-image: radial-gradient(
+        ellipse 7.5% 5.2% at 40.5% 52.5%,
+        rgba(0,0,0,1) 0%,
+        rgba(0,0,0,.90) 32%,
+        rgba(0,0,0,.52) 56%,
+        rgba(0,0,0,.16) 77%,
+        rgba(0,0,0,0) 100%
+      );
+      mask-image: radial-gradient(
+        ellipse 7.5% 5.2% at 40.5% 52.5%,
+        rgba(0,0,0,1) 0%,
+        rgba(0,0,0,.90) 32%,
+        rgba(0,0,0,.52) 56%,
+        rgba(0,0,0,.16) 77%,
+        rgba(0,0,0,0) 100%
+      );
+      animation: breathe-vaelyn 8s cubic-bezier(.42,0,.58,1) infinite;
+    }
+
+    .breath-toma {
+      transform-origin: 44.8% 53%;
+      -webkit-mask-image: radial-gradient(
+        ellipse 8.3% 5.3% at 44.8% 50%,
+        rgba(0,0,0,1) 0%,
+        rgba(0,0,0,.92) 32%,
+        rgba(0,0,0,.56) 56%,
+        rgba(0,0,0,.17) 77%,
+        rgba(0,0,0,0) 100%
+      );
+      mask-image: radial-gradient(
+        ellipse 8.3% 5.3% at 44.8% 50%,
+        rgba(0,0,0,1) 0%,
+        rgba(0,0,0,.92) 32%,
+        rgba(0,0,0,.56) 56%,
+        rgba(0,0,0,.17) 77%,
+        rgba(0,0,0,0) 100%
+      );
+      animation: breathe-toma 8.25s cubic-bezier(.42,0,.58,1) infinite;
     }
 
     .ambient {
@@ -46,7 +97,7 @@
       inset: 0;
       overflow: hidden;
       pointer-events: none;
-      z-index: 1;
+      z-index: 2;
     }
 
     .moon-wash {
@@ -174,6 +225,18 @@
       100% { transform: translate3d(34px, -6px, 0) scale(1.065); }
     }
 
+    @keyframes breathe-vaelyn {
+      0%, 100% { transform: translate3d(0, 0, 0) scaleY(1); }
+      42%      { transform: translate3d(0, -4px, 0) scaleY(1.014); }
+      58%      { transform: translate3d(0, -4px, 0) scaleY(1.014); }
+    }
+
+    @keyframes breathe-toma {
+      0%, 100% { transform: translate3d(0, 0, 0) scaleY(1); }
+      42%      { transform: translate3d(0, -4px, 0) scaleY(1.016); }
+      58%      { transform: translate3d(0, -4px, 0) scaleY(1.016); }
+    }
+
     @keyframes flame-flicker {
       0%   { transform: translate3d(-1px, 1px, 0) scale(.82, 1.12) rotate(-3deg); opacity: .72; }
       35%  { transform: translate3d(1px, -1px, 0) scale(1.04, .94) rotate(2deg); opacity: 1; }
@@ -213,6 +276,18 @@
         class="scene-image"
         src="./assets/images/nighttime-bed-character-staging-v1.png?v=1"
         alt="Nighttime Bed character staging artwork">
+
+      <img
+        class="breath-layer breath-vaelyn"
+        src="./assets/images/nighttime-bed-character-staging-v1.png?v=1"
+        alt=""
+        aria-hidden="true">
+
+      <img
+        class="breath-layer breath-toma"
+        src="./assets/images/nighttime-bed-character-staging-v1.png?v=1"
+        alt=""
+        aria-hidden="true">
 
       <div class="ambient" aria-hidden="true">
         <div class="moon-wash"></div>
