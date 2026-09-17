@@ -1,0 +1,89 @@
+:root {
+  --fade-time: 2200ms;
+  --panel-bg: rgba(10, 14, 12, .48);
+  --text-main: #f3ead2;
+  --text-soft: rgba(243, 234, 210, .76);
+  --accent: #d5bd79;
+}
+
+* { box-sizing: border-box; }
+html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; background: #07100c; color: var(--text-main); font-family: Georgia, "Times New Roman", serif; }
+body { user-select: none; }
+
+#living-space { position: relative; width: 100vw; height: 100vh; overflow: hidden; isolation: isolate; background: #07100c; }
+#scene-root { position: absolute; inset: 0; }
+.scene { position: absolute; inset: 0; opacity: 0; transition: opacity var(--fade-time) ease-in-out; overflow: hidden; pointer-events: none; }
+.scene.active { opacity: 1; }
+.scene::after { content: ""; position: absolute; inset: 0; z-index: 20; background: radial-gradient(circle at 50% 45%, transparent 0 45%, rgba(0,0,0,.12) 72%, rgba(0,0,0,.38) 100%), linear-gradient(to bottom, rgba(0,0,0,.04), rgba(0,0,0,.22)); }
+.layer { position: absolute; inset: 0; }
+
+.scene.woodland { background: radial-gradient(circle at 65% 15%, rgba(242,215,145,.55), transparent 20%), linear-gradient(#6d8d74 0%, #44634f 35%, #223b30 68%, #0c1c16 100%); }
+.scene.woodland .distant { top: 24%; background: repeating-linear-gradient(88deg, transparent 0 4.2%, rgba(18,45,34,.43) 4.2% 5.4%, transparent 5.4% 8.5%), linear-gradient(to top, rgba(15,38,28,.88), transparent 70%); opacity: .85; animation: woodland-breathe 14s ease-in-out infinite alternate; }
+.scene.woodland .road { inset: auto 18% -18% 16%; height: 62%; background: linear-gradient(102deg, transparent 0 27%, rgba(164,143,102,.18) 31%, rgba(191,168,123,.56) 47%, rgba(131,111,78,.46) 64%, transparent 69%); clip-path: polygon(48% 0, 58% 0, 100% 100%, 0 100%); }
+.scene.woodland .mist { inset: 38% -15% 12% -15%; background: radial-gradient(ellipse at 25% 45%, rgba(223,238,222,.18), transparent 46%), radial-gradient(ellipse at 72% 62%, rgba(223,238,222,.15), transparent 43%), radial-gradient(ellipse at 52% 30%, rgba(223,238,222,.12), transparent 39%); filter: blur(18px); animation: drift-right 28s linear infinite alternate; }
+.scene.woodland .sunbeam { inset: -20% 25% 0 46%; background: linear-gradient(110deg, transparent 20%, rgba(251,226,157,.12) 44%, rgba(251,226,157,.04) 62%, transparent 74%); transform: skewX(-7deg); animation: light-pulse 11s ease-in-out infinite alternate; z-index: 5; }
+.scene.woodland .foreground { background: radial-gradient(ellipse at -4% 38%, rgba(11,33,23,.88) 0 19%, transparent 20%), radial-gradient(ellipse at 104% 48%, rgba(10,29,21,.9) 0 23%, transparent 24%), linear-gradient(to top, rgba(6,20,14,.88) 0 12%, transparent 25%); z-index: 12; animation: foreground-sway 8s ease-in-out infinite alternate; transform-origin: bottom center; }
+
+.scene.campfire { background: radial-gradient(circle at 50% 67%, rgba(206,103,43,.38), transparent 21%), linear-gradient(#172437 0%, #111d26 38%, #101815 68%, #070d0a 100%); }
+.scene.campfire .trees { top: 16%; background: repeating-linear-gradient(92deg, transparent 0 5%, rgba(5,12,10,.72) 5% 6.2%, transparent 6.2% 10%), linear-gradient(to top, rgba(4,11,8,.8), transparent 75%); }
+.scene.campfire .ground { top: 63%; background: radial-gradient(ellipse at 50% 30%, rgba(93,55,31,.32), transparent 34%), linear-gradient(#142018, #050b08); z-index: 5; }
+.scene.campfire .firelight { inset: 35% 18% -22% 18%; background: radial-gradient(ellipse at 50% 62%, rgba(232,133,61,.28), transparent 43%); animation: firelight 1.5s ease-in-out infinite alternate; z-index: 8; }
+.scene.campfire .foreground { background: linear-gradient(to top, rgba(2,7,5,.88) 0 11%, transparent 29%); z-index: 13; }
+.fire { position: absolute; left: 50%; top: 66%; width: clamp(42px, 5vw, 92px); aspect-ratio: 1 / 1.28; transform: translate(-50%, -50%); border-radius: 54% 46% 58% 42% / 65% 58% 42% 35%; background: radial-gradient(circle at 50% 74%, #ffd47c 0 14%, transparent 15%), radial-gradient(ellipse at 48% 58%, #ec8c36 0 35%, #8f381d 62%, transparent 64%); filter: blur(.6px) drop-shadow(0 0 22px rgba(234,120,48,.72)); animation: flame-dance .75s ease-in-out infinite alternate; z-index: 11; }
+
+.scene.interior { background: radial-gradient(circle at 70% 30%, rgba(184,201,218,.11), transparent 24%), linear-gradient(120deg, #171b20 0%, #27221f 47%, #130f11 100%); }
+.scene.interior .wall { inset: 8% 5% 7% 5%; border: 1px solid rgba(180,151,111,.10); background: linear-gradient(90deg, rgba(87,57,38,.08) 1px, transparent 1px), linear-gradient(rgba(87,57,38,.06) 1px, transparent 1px); background-size: 10% 100%, 100% 18%; opacity: .7; }
+.scene.interior .window { inset: 14% 11% auto auto; width: 21%; height: 43%; border: clamp(6px, .7vw, 15px) solid rgba(58,43,35,.9); background: radial-gradient(circle at 68% 24%, rgba(239,240,213,.9) 0 4%, rgba(201,216,228,.22) 4.5% 7%, transparent 8%), linear-gradient(#304055, #172233 70%, #111822); box-shadow: 0 0 45px rgba(154,186,214,.08); z-index: 5; }
+.scene.interior .window::before, .scene.interior .window::after { content: ""; position: absolute; background: rgba(50,38,33,.88); }
+.scene.interior .window::before { width: 5%; height: 100%; left: 48%; }
+.scene.interior .window::after { width: 100%; height: 4%; top: 48%; }
+.scene.interior .moonlight { inset: 20% -7% -5% 43%; background: linear-gradient(126deg, rgba(178,204,226,.15), rgba(178,204,226,.035) 44%, transparent 67%); filter: blur(4px); animation: light-pulse 12s ease-in-out infinite alternate; z-index: 4; }
+.scene.interior .candle-glow { inset: 42% 49% 0 6%; background: radial-gradient(circle at 36% 47%, rgba(224,151,67,.26), transparent 27%); animation: candle-flicker 1.9s ease-in-out infinite alternate; z-index: 6; }
+.scene.interior .furnishings { inset: auto 0 0 0; height: 37%; background: linear-gradient(to right, transparent 0 8%, rgba(15,10,10,.72) 8% 33%, transparent 33% 60%, rgba(13,9,9,.76) 60% 92%, transparent 92%), linear-gradient(to top, rgba(9,7,7,.8), transparent 48%); z-index: 10; }
+
+.character-pair { position: absolute; left: 50%; top: 58%; width: min(30vw, 520px); height: min(43vh, 500px); transform: translate(-50%, -50%); z-index: 9; opacity: .34; }
+.character { position: absolute; bottom: 0; width: 36%; height: 90%; filter: blur(.35px); animation: character-breathe 5.5s ease-in-out infinite alternate; }
+.character::before { content: ""; position: absolute; left: 50%; top: 4%; width: 34%; aspect-ratio: 1; transform: translateX(-50%); border-radius: 50%; background: rgba(6,9,8,.95); }
+.character::after { content: ""; position: absolute; left: 50%; top: 22%; width: 72%; height: 74%; transform: translateX(-50%); border-radius: 45% 45% 20% 20% / 20% 20% 10% 10%; background: linear-gradient(rgba(8,12,10,.96), rgba(4,7,5,.98)); clip-path: polygon(30% 0, 70% 0, 87% 45%, 70% 100%, 30% 100%, 13% 45%); }
+.character.a { left: 15%; transform: scale(.88); transform-origin: bottom center; }
+.character.b { right: 13%; animation-delay: -2.1s; }
+
+.particle-field { position: absolute; inset: 0; z-index: 15; overflow: hidden; }
+.particle { position: absolute; pointer-events: none; }
+.leaf { width: 10px; height: 5px; border-radius: 80% 0 80% 0; background: rgba(181,155,76,.62); animation: leaf-fall linear infinite; }
+.ember { width: 4px; height: 4px; border-radius: 50%; background: rgba(255,187,88,.88); box-shadow: 0 0 6px rgba(255,139,52,.85); animation: ember-rise linear infinite; }
+.dust { width: 3px; height: 3px; border-radius: 50%; background: rgba(224,207,168,.46); animation: dust-float linear infinite alternate; }
+
+.hud { position: absolute; inset: 0; z-index: 50; pointer-events: none; }
+.clock { position: absolute; top: clamp(18px, 2.2vw, 42px); right: clamp(22px, 3vw, 58px); text-align: right; text-shadow: 0 2px 12px rgba(0,0,0,.72); }
+.clock .time { font-size: clamp(34px, 4.2vw, 82px); line-height: .95; letter-spacing: .02em; }
+.clock .date { margin-top: .35em; font-size: clamp(15px, 1.25vw, 26px); color: var(--text-soft); letter-spacing: .07em; text-transform: uppercase; }
+.quest-panel { position: absolute; left: clamp(20px, 3vw, 58px); bottom: clamp(22px, 3.2vw, 60px); max-width: min(48vw, 820px); padding: clamp(12px, 1.2vw, 22px) clamp(16px, 1.7vw, 30px); border-left: 2px solid rgba(213,189,121,.72); background: linear-gradient(90deg, var(--panel-bg), rgba(10,14,12,.18), transparent); text-shadow: 0 2px 10px rgba(0,0,0,.7); }
+.eyebrow { font-size: clamp(11px, .85vw, 17px); letter-spacing: .18em; text-transform: uppercase; color: var(--accent); }
+.quest-title { margin-top: .25em; font-size: clamp(20px, 2vw, 38px); line-height: 1.08; }
+.location { position: absolute; right: clamp(24px, 3vw, 58px); bottom: clamp(25px, 3.4vw, 64px); font-size: clamp(13px, 1vw, 20px); letter-spacing: .14em; text-transform: uppercase; color: var(--text-soft); text-shadow: 0 2px 10px rgba(0,0,0,.8); }
+
+.debug-panel { position: absolute; top: 18px; left: 18px; z-index: 100; display: none; gap: 8px; align-items: center; padding: 10px; border: 1px solid rgba(255,255,255,.18); border-radius: 8px; background: rgba(0,0,0,.66); font: 14px/1.2 system-ui, sans-serif; color: white; pointer-events: auto; }
+.debug .debug-panel { display: flex; }
+.debug-panel button { border: 1px solid rgba(255,255,255,.22); border-radius: 5px; background: rgba(255,255,255,.08); color: white; padding: 7px 10px; cursor: pointer; }
+.debug-panel button.active { background: rgba(213,189,121,.28); border-color: rgba(213,189,121,.72); }
+.safe-zone { position: absolute; left: 30%; top: 18%; width: 40%; height: 64%; z-index: 80; display: none; border: 1px dashed rgba(255,225,120,.6); pointer-events: none; }
+.debug .safe-zone { display: block; }
+.status { position: absolute; left: 18px; bottom: 18px; z-index: 100; display: none; padding: 7px 10px; border-radius: 5px; background: rgba(0,0,0,.62); color: rgba(255,255,255,.8); font: 12px/1.2 system-ui, sans-serif; }
+.debug .status { display: block; }
+
+@keyframes woodland-breathe { from { transform: scale(1); } to { transform: scale(1.018); } }
+@keyframes drift-right { from { transform: translateX(-2%); } to { transform: translateX(3%); } }
+@keyframes foreground-sway { from { transform: rotate(-.25deg) scale(1.01); } to { transform: rotate(.25deg) scale(1.015); } }
+@keyframes light-pulse { from { opacity: .55; } to { opacity: 1; } }
+@keyframes flame-dance { from { transform: translate(-50%, -50%) rotate(-2deg) scale(.94, 1.03); } to { transform: translate(-50%, -50%) rotate(2deg) scale(1.05, .96); } }
+@keyframes firelight { from { opacity: .65; transform: scale(.97); } to { opacity: 1; transform: scale(1.025); } }
+@keyframes candle-flicker { from { opacity: .62; } to { opacity: 1; } }
+@keyframes character-breathe { from { transform: translateY(0); } to { transform: translateY(-1.2%); } }
+@keyframes leaf-fall { 0% { transform: translate3d(0,-10vh,0) rotate(0deg); opacity: 0; } 12% { opacity: .75; } 100% { transform: translate3d(14vw,110vh,0) rotate(540deg); opacity: 0; } }
+@keyframes ember-rise { 0% { transform: translate3d(0,0,0) scale(.7); opacity: 0; } 12% { opacity: 1; } 100% { transform: translate3d(var(--drift, 20px),-42vh,0) scale(.2); opacity: 0; } }
+@keyframes dust-float { from { transform: translate3d(-8px,5px,0); opacity: .18; } to { transform: translate3d(15px,-16px,0); opacity: .7; } }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+}
