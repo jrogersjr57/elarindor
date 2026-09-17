@@ -193,29 +193,25 @@ rather than inventing one.
 
 - **Notes:** This AVR depicts the specific katana commissioned for Vaelyn Thistletide by her Swordmaster. Its distinctive visual design belongs to Vaelyn's personal commissioned weapon and should not be generalized into a standard design for the Swordmaster's katana or for other swords of the martial tradition. Vaelyn's Swordmaster also uses a katana, but the appearance of the Swordmaster's individual weapon remains separately determined and is outside this AVR's scope.
 
-### Valdari_Ears.png
+### valdari_ear_anatomy_guide.png
 
--   **Type:** Specialized AVR
+-   **Type:** Specialized species visual-control reference
 
 -   **Subject:** Valdari
 
--   **Status:** Authoritative Visual Reference
+-   **Status:** Current working reference
 
--   **Role:** Species-specific anatomical feature
+-   **Role:** Species-specific ear-anatomy control
 
--   **Scope:** Established Valdari ear anatomy
+-   **Scope:** Current visual guidance for established Valdari ear anatomy: a fundamentally human-like ear with a subtle species-specific modification concentrated in the upper portion.
 
--   **Required for Fidelity:** Yes when Valdari ears are materially
-    visible and preservation of established ear anatomy is required.
+-   **Required for Fidelity:** Yes when Valdari ears are materially visible and a generator-facing anatomy reference is needed to prevent drift toward generic pointed fantasy ears.
 
--   **Not Automatically Authoritative For:** Other anatomy, individual
-    identity, clothing, hairstyle, pigmentation, or cultural traits.
+-   **Not Automatically Authoritative For:** Other anatomy, individual identity, facial structure, clothing, hairstyle, pigmentation, jewelry, environment, typography, decorative elements, or generated lore shown in the guide.
 
--   **Generator Input:** Actual image must be available to the generator
-    when required for fidelity.
+-   **Generator Input:** Use `artwork/species/valdari/valdari_ear_anatomy_guide.png` together with the current written ear anatomy in the [[Valdari Race Bible]].
 
--   **Notes:** Controls ear anatomy within its scope rather than the
-    full appearance of a Valdari subject.
+-   **Notes:** Preferred current generator-facing Valdari ear reference. The written Race Bible controls the anatomical rule: human-like base anatomy, only slightly longer than a typical human ear, upper rim/helix flowing gently backward in a shallow arc, and a softly rounded terminal shape rather than a sharp point. The former `Valdari_Ears.png` registry reference is superseded. Its historical visual direction is retained at `artwork/species/valdari/valdari-ear-design-historical-reference.png` and should not be used as the primary ear-control reference when the current guide is available.
 
 ### Valdari_Architecture.png
 
