@@ -2,11 +2,11 @@
   'use strict';
 
   const DEFAULT_CONFIG = {
-    version: 2,
+    version: 3,
     rotationSeconds: 30,
     fadeMilliseconds: 2200,
     scenes: [
-      { id: 'woodland', name: 'Woodland Road', eyebrow: 'The Road', quest: 'Build the Living Window', theme: 'woodland', characters: true, particles: 'leaves' },
+      { id: 'woodland', name: 'Woodland Road — Day', eyebrow: 'Living Elarindor', quest: 'Build the Living Window', theme: 'woodland', characters: false, particles: 'leaves' },
       { id: 'campfire', name: 'Forest Camp', eyebrow: 'Evening Camp', quest: 'Build the Living Window', theme: 'campfire', characters: true, particles: 'embers' },
       { id: 'interior', name: 'Quiet Evening', eyebrow: 'After the Road', quest: 'Build the Living Window', theme: 'interior', characters: true, particles: 'dust' }
     ]
@@ -55,28 +55,41 @@
     }
   }
 
-  function sceneMarkup(scene) {
-    const commonCharacters = scene.characters ? `
+  function characterMarkup(scene) {
+    if (!scene.characters) return '';
+    return `
       <div class="character-pair" aria-hidden="true">
         <div class="character a"></div>
         <div class="character b"></div>
-      </div>` : '';
+      </div>`;
+  }
 
+  function sceneMarkup(scene) {
+    const characters = characterMarkup(scene);
     let layers = '';
+
     if (scene.theme === 'woodland') {
       layers = `
-        <div class="layer distant"></div>
-        <div class="layer road"></div>
-        <div class="layer mist"></div>
-        <div class="layer sunbeam"></div>
-        ${commonCharacters}
-        <div class="layer foreground"></div>`;
+        <div class="layer woodland-sky"></div>
+        <div class="layer woodland-canopy-back"></div>
+        <div class="layer woodland-trunks-back"></div>
+        <div class="layer woodland-ground"></div>
+        <div class="layer woodland-road"></div>
+        <div class="layer woodland-road-light"></div>
+        <div class="layer woodland-mist mist-a"></div>
+        <div class="layer woodland-mist mist-b"></div>
+        <div class="layer woodland-sunbeam beam-a"></div>
+        <div class="layer woodland-sunbeam beam-b"></div>
+        ${characters}
+        <div class="layer woodland-foreground foreground-left"></div>
+        <div class="layer woodland-foreground foreground-right"></div>
+        <div class="layer woodland-vignette"></div>`;
     } else if (scene.theme === 'campfire') {
       layers = `
         <div class="layer trees"></div>
         <div class="layer ground"></div>
         <div class="layer firelight"></div>
-        ${commonCharacters}
+        ${characters}
         <div class="fire" aria-hidden="true"></div>
         <div class="layer foreground"></div>`;
     } else if (scene.theme === 'interior') {
@@ -85,7 +98,7 @@
         <div class="window" aria-hidden="true"></div>
         <div class="layer moonlight"></div>
         <div class="layer candle-glow"></div>
-        ${commonCharacters}
+        ${characters}
         <div class="layer furnishings"></div>`;
     }
 
@@ -101,12 +114,12 @@
     config.scenes.forEach((scene, index) => seedParticles(scene, index));
   }
 
-  function seedParticles(scene, index) {
+  function seedParticles(scene) {
     const field = el.sceneRoot.querySelector(`[data-scene-id="${scene.id}"] .particle-field`);
     if (!field) return;
 
     const type = scene.particles;
-    const count = type === 'leaves' ? 17 : type === 'embers' ? 24 : type === 'dust' ? 20 : 0;
+    const count = type === 'leaves' ? 18 : type === 'embers' ? 24 : type === 'dust' ? 20 : 0;
 
     for (let i = 0; i < count; i += 1) {
       const p = document.createElement('i');
@@ -116,9 +129,12 @@
       p.style.left = `${left}%`;
       p.style.top = `${top}%`;
       p.style.animationDelay = `${-(Math.random() * 14)}s`;
-      p.style.animationDuration = `${type === 'embers' ? 3.6 + Math.random() * 3.2 : type === 'leaves' ? 10 + Math.random() * 10 : 8 + Math.random() * 13}s`;
+      p.style.animationDuration = `${type === 'embers' ? 3.6 + Math.random() * 3.2 : type === 'leaves' ? 11 + Math.random() * 11 : 8 + Math.random() * 13}s`;
       if (type === 'embers') p.style.setProperty('--drift', `${-35 + Math.random() * 70}px`);
-      if (type === 'leaves') p.style.opacity = `${0.35 + Math.random() * 0.5}`;
+      if (type === 'leaves') {
+        p.style.opacity = `${0.28 + Math.random() * 0.45}`;
+        p.style.transform = `scale(${0.65 + Math.random() * 0.8})`;
+      }
       field.appendChild(p);
     }
   }
@@ -184,7 +200,7 @@
       const button = document.createElement('button');
       button.type = 'button';
       button.dataset.scene = scene.id;
-      button.textContent = scene.name.replace(' Road', '').replace('Forest ', '');
+      button.textContent = scene.id === 'woodland' ? 'Woodland' : scene.id === 'campfire' ? 'Campfire' : 'Interior';
       button.addEventListener('click', () => forceScene(scene.id));
       el.debugPanel.appendChild(button);
     });
