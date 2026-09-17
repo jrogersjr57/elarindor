@@ -2,7 +2,7 @@
   'use strict';
 
   const DEFAULT_CONFIG = {
-    version: 5,
+    version: 6,
     rotationSeconds: 15,
     fadeMilliseconds: 2200,
     scenes: [
@@ -172,8 +172,6 @@
 
   function productionSceneId(now = new Date()) {
     const hour = now.getHours();
-    // Temporary two-scene schedule until more day-part scenes are developed.
-    // Morning Wakeup carries the daytime slot; Nighttime Bed carries evening/night.
     return (hour >= 18 || hour < 5) ? 'nighttime-bed' : 'morning-wakeup';
   }
 
@@ -206,10 +204,15 @@
       el.debugPanel.appendChild(button);
     });
 
-    const probe = document.createElement('div');
-    probe.className = 'motion-probe';
-    probe.innerHTML = '<span>motion</span><i></i>';
-    el.livingSpace.appendChild(probe);
+    const cssProbe = document.createElement('div');
+    cssProbe.className = 'diagnostic-probe css-probe';
+    cssProbe.innerHTML = '<span>CSS motion</span><i></i>';
+    el.livingSpace.appendChild(cssProbe);
+
+    const jsProbe = document.createElement('div');
+    jsProbe.className = 'diagnostic-probe js-probe';
+    jsProbe.innerHTML = '<span>JS motion</span><i></i>';
+    el.livingSpace.appendChild(jsProbe);
   }
 
   function updateDebugButtons(sceneId) {
@@ -243,10 +246,10 @@
     });
 
     if (debug) {
-      const probeDot = document.querySelector('.motion-probe i');
-      if (probeDot) {
-        const pct = 50 + Math.sin(t * 1.15) * 46;
-        probeDot.style.left = `${pct.toFixed(2)}%`;
+      const jsProbeDot = document.querySelector('.js-probe i');
+      if (jsProbeDot) {
+        const pct = 50 + Math.sin(t * 1.15) * 44;
+        jsProbeDot.style.left = `${pct.toFixed(2)}%`;
       }
 
       if (isAuto) {
