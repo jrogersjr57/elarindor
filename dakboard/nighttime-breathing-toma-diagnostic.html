@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0d0b0b">
+  <title>Living Elarindor — Toma Breathing Isolation Test</title>
+  <style>
+    html, body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      background: #0d0b0b;
+    }
+
+    .stage {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background: #0d0b0b;
+    }
+
+    .scene-image,
+    .breath-toma {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center center;
+      display: block;
+    }
+
+    .scene-image { z-index: 0; }
+
+    /* Isolation diagnostic: only Toma's bedding zone moves. The motion is
+       intentionally a little stronger than the eventual final version so its
+       location and independence from Vaelyn can be judged from TV distance. */
+    .breath-toma {
+      z-index: 1;
+      pointer-events: none;
+      transform-origin: 49.5% 63%;
+      -webkit-mask-image: radial-gradient(
+        ellipse 12% 8.5% at 49.5% 59%,
+        rgba(0,0,0,1) 0%,
+        rgba(0,0,0,.92) 34%,
+        rgba(0,0,0,.56) 58%,
+        rgba(0,0,0,.18) 78%,
+        rgba(0,0,0,0) 100%
+      );
+      mask-image: radial-gradient(
+        ellipse 12% 8.5% at 49.5% 59%,
+        rgba(0,0,0,1) 0%,
+        rgba(0,0,0,.92) 34%,
+        rgba(0,0,0,.56) 58%,
+        rgba(0,0,0,.18) 78%,
+        rgba(0,0,0,0) 100%
+      );
+      animation: breathe-toma-only 8.6s cubic-bezier(.42,0,.58,1) infinite;
+      will-change: transform;
+    }
+
+    @keyframes breathe-toma-only {
+      0%, 100% { transform: translate3d(0, 0, 0) scaleY(1); }
+      42%      { transform: translate3d(0, -6px, 0) scaleY(1.022); }
+      58%      { transform: translate3d(0, -6px, 0) scaleY(1.022); }
+    }
+  </style>
+</head>
+<body>
+  <main class="stage" aria-label="Nighttime Bed Toma-only breathing diagnostic">
+    <img
+      class="scene-image"
+      src="./assets/images/nighttime-bed-character-staging-v1.png?v=1"
+      alt="Nighttime Bed character staging artwork">
+
+    <img
+      class="breath-toma"
+      src="./assets/images/nighttime-bed-character-staging-v1.png?v=1"
+      alt=""
+      aria-hidden="true">
+  </main>
+</body>
+</html>
