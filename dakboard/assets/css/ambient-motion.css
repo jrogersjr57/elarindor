@@ -1,0 +1,100 @@
+/* Living Elarindor v7 — production ambient motion.
+   All visible continuous motion is compositor-friendly CSS animation.
+   JavaScript may seed positions/variables once, but does not drive frames. */
+
+.scene.active .curtain-left {
+  animation: curtain-left-breeze 7.4s ease-in-out infinite alternate;
+}
+.scene.active .curtain-right {
+  animation: curtain-right-breeze 8.1s ease-in-out infinite alternate;
+}
+
+.scene.active.bedroom-morning .dawn-light {
+  animation: morning-light-drift 11s ease-in-out infinite alternate;
+}
+.scene.active.bedroom-morning .morning-glow {
+  animation: morning-glow-breathe 8.6s ease-in-out infinite alternate;
+}
+
+.scene.active.bedroom-night .moonlight {
+  animation: moonlight-drift 13s ease-in-out infinite alternate;
+}
+.scene.active.bedroom-night .night-glow {
+  animation: night-glow-breathe 7.8s ease-in-out infinite alternate;
+}
+.scene.active.bedroom-night .candle::before {
+  animation: candle-flame 1.35s ease-in-out infinite alternate;
+}
+.scene.active.bedroom-night .candle-b::before {
+  animation-duration: 1.7s;
+  animation-delay: -.6s;
+}
+
+.scene.active .particle {
+  animation-name: ambient-dust-drift;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+@keyframes curtain-left-breeze {
+  0%   { transform: translate3d(-3px, 0, 0) rotate(-.45deg); }
+  45%  { transform: translate3d(7px, 1px, 0) rotate(.7deg); }
+  100% { transform: translate3d(12px, 0, 0) rotate(1.15deg); }
+}
+
+@keyframes curtain-right-breeze {
+  0%   { transform: translate3d(4px, 0, 0) rotate(.35deg); }
+  55%  { transform: translate3d(-8px, 1px, 0) rotate(-.75deg); }
+  100% { transform: translate3d(-12px, 0, 0) rotate(-1.1deg); }
+}
+
+@keyframes morning-light-drift {
+  0%   { transform: translate3d(-8px, 0, 0) skewX(-8deg); opacity: .58; }
+  50%  { opacity: .78; }
+  100% { transform: translate3d(22px, 0, 0) skewX(-7deg); opacity: .88; }
+}
+
+@keyframes morning-glow-breathe {
+  0%   { opacity: .60; transform: scale(1); }
+  100% { opacity: .88; transform: scale(1.018); }
+}
+
+@keyframes moonlight-drift {
+  0%   { transform: translate3d(-7px, 0, 0) skewX(-9deg); opacity: .48; }
+  100% { transform: translate3d(17px, 0, 0) skewX(-8deg); opacity: .68; }
+}
+
+@keyframes night-glow-breathe {
+  0%   { opacity: .66; transform: scale(1); }
+  100% { opacity: .90; transform: scale(1.012); }
+}
+
+@keyframes candle-flame {
+  0% {
+    transform: translateX(-50%) scale(.88, 1.06) rotate(-1.6deg);
+    opacity: .72;
+  }
+  50% {
+    transform: translateX(-50%) scale(1.05, .96) rotate(1.1deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(-50%) scale(.94, 1.02) rotate(-.5deg);
+    opacity: .84;
+  }
+}
+
+@keyframes ambient-dust-drift {
+  0% {
+    transform: translate3d(0, 0, 0) scale(.9);
+    opacity: var(--dust-opacity-low, .20);
+  }
+  55% {
+    opacity: var(--dust-opacity-high, .58);
+  }
+  100% {
+    transform: translate3d(var(--dust-x, 12px), var(--dust-y, -8px), 0) scale(1.08);
+    opacity: var(--dust-opacity-low, .20);
+  }
+}
