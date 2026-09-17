@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#0d0b0b">
-  <title>Living Elarindor — Nighttime Bed Stage 3.8 Review</title>
+  <title>Living Elarindor — Nighttime Bed Stage 3.9 Review</title>
   <style>
     html, body {
       width: 100%;
@@ -22,13 +22,14 @@
       background: #0d0b0b;
     }
 
-    /* Mid-speed living-still drift: halfway between the too-slow 8s pass
-       and the too-fast 4s pass. */
+    /* Smooth living-still drift. There is no midpoint direction change now:
+       the scene glides continuously from one end of the path to the other,
+       then eases gently back. */
     .world {
       position: absolute;
       inset: -6%;
       transform-origin: 50% 50%;
-      animation: living-camera-test 6s ease-in-out infinite alternate;
+      animation: living-camera 7s cubic-bezier(.45, 0, .55, 1) infinite alternate;
       will-change: transform;
     }
 
@@ -171,10 +172,9 @@
     .m5 { left: 84%; top: 50%; animation-duration: 8.5s; animation-delay: -6s; }
     .m6 { left: 72%; top: 66%; animation-duration: 7.2s; animation-delay: -1s; }
 
-    @keyframes living-camera-test {
-      0%   { transform: translate3d(-42px, 14px, 0) scale(1.00); }
-      50%  { transform: translate3d(0, -12px, 0) scale(1.045); }
-      100% { transform: translate3d(42px, 10px, 0) scale(1.085); }
+    @keyframes living-camera {
+      0%   { transform: translate3d(-34px, 8px, 0) scale(1.010); }
+      100% { transform: translate3d(34px, -6px, 0) scale(1.065); }
     }
 
     @keyframes flame-flicker {
