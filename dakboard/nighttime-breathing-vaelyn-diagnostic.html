@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#0d0b0b">
-  <title>Living Elarindor — Vaelyn Breathing Isolation Test v2</title>
+  <title>Living Elarindor — Vaelyn Breathing Isolation Test v3</title>
   <style>
     html, body {
       width: 100%;
@@ -35,12 +35,15 @@
 
     .scene-image { z-index: 0; }
 
+    /* Isolation diagnostic v3: Vaelyn's breathing zone is moved down and
+       toward Toma so the rise/fall sits beneath the covers over her torso
+       rather than too high/left on the bed. */
     .breath-vaelyn {
       z-index: 1;
       pointer-events: none;
-      transform-origin: 30.5% 54%;
+      transform-origin: 37.5% 56%;
       -webkit-mask-image: radial-gradient(
-        ellipse 9.5% 6.5% at 30.5% 50%,
+        ellipse 9.5% 6.5% at 37.5% 52.5%,
         rgba(0,0,0,1) 0%,
         rgba(0,0,0,.92) 34%,
         rgba(0,0,0,.56) 58%,
@@ -48,7 +51,7 @@
         rgba(0,0,0,0) 100%
       );
       mask-image: radial-gradient(
-        ellipse 9.5% 6.5% at 30.5% 50%,
+        ellipse 9.5% 6.5% at 37.5% 52.5%,
         rgba(0,0,0,1) 0%,
         rgba(0,0,0,.92) 34%,
         rgba(0,0,0,.56) 58%,
