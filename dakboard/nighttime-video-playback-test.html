@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0d0b0b">
+  <title>Living Elarindor — Inline MP4 Playback Test</title>
+  <style>
+    html, body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      background: #0d0b0b;
+    }
+    .stage {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background: #0d0b0b;
+    }
+    video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      background: #0d0b0b;
+    }
+    .status {
+      position: absolute;
+      left: 1.2vw;
+      bottom: 1.2vh;
+      z-index: 2;
+      padding: .5rem .75rem;
+      border-radius: .35rem;
+      background: rgba(0,0,0,.62);
+      color: rgba(255,255,255,.92);
+      font: 600 14px/1.25 system-ui, -apple-system, sans-serif;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <main class="stage">
+    <video
+      id="videoTest"
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="auto"
+      poster="./assets/images/nighttime-bed-character-staging-v1.png?v=1">
+      <source src="./assets/video/nighttime-video-playback-test.mp4?v=1" type="video/mp4">
+    </video>
+    <div class="status" id="status">INLINE MP4 TEST · watch the white square move across the bottom</div>
+  </main>
+  <script>
+    (function () {
+      var video = document.getElementById('videoTest');
+      var status = document.getElementById('status');
+
+      video.addEventListener('playing', function () {
+        status.textContent = 'VIDEO PLAYING · white square should sweep across the bottom';
+      });
+
+      video.addEventListener('error', function () {
+        status.textContent = 'VIDEO ERROR · inline MP4 did not load';
+      });
+
+      var attempt = video.play();
+      if (attempt && typeof attempt.catch === 'function') {
+        attempt.catch(function () {
+          status.textContent = 'AUTOPLAY BLOCKED · video loaded but did not start automatically';
+        });
+      }
+    }());
+  </script>
+</body>
+</html>
