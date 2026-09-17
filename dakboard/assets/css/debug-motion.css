@@ -1,0 +1,84 @@
+.diagnostic-probe {
+  position: absolute;
+  left: 18px;
+  right: 18px;
+  height: 28px;
+  z-index: 140;
+  display: none;
+  border: 1px solid rgba(255,255,255,.36);
+  border-radius: 6px;
+  background: rgba(0,0,0,.72);
+  overflow: hidden;
+  font: 12px/26px system-ui, sans-serif;
+  color: white;
+  pointer-events: none;
+}
+
+.debug .diagnostic-probe { display: block; }
+
+.diagnostic-probe span {
+  position: absolute;
+  left: 8px;
+  top: 0;
+  z-index: 2;
+  padding-right: 6px;
+  background: rgba(0,0,0,.55);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.diagnostic-probe i {
+  position: absolute;
+  top: 6px;
+  width: 16px;
+  height: 16px;
+  margin-left: -8px;
+  border-radius: 50%;
+  box-shadow: 0 0 14px currentColor;
+  will-change: transform, left;
+}
+
+.css-probe { top: 72px; color: #66f2ff; }
+.css-probe i {
+  left: 6%;
+  background: currentColor;
+  animation: css-probe-sweep 4s ease-in-out infinite alternate;
+}
+
+.js-probe { top: 108px; color: #ffd95c; }
+.js-probe i {
+  left: 50%;
+  background: currentColor;
+}
+
+@keyframes css-probe-sweep {
+  from { transform: translateX(0); }
+  to { transform: translateX(calc(88vw - 36px)); }
+}
+
+/* Pure CSS compositor motion applied only during the diagnostic build. */
+.debug .curtain-left {
+  animation: diagnostic-curtain-left 5.2s ease-in-out infinite alternate !important;
+}
+.debug .curtain-right {
+  animation: diagnostic-curtain-right 5.6s ease-in-out infinite alternate !important;
+}
+.debug .morning-glow,
+.debug .night-glow {
+  animation: diagnostic-glow 4.8s ease-in-out infinite alternate !important;
+}
+
+@keyframes diagnostic-curtain-left {
+  from { transform: translate3d(-3px,0,0) rotate(-.5deg); }
+  to { transform: translate3d(11px,0,0) rotate(1.2deg); }
+}
+
+@keyframes diagnostic-curtain-right {
+  from { transform: translate3d(3px,0,0) rotate(.5deg); }
+  to { transform: translate3d(-11px,0,0) rotate(-1.2deg); }
+}
+
+@keyframes diagnostic-glow {
+  from { opacity: .58; transform: translate3d(-10px,0,0) scale(1); }
+  to { opacity: .9; transform: translate3d(10px,0,0) scale(1.02); }
+}
