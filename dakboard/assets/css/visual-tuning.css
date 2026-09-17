@@ -1,0 +1,74 @@
+/* Living Elarindor v8 — TV-distance visual tuning.
+   Keeps the proven CSS motion engine intact while making subtle effects readable
+   from across the den and constraining nighttime candle spill. */
+
+/* MORNING: make the sunbeam and glow clearly readable without becoming flashy. */
+.scene.active.bedroom-morning .dawn-light {
+  opacity: .82;
+  background:
+    linear-gradient(112deg,
+      transparent 20%,
+      rgba(255, 239, 183, .08) 31%,
+      rgba(255, 242, 190, .24) 40%,
+      rgba(255, 244, 198, .48) 49%,
+      rgba(255, 229, 155, .20) 59%,
+      transparent 72%);
+  filter: blur(2px);
+}
+
+.scene.active.bedroom-morning .morning-glow {
+  background:
+    radial-gradient(ellipse at 38% 67%, rgba(255, 215, 139, .34), transparent 34%),
+    radial-gradient(ellipse at 68% 54%, rgba(255, 238, 195, .16), transparent 31%);
+}
+
+/* Morning dust: deliberately a little larger/brighter for a television viewed at distance. */
+.scene.active.bedroom-morning .morning-dust {
+  width: 6px;
+  height: 6px;
+  background: rgba(255, 242, 204, .92);
+  box-shadow: 0 0 9px rgba(255, 224, 156, .52);
+}
+
+.scene.active.bedroom-morning .particle:nth-child(3n) {
+  width: 4px;
+  height: 4px;
+}
+
+/* Override the dust animation with a more readable fade range. */
+@keyframes ambient-dust-drift {
+  0% {
+    transform: translate3d(0, 0, 0) scale(.92);
+    opacity: .28;
+  }
+  50% {
+    opacity: .76;
+  }
+  100% {
+    transform: translate3d(var(--dust-x, 12px), var(--dust-y, -8px), 0) scale(1.10);
+    opacity: .30;
+  }
+}
+
+/* NIGHT: keep the candle light local so it doesn't read like a reflection on the bed. */
+.scene.active.bedroom-night .night-glow {
+  background:
+    radial-gradient(ellipse at 86% 68%, rgba(220, 137, 66, .11), transparent 17%),
+    radial-gradient(ellipse at 42% 61%, rgba(114, 153, 197, .12), transparent 38%);
+}
+
+.scene.active.bedroom-night .candle {
+  box-shadow: 0 0 10px rgba(225, 139, 69, .12);
+}
+
+.scene.active.bedroom-night .candle::before {
+  filter: drop-shadow(0 0 7px rgba(239, 139, 62, .68));
+}
+
+/* Keep night dust quieter than morning dust. */
+.scene.active.bedroom-night .night-dust {
+  width: 3px;
+  height: 3px;
+  background: rgba(204, 219, 235, .40);
+  box-shadow: 0 0 4px rgba(193, 210, 229, .18);
+}
