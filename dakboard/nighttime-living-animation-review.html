@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#0d0b0b">
-  <title>Living Elarindor — Nighttime Bed Stage 3.2 Review</title>
+  <title>Living Elarindor — Nighttime Bed Stage 3.3 Review</title>
   <style>
     html, body {
       width: 100%;
@@ -41,7 +41,6 @@
       z-index: 1;
     }
 
-    /* Cool window-side motion only. This stays slow and does not flicker. */
     .moon-wash {
       position: absolute;
       right: -7vw;
@@ -81,7 +80,6 @@
       will-change: transform, opacity;
     }
 
-    /* Visible flame sprites aligned to the clearest candles. */
     .flame {
       position: absolute;
       width: .72vw;
@@ -108,12 +106,9 @@
       will-change: transform, opacity;
     }
 
-    .flame-left   { left: 8.0%;  top: 36.3%; animation-duration: .92s; }
-    .flame-center { left: 53.3%; top: 36.2%; animation-duration: 1.17s; animation-delay: -.37s; }
-    .flame-right  { left: 96.0%; top: 36.1%; animation-duration: 1.03s; animation-delay: -.71s; }
+    .flame-left  { left: 8.0%;  top: 36.3%; animation-duration: .92s; }
+    .flame-right { left: 96.0%; top: 36.1%; animation-duration: 1.03s; animation-delay: -.71s; }
 
-    /* Halos are intentionally tight around their light sources so the quilt
-       does not visibly pulse with the candle animation. */
     .candle-halo {
       position: absolute;
       border-radius: 50%;
@@ -136,15 +131,6 @@
       width: 15vw;
       height: 22vh;
       animation-duration: 1.42s;
-    }
-
-    .halo-center {
-      left: 47.5vw;
-      top: 28vh;
-      width: 12vw;
-      height: 18vh;
-      animation-duration: 1.84s;
-      animation-delay: -.6s;
     }
 
     .halo-right {
@@ -219,10 +205,8 @@
       <div class="moon-beam"></div>
 
       <div class="candle-halo halo-left"></div>
-      <div class="candle-halo halo-center"></div>
       <div class="candle-halo halo-right"></div>
       <i class="flame flame-left"></i>
-      <i class="flame flame-center"></i>
       <i class="flame flame-right"></i>
 
       <i class="mote m1"></i>
