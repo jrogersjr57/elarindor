@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#0d0b0b">
-  <title>Living Elarindor — Nighttime Bed Stage 3.7 Review</title>
+  <title>Living Elarindor — Nighttime Bed Stage 3.8 Review</title>
   <style>
     html, body {
       width: 100%;
@@ -22,14 +22,13 @@
       background: #0d0b0b;
     }
 
-    /* Faster diagnostic motion. The previous 8s alternate animation took
-       roughly 16s for a full out-and-back cycle, which was still too slow
-       to read clearly from the Den TV. */
+    /* Mid-speed living-still drift: halfway between the too-slow 8s pass
+       and the too-fast 4s pass. */
     .world {
       position: absolute;
       inset: -6%;
       transform-origin: 50% 50%;
-      animation: living-camera-test 4s ease-in-out infinite alternate;
+      animation: living-camera-test 6s ease-in-out infinite alternate;
       will-change: transform;
     }
 
