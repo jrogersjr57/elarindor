@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0d0b0b">
+  <title>Living Elarindor — Animated WebP Playback Test</title>
+  <style>
+    html, body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      background: #0d0b0b;
+    }
+    .stage {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background: #0d0b0b;
+    }
+    .scene {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+    }
+    .webp-test {
+      position: absolute;
+      left: 15vw;
+      bottom: 8vh;
+      width: 70vw;
+      height: auto;
+      z-index: 2;
+      display: block;
+      pointer-events: none;
+    }
+    .status {
+      position: absolute;
+      left: 1.2vw;
+      bottom: 1.2vh;
+      z-index: 3;
+      padding: .5rem .75rem;
+      border-radius: .35rem;
+      background: rgba(0,0,0,.62);
+      color: rgba(255,255,255,.92);
+      font: 600 14px/1.25 system-ui, -apple-system, sans-serif;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <main class="stage" aria-label="Animated WebP playback test">
+    <img class="scene"
+         src="./assets/images/nighttime-bed-character-staging-v1.png?v=1"
+         alt="Nighttime Bed character staging artwork">
+
+    <img class="webp-test"
+         src="data:image/webp;base64,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"
+         alt="Animated WebP test: a white square moving left to right">
+
+    <div class="status">ANIMATED WEBP TEST · white square should repeatedly move left → right</div>
+  </main>
+</body>
+</html>
