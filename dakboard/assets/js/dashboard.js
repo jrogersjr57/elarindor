@@ -2,7 +2,7 @@
   'use strict';
 
   const DEFAULT_CONFIG = {
-    version: 7,
+    version: 9,
     fadeMilliseconds: 1400,
     scenes: [
       { id: 'morning-wakeup', name: 'Morning Wakeup', eyebrow: 'Living Elarindor', quest: 'Begin the Day', theme: 'bedroom-morning', particles: 'morning-dust' },
@@ -13,6 +13,14 @@
   const params = new URLSearchParams(window.location.search);
   const debug = params.get('debug') === '1';
   const requestedScene = params.get('scene') || 'morning-wakeup';
+  const requestedStage = params.get('stage') || 'live';
+  const stageNames = {
+    environment: 'Stage 1 · Environment',
+    characters: 'Stage 2 · Character Staging',
+    animation: 'Stage 3 · Living Animation',
+    live: ''
+  };
+  const activeStage = Object.prototype.hasOwnProperty.call(stageNames, requestedStage) ? requestedStage : 'live';
 
   const el = {
     sceneRoot: document.getElementById('scene-root'),
@@ -22,7 +30,8 @@
     quest: document.getElementById('quest-title'),
     location: document.getElementById('location'),
     debugPanel: document.getElementById('debug-panel'),
-    status: document.getElementById('status')
+    status: document.getElementById('status'),
+    stageLabel: document.getElementById('stage-label')
   };
 
   let config = DEFAULT_CONFIG;
@@ -30,6 +39,11 @@
 
   function setStatus(message) {
     if (el.status) el.status.textContent = message;
+  }
+
+  function applyDevelopmentStage() {
+    document.documentElement.dataset.stage = activeStage;
+    if (el.stageLabel) el.stageLabel.textContent = stageNames[activeStage] || '';
   }
 
   function updateClock() {
@@ -135,7 +149,7 @@
     if (el.location) el.location.textContent = scene.name || scene.id;
 
     updateDebugButtons();
-    setStatus(`Scene: ${scene.id} • ${reason} • CSS motion • engine v${config.version}`);
+    setStatus(`Scene: ${scene.id} • ${reason} • stage: ${activeStage} • CSS motion • engine v${config.version}`);
   }
 
   function buildDebugControls() {
@@ -174,6 +188,7 @@
   }
 
   async function init() {
+    applyDevelopmentStage();
     updateClock();
     window.setInterval(updateClock, 30000);
 
