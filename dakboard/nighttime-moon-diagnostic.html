@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#0d0b0b">
-  <title>Living Elarindor — Moon Cloud Cover Diagnostic v9</title>
+  <title>Living Elarindor — Moonlight Cloud Diagnostic v10</title>
   <style>
     html, body {
       width: 100%;
@@ -33,9 +33,10 @@
       z-index: 0;
     }
 
-    /* The room response is the main cue that a cloud has crossed the moon.
-       No literal cloud shape is drawn across the window in this version. */
-    .room-dim {
+    /* v10: no cloud shape and no moon-localized mask at all.
+       The whole scene simply experiences a soft moonlight dip, strongest
+       near the window, then recovers. This avoids eclipse/crescent artifacts. */
+    .cloud-light-dip {
       position: absolute;
       inset: 0;
       z-index: 1;
@@ -43,62 +44,21 @@
       background:
         radial-gradient(
           ellipse at 84% 14%,
-          rgba(7, 14, 30, .20) 0%,
-          rgba(7, 14, 30, .15) 30%,
-          rgba(7, 14, 30, .09) 54%,
-          rgba(7, 14, 30, .03) 74%,
+          rgba(4, 8, 18, .30) 0%,
+          rgba(4, 8, 18, .22) 26%,
+          rgba(4, 8, 18, .14) 48%,
+          rgba(4, 8, 18, .06) 70%,
           rgba(0, 0, 0, 0) 100%
         ),
-        rgba(3, 7, 16, .08);
+        linear-gradient(
+          180deg,
+          rgba(3, 7, 16, .10) 0%,
+          rgba(3, 7, 16, .06) 55%,
+          rgba(3, 7, 16, .02) 100%
+        );
       opacity: 0;
-      animation: room-moon-dim 16s ease-in-out infinite;
+      animation: cloud-light-dip 16s ease-in-out infinite;
       will-change: opacity;
-    }
-
-    /* Small moon-only zone so nothing can touch curtains, frame, or room. */
-    .moon-zone {
-      position: absolute;
-      left: 79.7%;
-      top: 5.0%;
-      width: 9.2%;
-      height: 15.0%;
-      overflow: hidden;
-      z-index: 2;
-      pointer-events: none;
-      border-radius: 50%;
-    }
-
-    /* Patchy translucent haze. It covers the whole moon unevenly instead of
-       making a moving silhouette or crescent edge. */
-    .haze-a,
-    .haze-b {
-      position: absolute;
-      inset: -12%;
-      opacity: 0;
-      will-change: opacity, transform;
-      mix-blend-mode: multiply;
-    }
-
-    .haze-a {
-      background:
-        radial-gradient(circle at 18% 28%, rgba(23,34,54,.36) 0 16%, rgba(23,34,54,0) 34%),
-        radial-gradient(circle at 49% 18%, rgba(28,40,62,.28) 0 18%, rgba(28,40,62,0) 39%),
-        radial-gradient(circle at 76% 34%, rgba(21,32,51,.44) 0 19%, rgba(21,32,51,0) 40%),
-        radial-gradient(circle at 32% 66%, rgba(31,44,67,.30) 0 20%, rgba(31,44,67,0) 43%),
-        radial-gradient(circle at 67% 72%, rgba(20,30,48,.40) 0 21%, rgba(20,30,48,0) 44%),
-        linear-gradient(90deg, rgba(18,28,45,.10), rgba(31,43,66,.30) 46%, rgba(20,31,50,.12));
-      filter: blur(4px);
-      animation: haze-a-pass 16s ease-in-out infinite;
-    }
-
-    .haze-b {
-      background:
-        radial-gradient(ellipse at 27% 43%, rgba(37,50,74,.24) 0 17%, rgba(37,50,74,0) 40%),
-        radial-gradient(ellipse at 58% 36%, rgba(18,28,45,.38) 0 19%, rgba(18,28,45,0) 43%),
-        radial-gradient(ellipse at 82% 61%, rgba(35,48,72,.26) 0 18%, rgba(35,48,72,0) 41%),
-        radial-gradient(ellipse at 41% 78%, rgba(20,30,48,.32) 0 20%, rgba(20,30,48,0) 45%);
-      filter: blur(5px);
-      animation: haze-b-pass 16s ease-in-out infinite;
     }
 
     .diagnostic-note {
@@ -115,75 +75,25 @@
       pointer-events: none;
     }
 
-    @keyframes haze-a-pass {
-      0%, 20% {
-        opacity: 0;
-        transform: translate3d(8%, -3%, 0) scale(1.02);
-      }
-      34% {
-        opacity: .28;
-        transform: translate3d(3%, -1%, 0) scale(1.03);
-      }
-      47%, 58% {
-        opacity: .78;
-        transform: translate3d(-2%, 1%, 0) scale(1.05);
-      }
-      70% {
-        opacity: .30;
-        transform: translate3d(-6%, 2%, 0) scale(1.04);
-      }
-      82%, 100% {
-        opacity: 0;
-        transform: translate3d(-10%, 3%, 0) scale(1.02);
-      }
-    }
-
-    @keyframes haze-b-pass {
-      0%, 25% {
-        opacity: 0;
-        transform: translate3d(6%, 2%, 0) scale(1.01);
-      }
-      39% {
-        opacity: .20;
-        transform: translate3d(2%, 1%, 0) scale(1.03);
-      }
-      50%, 63% {
-        opacity: .58;
-        transform: translate3d(-3%, -1%, 0) scale(1.05);
-      }
-      73% {
-        opacity: .18;
-        transform: translate3d(-7%, -2%, 0) scale(1.03);
-      }
-      84%, 100% {
-        opacity: 0;
-        transform: translate3d(-9%, -3%, 0) scale(1.01);
-      }
-    }
-
-    @keyframes room-moon-dim {
-      0%, 23%, 78%, 100% { opacity: 0; }
-      37% { opacity: .16; }
-      49%, 61% { opacity: .48; }
-      70% { opacity: .18; }
+    @keyframes cloud-light-dip {
+      0%, 22%   { opacity: 0; }
+      35%        { opacity: .20; }
+      48%, 60%  { opacity: .72; }
+      72%        { opacity: .24; }
+      82%, 100%  { opacity: 0; }
     }
   </style>
 </head>
 <body>
-  <main class="stage" aria-label="Nighttime moon cloud-cover diagnostic">
+  <main class="stage" aria-label="Nighttime moonlight cloud-cover diagnostic">
     <img
       class="scene-image"
       src="./assets/images/nighttime-bed-character-staging-v1.png?v=1"
       alt="Nighttime Bed character staging artwork">
 
-    <div class="room-dim" aria-hidden="true"></div>
+    <div class="cloud-light-dip" aria-hidden="true"></div>
 
-    <div class="moon-zone" aria-hidden="true">
-      <div class="haze-a"></div>
-      <div class="haze-b"></div>
-    </div>
-
-    <div class="diagnostic-note">CLOUD TEST v9 · patchy moon haze · 16s</div>
+    <div class="diagnostic-note">CLOUD TEST v10 · light dip only · 16s</div>
   </main>
 </body>
 </html>
