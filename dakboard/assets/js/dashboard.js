@@ -211,9 +211,12 @@
     const slower = Math.sin(t * 0.31);
     const pulse = (Math.sin(t * 1.7) + 1) / 2;
 
-    document.documentElement.style.setProperty('--motion-x', sway.toFixed(4));
-    document.documentElement.style.setProperty('--motion-y', slower.toFixed(4));
-    document.documentElement.style.setProperty('--motion-pulse', pulse.toFixed(4));
+    document.documentElement.style.setProperty('--curtain-shift', `${(sway * 10).toFixed(2)}px`);
+    document.documentElement.style.setProperty('--curtain-rotate', `${(sway * 1.15).toFixed(2)}deg`);
+    document.documentElement.style.setProperty('--light-shift', `${(slower * 18).toFixed(2)}px`);
+    document.documentElement.style.setProperty('--light-opacity', `${(0.62 + pulse * 0.24).toFixed(3)}`);
+    document.documentElement.style.setProperty('--candle-scale', `${(0.93 + pulse * 0.11).toFixed(3)}`);
+    document.documentElement.style.setProperty('--candle-opacity', `${(0.66 + pulse * 0.32).toFixed(3)}`);
 
     el.sceneRoot.querySelectorAll('.particle').forEach((node, index) => {
       const phase = Number(node.dataset.phase || 0);
@@ -221,14 +224,14 @@
       const range = Number(node.dataset.range || 10);
       const x = Math.sin((t * speed) + phase) * range;
       const y = Math.cos((t * speed * 0.62) + phase + index * 0.07) * range * 0.42;
-      node.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+      node.style.transform = `translate3d(${x.toFixed(2)}px, ${y.toFixed(2)}px, 0)`;
     });
 
     if (debug) {
       const probeDot = document.querySelector('.motion-probe i');
       if (probeDot) {
         const pct = 50 + Math.sin(t * 1.15) * 46;
-        probeDot.style.left = `${pct}%`;
+        probeDot.style.left = `${pct.toFixed(2)}%`;
       }
     }
 
