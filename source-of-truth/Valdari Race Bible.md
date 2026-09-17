@@ -174,7 +174,7 @@ They are:
 
 The backward sweep should be immediately noticeable upon inspection but subtle enough that the ear still looks biologically plausible.
 
-> ![[Valdari_Ears.png]]
+> ![[../species/valdar/valdari_ear_anatomy_guide.png]]
 
 ![[Vaelyn_Thistletide_Overview.png]]
 
