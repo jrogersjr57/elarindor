@@ -14,16 +14,155 @@ body { user-select: none; }
 #scene-root { position: absolute; inset: 0; }
 .scene { position: absolute; inset: 0; opacity: 0; transition: opacity var(--fade-time) ease-in-out; overflow: hidden; pointer-events: none; }
 .scene.active { opacity: 1; }
-.scene::after { content: ""; position: absolute; inset: 0; z-index: 20; background: radial-gradient(circle at 50% 45%, transparent 0 45%, rgba(0,0,0,.12) 72%, rgba(0,0,0,.38) 100%), linear-gradient(to bottom, rgba(0,0,0,.04), rgba(0,0,0,.22)); }
+.scene::after { content: ""; position: absolute; inset: 0; z-index: 40; background: radial-gradient(circle at 52% 44%, transparent 0 46%, rgba(0,0,0,.08) 70%, rgba(0,0,0,.34) 100%), linear-gradient(to bottom, rgba(0,0,0,.02), rgba(0,0,0,.16)); }
 .layer { position: absolute; inset: 0; }
 
-.scene.woodland { background: radial-gradient(circle at 65% 15%, rgba(242,215,145,.55), transparent 20%), linear-gradient(#6d8d74 0%, #44634f 35%, #223b30 68%, #0c1c16 100%); }
-.scene.woodland .distant { top: 24%; background: repeating-linear-gradient(88deg, transparent 0 4.2%, rgba(18,45,34,.43) 4.2% 5.4%, transparent 5.4% 8.5%), linear-gradient(to top, rgba(15,38,28,.88), transparent 70%); opacity: .85; animation: woodland-breathe 14s ease-in-out infinite alternate; }
-.scene.woodland .road { inset: auto 18% -18% 16%; height: 62%; background: linear-gradient(102deg, transparent 0 27%, rgba(164,143,102,.18) 31%, rgba(191,168,123,.56) 47%, rgba(131,111,78,.46) 64%, transparent 69%); clip-path: polygon(48% 0, 58% 0, 100% 100%, 0 100%); }
-.scene.woodland .mist { inset: 38% -15% 12% -15%; background: radial-gradient(ellipse at 25% 45%, rgba(223,238,222,.18), transparent 46%), radial-gradient(ellipse at 72% 62%, rgba(223,238,222,.15), transparent 43%), radial-gradient(ellipse at 52% 30%, rgba(223,238,222,.12), transparent 39%); filter: blur(18px); animation: drift-right 28s linear infinite alternate; }
-.scene.woodland .sunbeam { inset: -20% 25% 0 46%; background: linear-gradient(110deg, transparent 20%, rgba(251,226,157,.12) 44%, rgba(251,226,157,.04) 62%, transparent 74%); transform: skewX(-7deg); animation: light-pulse 11s ease-in-out infinite alternate; z-index: 5; }
-.scene.woodland .foreground { background: radial-gradient(ellipse at -4% 38%, rgba(11,33,23,.88) 0 19%, transparent 20%), radial-gradient(ellipse at 104% 48%, rgba(10,29,21,.9) 0 23%, transparent 24%), linear-gradient(to top, rgba(6,20,14,.88) 0 12%, transparent 25%); z-index: 12; animation: foreground-sway 8s ease-in-out infinite alternate; transform-origin: bottom center; }
+/* Woodland Road — Day: first real living-environment study. */
+.scene.woodland {
+  background: linear-gradient(#8fa99a 0%, #789485 22%, #526e5d 46%, #263f31 72%, #112219 100%);
+}
 
+.scene.woodland .woodland-sky {
+  inset: -7% -4% 30% -4%;
+  background:
+    radial-gradient(circle at 66% 18%, rgba(255,238,184,.92) 0 4%, rgba(255,226,158,.35) 5%, transparent 18%),
+    radial-gradient(ellipse at 49% 36%, rgba(221,236,215,.34), transparent 49%),
+    linear-gradient(#9db6aa 0%, #799686 58%, rgba(83,112,91,.15) 100%);
+  animation: woodland-sky-breathe 18s ease-in-out infinite alternate;
+  transform-origin: 60% 30%;
+}
+
+.scene.woodland .woodland-canopy-back {
+  inset: -10% -5% 28% -5%;
+  z-index: 3;
+  background:
+    radial-gradient(ellipse at 6% 12%, rgba(22,59,38,.92) 0 13%, transparent 14%),
+    radial-gradient(ellipse at 18% 5%, rgba(29,72,45,.88) 0 14%, transparent 15%),
+    radial-gradient(ellipse at 34% -1%, rgba(31,75,47,.82) 0 16%, transparent 17%),
+    radial-gradient(ellipse at 78% 2%, rgba(25,63,41,.86) 0 17%, transparent 18%),
+    radial-gradient(ellipse at 94% 12%, rgba(17,49,33,.95) 0 18%, transparent 19%),
+    radial-gradient(ellipse at 61% 0%, rgba(43,84,52,.68) 0 14%, transparent 15%);
+  filter: blur(.4px);
+  animation: canopy-drift 12s ease-in-out infinite alternate;
+  transform-origin: top center;
+}
+
+.scene.woodland .woodland-trunks-back {
+  inset: 6% -4% 16% -4%;
+  z-index: 5;
+  opacity: .84;
+  background:
+    linear-gradient(93deg, transparent 0 5%, rgba(43,50,34,.62) 5.2% 6.3%, transparent 6.5% 12%, rgba(47,54,36,.55) 12.3% 13.1%, transparent 13.4% 21%, rgba(35,45,31,.65) 21.2% 22.5%, transparent 22.8% 32%, rgba(50,56,36,.46) 32.4% 33.2%, transparent 33.5% 45%, rgba(35,44,29,.52) 45.2% 46.5%, transparent 46.8% 59%, rgba(44,51,34,.58) 59.2% 60.7%, transparent 61% 72%, rgba(34,44,30,.6) 72.1% 73.5%, transparent 73.8% 86%, rgba(39,47,31,.68) 86.2% 87.8%, transparent 88%),
+    linear-gradient(to top, rgba(17,41,27,.64), transparent 72%);
+  filter: blur(.2px);
+  animation: woodland-depth 20s ease-in-out infinite alternate;
+}
+
+.scene.woodland .woodland-ground {
+  inset: 44% -4% -8% -4%;
+  z-index: 6;
+  background:
+    radial-gradient(ellipse at 12% 53%, rgba(72,99,55,.72) 0 17%, transparent 18%),
+    radial-gradient(ellipse at 87% 47%, rgba(56,83,46,.72) 0 20%, transparent 21%),
+    radial-gradient(ellipse at 50% 75%, rgba(35,62,39,.76) 0 42%, transparent 58%),
+    linear-gradient(#425e43 0%, #27402f 48%, #15291e 100%);
+}
+
+.scene.woodland .woodland-road {
+  inset: auto 9% -17% 11%;
+  height: 67%;
+  z-index: 8;
+  clip-path: polygon(45% 0, 54% 0, 87% 100%, 7% 100%);
+  background:
+    radial-gradient(ellipse at 56% 16%, rgba(220,201,155,.16), transparent 22%),
+    linear-gradient(103deg, rgba(90,75,51,.2) 0%, rgba(154,135,96,.64) 35%, rgba(190,170,122,.78) 52%, rgba(139,119,82,.62) 68%, rgba(79,67,48,.28) 100%);
+  box-shadow: inset 0 0 46px rgba(74,57,35,.24);
+  transform-origin: 50% 0;
+}
+
+.scene.woodland .woodland-road-light {
+  inset: auto 20% 4% 25%;
+  height: 39%;
+  z-index: 9;
+  clip-path: polygon(36% 0, 50% 0, 72% 100%, 15% 100%);
+  background: linear-gradient(105deg, transparent 0 25%, rgba(255,229,162,.22) 39%, rgba(255,239,189,.36) 55%, rgba(255,229,162,.09) 72%, transparent 84%);
+  filter: blur(7px);
+  animation: road-light 9s ease-in-out infinite alternate;
+}
+
+.scene.woodland .woodland-mist {
+  z-index: 10;
+  filter: blur(24px);
+  opacity: .65;
+}
+.scene.woodland .mist-a {
+  inset: 37% -18% 17% -18%;
+  background:
+    radial-gradient(ellipse at 23% 46%, rgba(222,238,225,.22), transparent 40%),
+    radial-gradient(ellipse at 70% 59%, rgba(222,238,225,.19), transparent 44%),
+    radial-gradient(ellipse at 48% 30%, rgba(231,241,228,.12), transparent 36%);
+  animation: mist-drift-a 31s linear infinite alternate;
+}
+.scene.woodland .mist-b {
+  inset: 47% -12% 8% -12%;
+  background:
+    radial-gradient(ellipse at 38% 58%, rgba(219,235,219,.14), transparent 38%),
+    radial-gradient(ellipse at 80% 38%, rgba(219,235,219,.12), transparent 42%);
+  opacity: .45;
+  animation: mist-drift-b 38s linear infinite alternate;
+}
+
+.scene.woodland .woodland-sunbeam {
+  z-index: 12;
+  mix-blend-mode: screen;
+  transform-origin: top center;
+}
+.scene.woodland .beam-a {
+  inset: -21% 19% 0 41%;
+  background: linear-gradient(111deg, transparent 19%, rgba(255,234,171,.17) 41%, rgba(255,234,171,.05) 61%, transparent 73%);
+  transform: skewX(-7deg);
+  animation: sunbeam-pulse-a 10s ease-in-out infinite alternate;
+}
+.scene.woodland .beam-b {
+  inset: -16% 44% 10% 23%;
+  background: linear-gradient(105deg, transparent 26%, rgba(249,228,170,.09) 48%, transparent 67%);
+  transform: skewX(-4deg);
+  animation: sunbeam-pulse-b 13s ease-in-out infinite alternate;
+}
+
+.scene.woodland .woodland-foreground {
+  z-index: 24;
+  width: 34%;
+  animation: foreground-breathe 8s ease-in-out infinite alternate;
+}
+.scene.woodland .foreground-left {
+  right: auto;
+  background:
+    radial-gradient(ellipse at 1% 29%, rgba(7,28,17,.98) 0 23%, transparent 24%),
+    radial-gradient(ellipse at 13% 68%, rgba(10,38,22,.95) 0 25%, transparent 26%),
+    radial-gradient(ellipse at 21% 92%, rgba(9,32,19,.96) 0 31%, transparent 32%),
+    linear-gradient(83deg, rgba(8,22,15,.94) 0 13%, transparent 14%);
+  transform-origin: left bottom;
+}
+.scene.woodland .foreground-right {
+  left: auto;
+  background:
+    radial-gradient(ellipse at 99% 36%, rgba(6,25,16,.98) 0 25%, transparent 26%),
+    radial-gradient(ellipse at 87% 70%, rgba(9,34,20,.95) 0 27%, transparent 28%),
+    radial-gradient(ellipse at 79% 94%, rgba(8,29,18,.97) 0 31%, transparent 32%),
+    linear-gradient(97deg, transparent 0 85%, rgba(7,21,14,.95) 86% 100%);
+  transform-origin: right bottom;
+  animation-delay: -3.3s;
+}
+
+.scene.woodland .woodland-vignette {
+  z-index: 28;
+  background:
+    linear-gradient(to top, rgba(5,17,11,.48), transparent 23%),
+    radial-gradient(ellipse at 50% 47%, transparent 0 58%, rgba(2,11,7,.16) 78%, rgba(2,9,6,.39) 100%);
+}
+
+/* Existing prototype scenes retained while Woodland Road is developed first. */
 .scene.campfire { background: radial-gradient(circle at 50% 67%, rgba(206,103,43,.38), transparent 21%), linear-gradient(#172437 0%, #111d26 38%, #101815 68%, #070d0a 100%); }
 .scene.campfire .trees { top: 16%; background: repeating-linear-gradient(92deg, transparent 0 5%, rgba(5,12,10,.72) 5% 6.2%, transparent 6.2% 10%), linear-gradient(to top, rgba(4,11,8,.8), transparent 75%); }
 .scene.campfire .ground { top: 63%; background: radial-gradient(ellipse at 50% 30%, rgba(93,55,31,.32), transparent 34%), linear-gradient(#142018, #050b08); z-index: 5; }
@@ -48,9 +187,9 @@ body { user-select: none; }
 .character.a { left: 15%; transform: scale(.88); transform-origin: bottom center; }
 .character.b { right: 13%; animation-delay: -2.1s; }
 
-.particle-field { position: absolute; inset: 0; z-index: 15; overflow: hidden; }
+.particle-field { position: absolute; inset: 0; z-index: 30; overflow: hidden; }
 .particle { position: absolute; pointer-events: none; }
-.leaf { width: 10px; height: 5px; border-radius: 80% 0 80% 0; background: rgba(181,155,76,.62); animation: leaf-fall linear infinite; }
+.leaf { width: 10px; height: 5px; border-radius: 80% 0 80% 0; background: rgba(186,157,79,.62); animation: leaf-fall linear infinite; box-shadow: 0 0 4px rgba(206,184,112,.1); }
 .ember { width: 4px; height: 4px; border-radius: 50%; background: rgba(255,187,88,.88); box-shadow: 0 0 6px rgba(255,139,52,.85); animation: ember-rise linear infinite; }
 .dust { width: 3px; height: 3px; border-radius: 50%; background: rgba(224,207,168,.46); animation: dust-float linear infinite alternate; }
 
@@ -72,18 +211,24 @@ body { user-select: none; }
 .status { position: absolute; left: 18px; bottom: 18px; z-index: 100; display: none; padding: 7px 10px; border-radius: 5px; background: rgba(0,0,0,.62); color: rgba(255,255,255,.8); font: 12px/1.2 system-ui, sans-serif; }
 .debug .status { display: block; }
 
-@keyframes woodland-breathe { from { transform: scale(1); } to { transform: scale(1.018); } }
-@keyframes drift-right { from { transform: translateX(-2%); } to { transform: translateX(3%); } }
-@keyframes foreground-sway { from { transform: rotate(-.25deg) scale(1.01); } to { transform: rotate(.25deg) scale(1.015); } }
+@keyframes woodland-sky-breathe { from { transform: scale(1); filter: brightness(.98); } to { transform: scale(1.018); filter: brightness(1.04); } }
+@keyframes canopy-drift { from { transform: translateX(-.3%) rotate(-.12deg) scale(1.01); } to { transform: translateX(.4%) rotate(.15deg) scale(1.018); } }
+@keyframes woodland-depth { from { transform: scale(1.005) translateX(-.15%); } to { transform: scale(1.018) translateX(.15%); } }
+@keyframes road-light { from { opacity: .48; transform: translateX(-1%) scale(.98); } to { opacity: .9; transform: translateX(1.2%) scale(1.03); } }
+@keyframes mist-drift-a { from { transform: translateX(-3%); } to { transform: translateX(4%); } }
+@keyframes mist-drift-b { from { transform: translateX(4%); } to { transform: translateX(-3%); } }
+@keyframes sunbeam-pulse-a { from { opacity: .45; transform: skewX(-7deg) translateX(-.8%); } to { opacity: .9; transform: skewX(-7deg) translateX(.8%); } }
+@keyframes sunbeam-pulse-b { from { opacity: .2; transform: skewX(-4deg) translateX(.5%); } to { opacity: .62; transform: skewX(-4deg) translateX(-.7%); } }
+@keyframes foreground-breathe { from { transform: rotate(-.28deg) scale(1.01); } to { transform: rotate(.3deg) scale(1.023); } }
 @keyframes light-pulse { from { opacity: .55; } to { opacity: 1; } }
 @keyframes flame-dance { from { transform: translate(-50%, -50%) rotate(-2deg) scale(.94, 1.03); } to { transform: translate(-50%, -50%) rotate(2deg) scale(1.05, .96); } }
 @keyframes firelight { from { opacity: .65; transform: scale(.97); } to { opacity: 1; transform: scale(1.025); } }
 @keyframes candle-flicker { from { opacity: .62; } to { opacity: 1; } }
 @keyframes character-breathe { from { transform: translateY(0); } to { transform: translateY(-1.2%); } }
-@keyframes leaf-fall { 0% { transform: translate3d(0,-10vh,0) rotate(0deg); opacity: 0; } 12% { opacity: .75; } 100% { transform: translate3d(14vw,110vh,0) rotate(540deg); opacity: 0; } }
-@keyframes ember-rise { 0% { transform: translate3d(0,0,0) scale(.7); opacity: 0; } 12% { opacity: 1; } 100% { transform: translate3d(var(--drift, 20px),-42vh,0) scale(.2); opacity: 0; } }
-@keyframes dust-float { from { transform: translate3d(-8px,5px,0); opacity: .18; } to { transform: translate3d(15px,-16px,0); opacity: .7; } }
+@keyframes leaf-fall { 0% { transform: translate3d(-3vw,-10vh,0) rotate(0deg); opacity: 0; } 12% { opacity: .7; } 55% { transform: translate3d(6vw,55vh,0) rotate(260deg); } 100% { transform: translate3d(14vw,112vh,0) rotate(560deg); opacity: 0; } }
+@keyframes ember-rise { 0% { transform: translate3d(0,0,0) scale(.7); opacity: 0; } 12% { opacity: 1; } 100% { transform: translate3d(var(--drift,0),-38vh,0) scale(.25); opacity: 0; } }
+@keyframes dust-float { from { transform: translate3d(-8px,-10px,0); opacity: .15; } to { transform: translate3d(18px,14px,0); opacity: .65; } }
 
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+  *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
 }
