@@ -1,6 +1,6 @@
 {
-  "version": 4,
-  "rotationSeconds": 30,
+  "version": 5,
+  "rotationSeconds": 15,
   "fadeMilliseconds": 2200,
   "scenes": [
     {
