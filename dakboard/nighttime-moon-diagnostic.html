@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0d0b0b">
+  <title>Living Elarindor — Moon Crossing Diagnostic v1</title>
+  <style>
+    html, body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      background: #0d0b0b;
+    }
+
+    .stage {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background: #0d0b0b;
+    }
+
+    .scene-image {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center center;
+      display: block;
+      z-index: 0;
+    }
+
+    /* Accelerated window-only moon test. The final production cycle will be
+       much slower; this version is intentionally fast enough to judge on TV. */
+    .window-zone {
+      position: absolute;
+      right: 1.5%;
+      top: 7%;
+      width: 28%;
+      height: 57%;
+      overflow: hidden;
+      z-index: 2;
+      pointer-events: none;
+      clip-path: polygon(12% 0, 100% 0, 100% 100%, 0 100%, 0 18%);
+    }
+
+    .moon-track {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      animation: moon-crossing-test 18s linear infinite;
+      will-change: transform, opacity;
+    }
+
+    .moon-halo {
+      position: absolute;
+      left: 0;
+      top: 20%;
+      width: 34%;
+      aspect-ratio: 1 / 1;
+      border-radius: 50%;
+      background: radial-gradient(
+        circle,
+        rgba(210,225,255,.42) 0%,
+        rgba(170,200,255,.22) 34%,
+        rgba(120,160,235,.09) 58%,
+        rgba(80,120,205,0) 78%
+      );
+      filter: blur(4px);
+      mix-blend-mode: screen;
+    }
+
+    .moon-disc {
+      position: absolute;
+      left: 8.5%;
+      top: 27%;
+      width: 16%;
+      aspect-ratio: 1 / 1;
+      border-radius: 50%;
+      background: radial-gradient(
+        circle at 42% 38%,
+        rgba(255,255,247,.98) 0%,
+        rgba(238,243,255,.96) 48%,
+        rgba(199,215,244,.92) 72%,
+        rgba(162,188,231,.75) 100%
+      );
+      box-shadow:
+        0 0 10px rgba(220,232,255,.72),
+        0 0 24px rgba(159,192,248,.42),
+        0 0 42px rgba(109,151,224,.20);
+      mix-blend-mode: screen;
+    }
+
+    /* Diagnostic foreground silhouettes so the moon visibly starts behind
+       branches before emerging into the open part of the window. */
+    .branch {
+      position: absolute;
+      z-index: 3;
+      background: rgba(11,17,24,.80);
+      border-radius: 999px;
+      transform-origin: left center;
+      filter: blur(.2px);
+    }
+
+    .branch-a {
+      left: -2%;
+      top: 20%;
+      width: 47%;
+      height: 2.1%;
+      transform: rotate(18deg);
+    }
+
+    .branch-b {
+      left: 2%;
+      top: 31%;
+      width: 39%;
+      height: 1.7%;
+      transform: rotate(-14deg);
+    }
+
+    .branch-c {
+      left: 8%;
+      top: 11%;
+      width: 30%;
+      height: 1.5%;
+      transform: rotate(48deg);
+    }
+
+    .twig-a, .twig-b, .twig-c {
+      position: absolute;
+      z-index: 3;
+      width: 1.1%;
+      background: rgba(10,16,23,.78);
+      border-radius: 999px;
+      transform-origin: top center;
+    }
+
+    .twig-a { left: 20%; top: 17%; height: 23%; transform: rotate(-28deg); }
+    .twig-b { left: 31%; top: 24%; height: 17%; transform: rotate(31deg); }
+    .twig-c { left: 12%; top: 31%; height: 16%; transform: rotate(54deg); }
+
+    .diagnostic-note {
+      position: absolute;
+      left: 1.2vw;
+      bottom: 1.2vh;
+      z-index: 4;
+      padding: .45rem .7rem;
+      border-radius: .35rem;
+      background: rgba(0,0,0,.48);
+      color: rgba(255,255,255,.82);
+      font: 600 13px/1.2 system-ui, -apple-system, sans-serif;
+      letter-spacing: .02em;
+      pointer-events: none;
+    }
+
+    @keyframes moon-crossing-test {
+      0%, 7% {
+        transform: translate3d(-34%, 10%, 0);
+        opacity: 0;
+      }
+      12% {
+        transform: translate3d(-28%, 9%, 0);
+        opacity: 1;
+      }
+      24% {
+        transform: translate3d(-6%, 7%, 0);
+        opacity: 1;
+      }
+      74% {
+        transform: translate3d(67%, -2%, 0);
+        opacity: 1;
+      }
+      89% {
+        transform: translate3d(102%, -7%, 0);
+        opacity: 1;
+      }
+      94%, 100% {
+        transform: translate3d(118%, -10%, 0);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="stage" aria-label="Nighttime moon crossing diagnostic">
+    <img
+      class="scene-image"
+      src="./assets/images/a_cozy_cinematic_highly_detailed_photorealistic.png?v=1"
+      alt="Nighttime Bed environment artwork">
+
+    <div class="window-zone" aria-hidden="true">
+      <div class="moon-track">
+        <div class="moon-halo"></div>
+        <div class="moon-disc"></div>
+      </div>
+
+      <div class="branch branch-a"></div>
+      <div class="branch branch-b"></div>
+      <div class="branch branch-c"></div>
+      <div class="twig-a"></div>
+      <div class="twig-b"></div>
+      <div class="twig-c"></div>
+    </div>
+
+    <div class="diagnostic-note">MOON TEST · accelerated 18s crossing</div>
+  </main>
+</body>
+</html>
