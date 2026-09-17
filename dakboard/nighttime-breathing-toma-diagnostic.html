@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#0d0b0b">
-  <title>Living Elarindor — Toma Breathing Isolation Test</title>
+  <title>Living Elarindor — Toma Breathing Isolation Test v2</title>
   <style>
     html, body {
       width: 100%;
@@ -35,15 +35,15 @@
 
     .scene-image { z-index: 0; }
 
-    /* Isolation diagnostic: only Toma's bedding zone moves. The motion is
-       intentionally a little stronger than the eventual final version so its
-       location and independence from Vaelyn can be judged from TV distance. */
+    /* Isolation diagnostic v2: Toma's breathing zone is moved upward and
+       inward so the rise/fall sits beneath her visible torso/body path rather
+       than reading as motion from the far bed corner. */
     .breath-toma {
       z-index: 1;
       pointer-events: none;
-      transform-origin: 49.5% 63%;
+      transform-origin: 45% 58%;
       -webkit-mask-image: radial-gradient(
-        ellipse 12% 8.5% at 49.5% 59%,
+        ellipse 10% 7.5% at 45% 54%,
         rgba(0,0,0,1) 0%,
         rgba(0,0,0,.92) 34%,
         rgba(0,0,0,.56) 58%,
@@ -51,7 +51,7 @@
         rgba(0,0,0,0) 100%
       );
       mask-image: radial-gradient(
-        ellipse 12% 8.5% at 49.5% 59%,
+        ellipse 10% 7.5% at 45% 54%,
         rgba(0,0,0,1) 0%,
         rgba(0,0,0,.92) 34%,
         rgba(0,0,0,.56) 58%,
@@ -64,8 +64,8 @@
 
     @keyframes breathe-toma-only {
       0%, 100% { transform: translate3d(0, 0, 0) scaleY(1); }
-      42%      { transform: translate3d(0, -6px, 0) scaleY(1.022); }
-      58%      { transform: translate3d(0, -6px, 0) scaleY(1.022); }
+      42%      { transform: translate3d(0, -5px, 0) scaleY(1.018); }
+      58%      { transform: translate3d(0, -5px, 0) scaleY(1.018); }
     }
   </style>
 </head>
