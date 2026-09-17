@@ -2,8 +2,8 @@
   'use strict';
 
   const DEFAULT_CONFIG = {
-    version: 4,
-    rotationSeconds: 30,
+    version: 5,
+    rotationSeconds: 15,
     fadeMilliseconds: 2200,
     scenes: [
       { id: 'morning-wakeup', name: 'Morning Wakeup', eyebrow: 'Living Elarindor', quest: 'Begin the Day', theme: 'bedroom-morning', particles: 'morning-dust' },
@@ -29,10 +29,11 @@
 
   let config = DEFAULT_CONFIG;
   let currentIndex = 0;
-  let rotationTimer = null;
   let isAuto = !forcedScene;
   let motionFrame = null;
   let motionStartedAt = performance.now();
+  let lastSceneSwitchAt = performance.now();
+  let lastProductionSceneId = null;
 
   function setStatus(message) {
     if (el.status) el.status.textContent = message;
@@ -142,30 +143,47 @@
     setStatus(`Scene: ${scene.id} • ${reason} • engine v${config.version}`);
   }
 
-  function advanceScene() {
-    if (!isAuto) return;
-    setActiveScene(currentIndex + 1, 'auto');
+  function setSceneById(id, reason) {
+    const index = config.scenes.findIndex(scene => scene.id === id);
+    if (index < 0) return false;
+    if (currentIndex === index && el.sceneRoot.querySelector('.scene.active')) return true;
+    setActiveScene(index, reason);
+    return true;
   }
 
-  function stopRotation() {
-    if (rotationTimer) window.clearInterval(rotationTimer);
-    rotationTimer = null;
+  function advanceScene(reason = 'auto') {
+    setActiveScene(currentIndex + 1, reason);
+    lastSceneSwitchAt = performance.now();
   }
 
-  function startRotation() {
-    stopRotation();
+  function startAuto() {
     isAuto = true;
-    const seconds = Math.max(5, Number(config.rotationSeconds) || 30);
-    rotationTimer = window.setInterval(advanceScene, seconds * 1000);
+    lastSceneSwitchAt = performance.now();
     updateDebugButtons(config.scenes[currentIndex]?.id);
+    setStatus(`Auto mode • frame-driven • engine v${config.version}`);
   }
 
   function forceScene(id) {
     const index = config.scenes.findIndex(scene => scene.id === id);
     if (index < 0) return;
     isAuto = false;
-    stopRotation();
     setActiveScene(index, 'forced');
+  }
+
+  function productionSceneId(now = new Date()) {
+    const hour = now.getHours();
+    // Temporary two-scene schedule until more day-part scenes are developed.
+    // Morning Wakeup carries the daytime slot; Nighttime Bed carries evening/night.
+    return (hour >= 18 || hour < 5) ? 'nighttime-bed' : 'morning-wakeup';
+  }
+
+  function updateProductionSchedule() {
+    if (debug || forcedScene) return;
+    const desired = productionSceneId(new Date());
+    if (desired !== lastProductionSceneId) {
+      lastProductionSceneId = desired;
+      setSceneById(desired, 'time-of-day');
+    }
   }
 
   function buildDebugControls() {
@@ -176,10 +194,7 @@
     auto.type = 'button';
     auto.dataset.mode = 'auto';
     auto.textContent = 'Auto';
-    auto.addEventListener('click', () => {
-      startRotation();
-      setStatus(`Auto rotation: ${config.rotationSeconds}s • engine v${config.version}`);
-    });
+    auto.addEventListener('click', startAuto);
     el.debugPanel.appendChild(auto);
 
     config.scenes.forEach(scene => {
@@ -233,6 +248,15 @@
         const pct = 50 + Math.sin(t * 1.15) * 46;
         probeDot.style.left = `${pct.toFixed(2)}%`;
       }
+
+      if (isAuto) {
+        const seconds = Math.max(5, Number(config.rotationSeconds) || 15);
+        if (now - lastSceneSwitchAt >= seconds * 1000) {
+          advanceScene('auto-frame');
+        }
+      }
+    } else {
+      updateProductionSchedule();
     }
 
     motionFrame = window.requestAnimationFrame(runMotion);
@@ -260,19 +284,17 @@
     renderScenes();
     buildDebugControls();
 
-    let initialIndex = 0;
-    if (forcedScene) {
-      const requested = config.scenes.findIndex(scene => scene.id === forcedScene);
-      if (requested >= 0) initialIndex = requested;
-    }
-
-    setActiveScene(initialIndex, forcedScene ? 'URL' : 'initial');
-
     if (forcedScene) {
       isAuto = false;
-      updateDebugButtons(config.scenes[initialIndex].id);
+      setSceneById(forcedScene, 'URL');
+    } else if (debug) {
+      isAuto = true;
+      setActiveScene(0, 'debug-initial');
+      lastSceneSwitchAt = performance.now();
     } else {
-      startRotation();
+      isAuto = false;
+      lastProductionSceneId = productionSceneId(new Date());
+      setSceneById(lastProductionSceneId, 'time-of-day');
     }
 
     if (motionFrame) window.cancelAnimationFrame(motionFrame);
