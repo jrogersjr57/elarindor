@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#0d0b0b">
-  <title>Living Elarindor — Breathing Diagnostic v7</title>
+  <title>Living Elarindor — Breathing Diagnostic v8</title>
   <style>
     html, body {
       width: 100%;
@@ -35,8 +35,9 @@
 
     .scene-image { z-index: 0; }
 
-    /* Diagnostic v7: combines the approved isolation settings unchanged:
-       Vaelyn v4 + Toma v3. */
+    /* Diagnostic v8: preserve Vaelyn v4. Toma is nudged slightly down and
+       toward Vaelyn, with a modestly tighter mask to reduce the visible seam.
+       Their breathing cycles remain independent but much closer in speed. */
     .breath-layer {
       z-index: 1;
       pointer-events: none;
@@ -65,24 +66,24 @@
     }
 
     .breath-toma {
-      transform-origin: 46% 52%;
+      transform-origin: 44.8% 53%;
       -webkit-mask-image: radial-gradient(
-        ellipse 9% 5.8% at 46% 48.5%,
+        ellipse 8.3% 5.3% at 44.8% 50%,
         rgba(0,0,0,1) 0%,
-        rgba(0,0,0,.94) 34%,
-        rgba(0,0,0,.60) 58%,
-        rgba(0,0,0,.20) 78%,
+        rgba(0,0,0,.92) 32%,
+        rgba(0,0,0,.56) 56%,
+        rgba(0,0,0,.17) 77%,
         rgba(0,0,0,0) 100%
       );
       mask-image: radial-gradient(
-        ellipse 9% 5.8% at 46% 48.5%,
+        ellipse 8.3% 5.3% at 44.8% 50%,
         rgba(0,0,0,1) 0%,
-        rgba(0,0,0,.94) 34%,
-        rgba(0,0,0,.60) 58%,
-        rgba(0,0,0,.20) 78%,
+        rgba(0,0,0,.92) 32%,
+        rgba(0,0,0,.56) 56%,
+        rgba(0,0,0,.17) 77%,
         rgba(0,0,0,0) 100%
       );
-      animation: breathe-toma 8.6s cubic-bezier(.42,0,.58,1) infinite;
+      animation: breathe-toma 8.25s cubic-bezier(.42,0,.58,1) infinite;
     }
 
     @keyframes breathe-vaelyn {
