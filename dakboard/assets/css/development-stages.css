@@ -1,4 +1,4 @@
-/* Living Elarindor v9 — development-stage review support.
+/* Living Elarindor v10 — development-stage review support.
    Stage URLs are for Den TV review during production. */
 
 .stage-label {
@@ -25,9 +25,63 @@ html[data-stage]:not([data-stage="live"]) .stage-label {
   display: block;
 }
 
-/* These hooks intentionally do not alter the artwork yet.
-   Future layered scene assets can be hidden/revealed by stage without
-   changing the review URLs already used on the Den TV. */
+/* Development review should show the artwork without dashboard overlays. */
+html[data-stage="environment"] .hud,
+html[data-stage="characters"] .hud,
+html[data-stage="animation"] .hud {
+  display: none;
+}
+
+.environment-art {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: none;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+}
+
+.scene.bedroom-night .nighttime-environment-art {
+  background-image: url("../images/a_cozy_cinematic_highly_detailed_photorealistic.png");
+}
+
+/* The approved master room is the base artwork for all Nighttime Bed review stages. */
+html[data-stage="environment"] .scene.active.bedroom-night .nighttime-environment-art,
+html[data-stage="characters"] .scene.active.bedroom-night .nighttime-environment-art,
+html[data-stage="animation"] .scene.active.bedroom-night .nighttime-environment-art {
+  display: block;
+}
+
+/* Hide the old CSS prototype room while reviewing the painterly master artwork. */
+html[data-stage="environment"] .scene.active.bedroom-night > .room-wall,
+html[data-stage="environment"] .scene.active.bedroom-night > .window,
+html[data-stage="environment"] .scene.active.bedroom-night > .moonlight,
+html[data-stage="environment"] .scene.active.bedroom-night > .bed,
+html[data-stage="environment"] .scene.active.bedroom-night > .candle,
+html[data-stage="environment"] .scene.active.bedroom-night > .bedside-furniture,
+html[data-stage="environment"] .scene.active.bedroom-night > .night-glow,
+html[data-stage="environment"] .scene.active.bedroom-night > .particle-field,
+html[data-stage="characters"] .scene.active.bedroom-night > .room-wall,
+html[data-stage="characters"] .scene.active.bedroom-night > .window,
+html[data-stage="characters"] .scene.active.bedroom-night > .moonlight,
+html[data-stage="characters"] .scene.active.bedroom-night > .bed,
+html[data-stage="characters"] .scene.active.bedroom-night > .candle,
+html[data-stage="characters"] .scene.active.bedroom-night > .bedside-furniture,
+html[data-stage="characters"] .scene.active.bedroom-night > .night-glow,
+html[data-stage="characters"] .scene.active.bedroom-night > .particle-field,
+html[data-stage="animation"] .scene.active.bedroom-night > .room-wall,
+html[data-stage="animation"] .scene.active.bedroom-night > .window,
+html[data-stage="animation"] .scene.active.bedroom-night > .moonlight,
+html[data-stage="animation"] .scene.active.bedroom-night > .bed,
+html[data-stage="animation"] .scene.active.bedroom-night > .candle,
+html[data-stage="animation"] .scene.active.bedroom-night > .bedside-furniture,
+html[data-stage="animation"] .scene.active.bedroom-night > .night-glow,
+html[data-stage="animation"] .scene.active.bedroom-night > .particle-field {
+  display: none !important;
+}
+
+/* Stage progression hooks. */
 html[data-stage="environment"] .character-layer,
 html[data-stage="environment"] .character-motion-layer {
   display: none !important;
