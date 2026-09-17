@@ -1,34 +1,23 @@
 {
-  "version": 3,
+  "version": 4,
   "rotationSeconds": 30,
   "fadeMilliseconds": 2200,
   "scenes": [
     {
-      "id": "woodland",
-      "name": "Woodland Road — Day",
+      "id": "morning-wakeup",
+      "name": "Morning Wakeup",
       "eyebrow": "Living Elarindor",
-      "quest": "Build the Living Window",
-      "theme": "woodland",
-      "characters": false,
-      "particles": "leaves"
+      "quest": "Begin the Day",
+      "theme": "bedroom-morning",
+      "particles": "morning-dust"
     },
     {
-      "id": "campfire",
-      "name": "Forest Camp",
-      "eyebrow": "Evening Camp",
-      "quest": "Build the Living Window",
-      "theme": "campfire",
-      "characters": true,
-      "particles": "embers"
-    },
-    {
-      "id": "interior",
-      "name": "Quiet Evening",
-      "eyebrow": "After the Road",
-      "quest": "Build the Living Window",
-      "theme": "interior",
-      "characters": true,
-      "particles": "dust"
+      "id": "nighttime-bed",
+      "name": "Nighttime Bed",
+      "eyebrow": "Living Elarindor",
+      "quest": "Rest at Day's End",
+      "theme": "bedroom-night",
+      "particles": "night-dust"
     }
   ]
 }
