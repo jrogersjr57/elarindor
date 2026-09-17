@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0d0b0b">
+  <title>Living Elarindor — Nighttime Bed Stage 3 Review</title>
+  <style>
+    html, body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      background: #0d0b0b;
+    }
+
+    body {
+      display: grid;
+      place-items: center;
+    }
+
+    .stage {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background: #0d0b0b;
+    }
+
+    .scene-image {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center center;
+      display: block;
+    }
+
+    .ambient {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    /* Cool moonlight breathing at the window/right side. */
+    .moon-glow {
+      position: absolute;
+      right: -8vw;
+      top: -10vh;
+      width: 55vw;
+      height: 95vh;
+      background: radial-gradient(
+        ellipse at 70% 35%,
+        rgba(176, 198, 235, .11) 0%,
+        rgba(138, 167, 213, .07) 34%,
+        rgba(85, 112, 157, .025) 58%,
+        rgba(0, 0, 0, 0) 76%
+      );
+      opacity: .58;
+      transform: translate3d(0, 0, 0) scale(1);
+      animation: moon-breathe 11s ease-in-out infinite alternate;
+      will-change: opacity, transform;
+    }
+
+    /* Candlelight glow pools. Positions are intentionally broad so they
+       enhance the existing painted candles without covering scene detail. */
+    .candle-glow {
+      position: absolute;
+      width: 24vw;
+      height: 34vh;
+      border-radius: 50%;
+      background: radial-gradient(
+        ellipse at center,
+        rgba(255, 194, 98, .22) 0%,
+        rgba(255, 153, 59, .10) 35%,
+        rgba(211, 99, 35, .035) 58%,
+        rgba(0, 0, 0, 0) 75%
+      );
+      opacity: .48;
+      transform: translate3d(0, 0, 0) scale(1);
+      animation: candle-pulse 2.25s ease-in-out infinite alternate;
+      will-change: opacity, transform;
+    }
+
+    .candle-left {
+      left: 3vw;
+      top: 24vh;
+      animation-duration: 2.05s;
+    }
+
+    .candle-center {
+      left: 46vw;
+      top: 41vh;
+      width: 20vw;
+      height: 30vh;
+      animation-duration: 2.7s;
+      animation-delay: -.9s;
+    }
+
+    .candle-right {
+      right: 4vw;
+      top: 31vh;
+      width: 18vw;
+      height: 28vh;
+      animation-duration: 2.4s;
+      animation-delay: -1.35s;
+    }
+
+    /* Sparse dust motes. Pure CSS transform/opacity for TV reliability. */
+    .mote {
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: rgba(255, 221, 164, .54);
+      opacity: .16;
+      animation: mote-drift 10s ease-in-out infinite alternate;
+      will-change: opacity, transform;
+    }
+
+    .m1 { left: 63%; top: 29%; animation-duration: 12s; }
+    .m2 { left: 70%; top: 42%; animation-duration: 9s; animation-delay: -4s; }
+    .m3 { left: 79%; top: 24%; animation-duration: 14s; animation-delay: -7s; }
+    .m4 { left: 57%; top: 53%; animation-duration: 11s; animation-delay: -2s; }
+    .m5 { left: 84%; top: 48%; animation-duration: 13s; animation-delay: -6s; }
+
+    @keyframes candle-pulse {
+      0%   { opacity: .34; transform: scale(.97); }
+      38%  { opacity: .54; transform: scale(1.015); }
+      72%  { opacity: .42; transform: scale(.995); }
+      100% { opacity: .61; transform: scale(1.035); }
+    }
+
+    @keyframes moon-breathe {
+      0%   { opacity: .46; transform: translate3d(-5px, 0, 0) scale(1); }
+      100% { opacity: .68; transform: translate3d(8px, 0, 0) scale(1.018); }
+    }
+
+    @keyframes mote-drift {
+      0%   { opacity: .10; transform: translate3d(0, 0, 0) scale(.8); }
+      45%  { opacity: .40; }
+      100% { opacity: .13; transform: translate3d(18px, -15px, 0) scale(1.15); }
+    }
+  </style>
+</head>
+<body>
+  <main class="stage" aria-label="Nighttime Bed living animation development review">
+    <img
+      class="scene-image"
+      src="./assets/images/nighttime-bed-character-staging-v1.png?v=1"
+      alt="Nighttime Bed character staging artwork">
+
+    <div class="ambient" aria-hidden="true">
+      <div class="moon-glow"></div>
+      <div class="candle-glow candle-left"></div>
+      <div class="candle-glow candle-center"></div>
+      <div class="candle-glow candle-right"></div>
+      <i class="mote m1"></i>
+      <i class="mote m2"></i>
+      <i class="mote m3"></i>
+      <i class="mote m4"></i>
+      <i class="mote m5"></i>
+    </div>
+  </main>
+</body>
+</html>
