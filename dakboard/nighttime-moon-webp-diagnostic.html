@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0d0b0b">
+  <title>Living Elarindor — Moon Cloud WebP Diagnostic</title>
+  <style>
+    html, body { width:100%; height:100%; margin:0; overflow:hidden; background:#0d0b0b; }
+    .stage { position:relative; width:100vw; height:100vh; overflow:hidden; background:#0d0b0b; }
+    .scene {
+      position:absolute; inset:0; width:100%; height:100%;
+      object-fit:cover; object-position:center center; display:block;
+    }
+    .moon-cloud {
+      position:absolute;
+      left:78.947368%;
+      top:3.188098%;
+      width:13.636364%;
+      height:15.940489%;
+      object-fit:fill;
+      image-rendering:auto;
+      z-index:2;
+      pointer-events:none;
+    }
+    .note {
+      position:absolute; left:1.2vw; bottom:1.2vh; z-index:4;
+      padding:.45rem .7rem; border-radius:.35rem;
+      background:rgba(0,0,0,.58); color:rgba(255,255,255,.92);
+      font:600 13px/1.2 system-ui,-apple-system,sans-serif;
+      pointer-events:none;
+    }
+  </style>
+</head>
+<body>
+  <main class="stage" aria-label="Animated WebP moon cloud diagnostic">
+    <img class="scene"
+      src="./assets/images/nighttime-bed-character-staging-v1.png?v=1"
+      alt="Nighttime Bed character staging artwork">
+    <img class="moon-cloud"
+      src="./assets/images/nighttime-moon-cloud-overlay-v1.webp?v=1"
+      alt="">
+    <div class="note">WEBP MOON CLOUD · ~60 FPS · 4.1s TEST LOOP</div>
+  </main>
+</body>
+</html>
