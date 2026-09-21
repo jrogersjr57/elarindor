@@ -1,0 +1,6 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Elarindor · Autumn morning</title>
+<style>html,body{margin:0;background:#100e0b;height:100%;overflow:hidden}video{width:100%;height:100%;object-fit:contain}button{position:absolute;bottom:20px;left:20px;padding:12px 20px;background:#f2e2c4;border:0;border-radius:8px;color:#352715;font:16px system-ui;cursor:pointer}button[hidden]{display:none}</style>
+<video id="scene" autoplay muted loop playsinline preload="auto" poster="autumn-morning-still-v8.png"><source src="autumn-morning-loop-720p-v8.mp4" type="video/mp4"></video>
+<button id="play" hidden>Play autumn morning</button>
+<script>const v=document.getElementById('scene'),b=document.getElementById('play');v.muted=true;function play(){v.play().then(()=>b.hidden=true).catch(()=>b.hidden=false)}b.onclick=play;play();document.addEventListener('visibilitychange',()=>{if(!document.hidden)play()});</script></html>
