@@ -1,0 +1,11 @@
+<!doctype html><html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Elarindor woodland walk</title><style>html,body{margin:0;background:#000;width:100%;height:100%;overflow:hidden}video{width:100%;height:100%;object-fit:contain;opacity:0;transition:opacity .75s linear}video.visible{opacity:1}</style><video id="walk" muted playsinline preload="auto" src="daytime-walk-v2.mp4"></video><script>const video=document.getElementById('walk');
+let enabled=true,restartTimer=null;
+function play(){if(!enabled)return;video.currentTime=0;const promise=video.play();if(promise)promise.catch(error=>{if(error.name!=='AbortError'&&enabled)parent.postMessage({type:'trail-error'},location.origin);});}
+function setActive(active){enabled=active;clearTimeout(restartTimer);video.pause();video.classList.remove('visible');if(active)play();}
+video.addEventListener('playing',()=>{if(enabled)video.classList.add('visible');else video.pause();});
+video.addEventListener('timeupdate',()=>{if(video.duration-video.currentTime<=0.75)video.classList.remove('visible');});
+video.addEventListener('ended',()=>{video.classList.remove('visible');if(enabled)restartTimer=setTimeout(play,1000);});
+video.addEventListener('error',()=>parent.postMessage({type:'trail-error'},location.origin));
+window.addEventListener('message',event=>{if(event.source===parent&&event.origin===location.origin&&event.data.type==='trail-active')setActive(event.data.active);});
+play();
+</script></html>
